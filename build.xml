@@ -79,7 +79,7 @@ Builds the project via ant (obviously).
 
   <property name="module" value="esg-orp"/>
   <property name="organization" value="Earth Systems Grid Federation"/>
-  <property name="project_name" value="ESG-Node"/>
+  <property name="project_name" value="ESG-ORP"/>
   <property name="author" value="Gavin M. Bell"/>
 
   <!--
@@ -143,7 +143,7 @@ Builds the project via ant (obviously).
     <property name="log_config"       	  value="${conf_dir}/log4j.properties"/>
     <property name="log_file"         	  value="${log_dir}/${module}_v${version_num}.log"/>
     <property name="javadoc_link_src" 	  value="true"/>
-    <property name="main_class"           value="esg.node.orp.Main"/>
+    <property name="main_class"           value="esg.orp.Main"/>
 
     <property name="doc_dir_generated"    value="${basedir}/docs-generated"/>
     <property name="jdoc_dir"   	  value="${doc_dir_generated}/javadocs"/>
@@ -377,8 +377,8 @@ Builds the project via ant (obviously).
     <mkdir dir="${dist_dir}" />
     <jar destfile="${dist_dir}/${module}-fe.${version_num}.jar">
       <fileset dir="${build_dir}" 
-	       includes="esg/node/**,esg/**/common/**,**/*.properties"
-	       excludes="**/test/**,**/node.properties/**"/>
+	       includes="esg/**,esg/**/common/**,**/*.properties"
+	       excludes="**/test/**,**/orp.properties/**"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
 	<attribute name="Author"       value="${author}"/>
@@ -387,7 +387,7 @@ Builds the project via ant (obviously).
 	<attribute name="Version"      value="${version_num}"/>
 	<attribute name="Release-Name" value="${release_name}"/>
 	<attribute name="Main-Class"   value="${main_class}"/>
-	<section name="esg/node/orp/">
+	<section name="esg/orp/">
 	  <attribute name="Sealed" value="false"/>
 	</section>
       </manifest>
@@ -622,10 +622,10 @@ Builds the project via ant (obviously).
       <doctitle><![CDATA[<h1>${module}</h1>]]></doctitle>
       <bottom><![CDATA[<i><a href="http://esg-repo.llnl.gov/esg" target="_top">ESG</a> / <a href="http://esg-repo.llnl.gov/" target="_top">BSD OpenSource License</a></i>]]></bottom>
       <tag name="todo" scope="all" description="To do:"/>
-      <group title="ESG ORP Component Packages" packages="esg.node*"/>
+      <group title="ESG ORP Component Packages" packages="esg.orp*"/>
       <group title="ESG ORP Connection Packages" packages="esg.node.orp.connection*"/>
-      <group title="ESG ORP Common Packages" packages="esg.node.orp.common*"/>
-      <group title="ESG ORP Utility Packages" packages="esg.node.orp.util*"/>
+      <group title="ESG ORP Common Packages" packages="esg.orp.common*"/>
+      <group title="ESG ORP Utility Packages" packages="esg.orp.util*"/>
       <link offline="true" href="http://java.sun.com/javase/6/docs/api/" packagelistLoc="${java.io.tmpdir}"/>
       <link href="http://java.sun.com/javase/6/docs/api/"/>
     </javadoc>
