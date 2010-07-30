@@ -1,0 +1,34 @@
+1.0.0
+Initial distribution
+
+1.1.0
+Inclusion of new components for expanded flexibility:
+	- FilterAuthorizationFilter as an alternative to the TDSAuthorizer
+	- NoAuthorizationFilterCollaborator to bypass authorization
+	
+1.1.8
+Enabled white listing of Identity Providers. 
+	- Required manual configuration of OpenIDAuthenticationFilter in security context.
+
+Moved retrieval and parsing of SAML authentication cookie from AuthorizationFilter to AuthenticationFilter.
+	- Makes authentication process more self-consistent (also lowers the chance of getting order of filters wrong)
+	- Requires the filter parameters "trustore" and "trustorePassword" to be set on the AuthenticationFilter instead of the AuthorizationFilter.
+	- If the SAML authentication cookie is found and succesfully parsed, the use openid identity is saved at request scope as the value of
+	  the attribute named "esg.openid" - can be retrieved by any downstream component including the metrics filter.
+	  
+1.1.9
+Added BSD Open Source License license
+Insert experimental filter X509PreAuthenticationFilter
+	- Detects client X509 certificate and sets authorization flag (bypass redirection to ORP)
+	- Only works for HTTPS requests
+	- Must be inserted before AuthenticationFilter
+	- DO NOT USE IN PRODUCTION
+	
+1.2.0
+- Moved XML configuration files to ORP specific directory: esg/datanode/security/orp/config
+- Moved application.properties to ORP specific directory: esg/datanode/security/orp/config
+- Changed name of LOG output stream
+- Introduced support for OpenID attribute exchange
+	
+1.2.1
+Migrated code to ESGF GIT repository, restructured to be compiled by Ivy

@@ -1,8 +1,13 @@
-#*****************************************************************
-#
-#   Description: Basic description of the project(s) and layout of the
-#   		project.
-#
-#*****************************************************************
+This package contains the ESG OpenidRelyingParty (ORP) web application, which can be used to secure a generic data application server
+running in a Tomcat container in conjunction with the ESG access control filters, and any Openid Identity Provider.
 
-README:
+By default, the application is configured to use a self-signed example keystore located in the classpath as esg/keystore-localhost
+(a corresponding example trustore containing that certificate is available as WEB-INF/jssecacerts). 
+It is highly recommended to obtain or generate a keystore specific to your application, 
+and to configure the ORP application to use it by changing the property file esg/application.properties 
+(a corresponding trustore must also be generated to be used by the data application server).
+
+When deployed on localhost, the default application URL is: https://localhost:8443/OpenidRelyingParty/ .
+
+Note that by default the application writes out very verbose logs to facilitate debugging in early deployment. 
+These settings can be changed in the file WEB-ING/log4j.xml
