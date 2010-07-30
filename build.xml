@@ -708,6 +708,7 @@ Builds the project via ant (obviously).
 			description="(Assembles the WEB-INF directory to run the web application in place.)">
 
 	    <mkdir dir="${basedir}/WebContent" />
+		<mkdir dir="${basedir}/WebContent/js" />
 	    <mkdir dir="${basedir}/WebContent/WEB-INF" />
 	  	<property name="web_deploy_dir" value="${basedir}/WebContent/WEB-INF"/>
 
@@ -718,10 +719,15 @@ Builds the project via ant (obviously).
 	    </copy>
 		
 		<!-- web views -->
+		<copy file="${web_dir}/index.jsp" tofile="${basedir}/WebContent/index.jsp"/>
 	    <copy todir="${web_deploy_dir}/views">
 	      <fileset dir="${web_dir}/WEB-INF/views" />
 	    </copy>
+	    <copy todir="${basedir}/WebContent/js">
+	      <fileset dir="${web_dir}/js" />
+	    </copy>
 
+		
 		<!-- web lib -->
 	    <copy todir="${web_deploy_dir}/lib" flatten="true">
 	      <fileset dir="${lib_dir}" includes="**/*.jar" excludes="**/junit*.jar,**/*sources.jar,**/*javadoc.jar"/>
