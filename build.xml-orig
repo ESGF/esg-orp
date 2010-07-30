@@ -77,9 +77,10 @@ Builds the project via ant (obviously).
 
 <project name="esg-orp" default="make" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
-  <!-- Default properties for this module - can be overridden in etc/${module}.ant.properties -->
   <property name="module" value="esg-orp"/>
   <property name="organization" value="Earth Systems Grid Federation"/>
+  <property name="project_name" value="ESG-ORP"/>
+  <property name="author" value="Gavin M. Bell"/>
 
   <!--
       ************************************************************
@@ -115,7 +116,7 @@ Builds the project via ant (obviously).
     -->
   
   <target name="pre-init" unless="build.master">
-    <property name="build.compiler" value="javac1.6" /> 
+    <property name="build.compiler" value="javac1.5" /> 
     <property name="build.compiler.emacs" value="true" /> 
     <echo message="set build.compiler to ${build.compiler}"/>
   </target>
@@ -129,7 +130,6 @@ Builds the project via ant (obviously).
     <!-- defaults to use if local .${module}.ant.properties file does not exist --> 
     <property name="src_dir"   	          value="${basedir}/src/java/main"/>
     <property name="lib_dir"   	          value="${basedir}/lib"/>
-    <property name="weblib_dir"   	  value="${basedir}/web/WEB-INF/lib"/>
     <property name="lib_fetched_dir"      value="${basedir}/lib/fetched"/>
     <property name="build_dir"   	  value="${basedir}/build"/>
     <property name="dist_dir"   	  value="${basedir}/dist"/>
@@ -143,6 +143,7 @@ Builds the project via ant (obviously).
     <property name="log_config"       	  value="${conf_dir}/log4j.properties"/>
     <property name="log_file"         	  value="${log_dir}/${module}_v${version_num}.log"/>
     <property name="javadoc_link_src" 	  value="true"/>
+    <property name="main_class"           value="esg.orp.Main"/>
 
     <property name="doc_dir_generated"    value="${basedir}/docs-generated"/>
     <property name="jdoc_dir"   	  value="${doc_dir_generated}/javadocs"/>
@@ -196,8 +197,6 @@ Builds the project via ant (obviously).
   
   <target name="init-ivy" depends="init">
     <property name="ivy_version" value="2.1.0" />
-    <!-- <get src="http://repo2.maven.org/maven2/org/apache/ivy/ivy/${ivy_version}/ivy-${ivy_version}.jar" 
-	      dest="ivy-${ivy_version}.jar" usetimestamp="true"/> -->
     <taskdef resource="org/apache/ivy/ant/antlib.xml"
              uri="antlib:org.apache.ivy.ant" classpath="${lib_dir}/ivy-${ivy_version}.jar"/>
     <ivy:settings file="./ivysettings.xml" />
@@ -208,18 +207,11 @@ Builds the project via ant (obviously).
     <ivy:retrieve sync="false"/>
     <path id="main_classpath">
       <fileset dir="${lib_dir}">
-	  	<include name="**/*.jar"/>
-		<exclude name="**/junit*.jar"/>
-		<exclude name="**/*javadoc.jar"/>
-		<exclude name="**/*sources.jar"/>
+	<include name="**/*.jar"/>
+	<exclude name="**/junit*.jar"/>
+	<exclude name="**/*javadoc.jar"/>
+	<exclude name="**/*sources.jar"/>
       </fileset>
-      <!-- <fileset dir="${weblib_dir}">
-   		<include name="**/*.jar"/>
-   		<exclude name="**/junit*.jar"/>
-   		<exclude name="**/*javadoc.jar"/>
-   		<exclude name="**/*sources.jar"/>
-       </fileset>
-       -->
       <pathelement path="${build_dir}"/>
     </path>
     
@@ -291,10 +283,8 @@ Builds the project via ant (obviously).
     </javac>
 
     <copy todir="${build_dir}" filtering="${filter}" overwrite="true">
-      <fileset dir="${conf_dir}" includes="**/*.properties,**/*.template,**/*.xml"/>
-      <fileset dir="${src_dir}" includes="**/*.properties,**/*.template,**/*.xml"/>
-    </copy>
-
+      <fileset dir="${conf_dir}" includes="**/*.properties,**/*.template,**/*filter-web.xml"/>
+    </copy> 
 
     <tstamp/>
   </target>
@@ -308,12 +298,12 @@ Builds the project via ant (obviously).
     -->
   <target name="make_jar" depends="make"
 	  description="(Creates the jar file distribution of this project)">
-    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-${version_num}.jar"/>
+    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}.${version_num}.jar"/>
     <delete>
-      <fileset dir="." includes="${dist_dir}/${module}-${version_num}.jar"/>
+      <fileset dir="." includes="${dist_dir}/${module}.${version_num}.jar"/>
     </delete>
     <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-${version_num}.jar">
+    <jar destfile="${dist_dir}/${module}.${version_num}.jar">
       <fileset dir="${build_dir}"
 	       includes="esg/**,**/*.properties"
 	       excludes="**/test/**"/>
@@ -333,12 +323,12 @@ Builds the project via ant (obviously).
   </target>
 
   <target name="make_test_jar" depends="make_test" description="(Creates test jar file)">
-    <echo message="JAR -  ${test_build_dir} ->> ${dist_dir}/${module}-test-${version_num}.jar"/>
+    <echo message="JAR -  ${test_build_dir} ->> ${dist_dir}/${module}-test.${version_num}.jar"/>
     <delete>
-      <fileset dir="." includes="${dist_dir}/${module}-test-${version_num}.jar"/>
+      <fileset dir="." includes="${dist_dir}/${module}-test.${version_num}.jar"/>
     </delete>
     <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-test-${version_num}.jar">
+    <jar destfile="${dist_dir}/${module}-test.${version_num}.jar">
       <fileset dir="${test_build_dir}"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
@@ -355,12 +345,12 @@ Builds the project via ant (obviously).
   </target>
   
   <target name="make_common_jar" depends="make" description="(Creates common jar file)">
-    <echo message="JAR -  ${test_build_dir} ->> ${dist_dir}/${module}-common-${version_num}.jar"/> 
+    <echo message="JAR -  ${test_build_dir} ->> ${dist_dir}/${module}-common.${version_num}.jar"/> 
     <delete> 
       <fileset dir="." includes="${dist_dir}/${module}-common*.jar"/>
     </delete>
     <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-common-${version_num}.jar">
+    <jar destfile="${dist_dir}/${module}-common.${version_num}.jar">
       <fileset dir="${build_dir}"
 	       includes="esg/orp/common/**"/>
       <manifest>
@@ -379,15 +369,15 @@ Builds the project via ant (obviously).
 
   <target name="make_fe_jar" depends="make"
 	  description="(Creates the jar file distribution for client Front End GUI)">
-    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-fe-${version_num}.jar"/> 
+    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-fe.${version_num}.jar"/> 
     <delete> 
-      <fileset dir="." includes="${dist_dir}/${module}-fe-${version_num}.jar"/>
+      <fileset dir="." includes="${dist_dir}/${module}-fe.${version_num}.jar"/>
     </delete>
     <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-fe-${version_num}.jar">
+    <jar destfile="${dist_dir}/${module}-fe.${version_num}.jar">
       <fileset dir="${build_dir}" 
-	       includes="esg/orp/**,esg/**/common/**,**/*.properties"
-	       excludes="**/test/**,**/${module}.properties/**"/>
+	       includes="esg/**,esg/**/common/**,**/*.properties"
+	       excludes="**/test/**,**/orp.properties/**"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
 	<attribute name="Author"       value="${author}"/>
@@ -405,15 +395,15 @@ Builds the project via ant (obviously).
 
   <target name="make_connector_jar" depends="make"
 	  description="(Creates the jar file distribution for node connector component to orp [non-java] component)">
-    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-connector-${version_num}.jar"/> 
+    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-connector.${version_num}.jar"/> 
     <delete> 
-      <fileset dir="." includes="${dist_dir}/${module}-connector-${version_num}.jar"/>
+      <fileset dir="." includes="${dist_dir}/${module}-connector.${version_num}.jar"/>
     </delete>
     <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-connector-${version_num}.jar">
+    <jar destfile="${dist_dir}/${module}-connector.${version_num}.jar">
       <fileset dir="${build_dir}" 
 	       includes="esg/node/**/connector/**,esg/**/common/**,**/*.properties"
-	       excludes="**/test/**,**/${module}.properties/**"/>
+	       excludes="**/test/**,**/node.properties/**"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
 	<attribute name="Author"       value="${author}"/>
@@ -430,41 +420,19 @@ Builds the project via ant (obviously).
 
   <target name="make_all_jars" depends="make_jar,make_test_jar,make_common_jar,make_fe_jar,make_connector_jar"/>
 
-  <target name="make_war" depends="make,init"
-          description="(Creates war file of this project)">
-    <mkdir dir="${dist_dir}" />
-    <mkdir dir="${dist_dir}/tmplib"/>
-
-    <copy todir="${dist_dir}/tmplib" overwrite="true" flatten="yes">
-      <fileset dir="${lib_dir}" includes="**/*.jar" excludes="**/junit*.jar,**/*sources.jar,**/*javadoc.jar"/>
-    </copy>
-
-    <delete file="${dist_dir}/${module}.war"/>
-    <war destfile="${dist_dir}/${module}.war" webxml="${conf_dir}/${module}-web.xml">
-      <fileset dir="${web_dir}" excludes="WEB-INF/**/web.xml/**,**semantic.cache**"/>
-      <lib dir="${dist_dir}/tmplib">
-        <include name="**/*.jar"/>
-        <exclude name="**/*-test*.jar,**/*-common*.jar"/>
-      </lib>
-      <classes dir="${build_dir}"/>
-    </war>
-    <delete dir="${dist_dir}/tmplib"/>
-  </target>
-
-
-  <target name="make_dist" depends="make_all_jars, make_war"
+  <target name="make_dist" depends="make_all_jars"
 	  description="(Creates full software distribution)">
-    <delete file="${dist_dir}/${module}-${version_num}.tar.gz"/> 
-    <tar destfile="${dist_dir}/${module}-${version_num}.tar">
-      <tarfileset dir="${dist_dir}" includes="**/*.jar,**/*.war" prefix="${module}-${version_num}"/>
-      <tarfileset dir="${basedir}" prefix="${module}-${version_num}">
+    <delete file="${dist_dir}/${module}.${version_num}.tar.gz"/> 
+    <tar destfile="${dist_dir}/${module}.${version_num}.tar">
+      <tarfileset dir="${dist_dir}" includes="**/*.jar,**/*.war" prefix="${module}.${version_num}"/>
+      <tarfileset dir="${basedir}" prefix="${module}.${version_num}">
 	<include name="LICENSE"/>
 	<include name="INSTALL"/>
 	<include name="README"/>
       </tarfileset>
     </tar>
-    <gzip destfile="${dist_dir}/${module}-${version_num}.tar.gz" src="${dist_dir}/${module}-${version_num}.tar"/>
-    <delete file="${dist_dir}/${module}-${version_num}.tar"/> 
+    <gzip destfile="${dist_dir}/${module}.${version_num}.tar.gz" src="${dist_dir}/${module}.${version_num}.tar"/>
+    <delete file="${dist_dir}/${module}.${version_num}.tar"/> 
 
   </target>
 
@@ -501,7 +469,7 @@ Builds the project via ant (obviously).
   <target name="clean_test_jar" depends="init" 
 	  description="(Cleans out the test jar file)">
     <echo message="Cleaning out test jar file"/> 
-    <delete file="${dist_dir}/${module}-test-${version_num}.jar"/>
+    <delete file="${dist_dir}/${module}-test.${version_num}.jar"/>
     <tstamp/>
   </target>
 
@@ -552,15 +520,10 @@ Builds the project via ant (obviously).
 	   classpathref="test_classpath"
 	   deprecation="true"
 	   failonerror="true"
-	   target="1.6"
+	   target="1.5"
 	   debug="on"
 	   verbose="off"
 	   nowarn="on"/>
-  	
-    <copy todir="${test_build_dir}" filtering="${filter}" overwrite="true">
-      <fileset dir="${test_src_dir}" includes="**/*.properties,**/*.template,**/*.xml,**/*.ks"/>
-    </copy>
-
     <tstamp/>
 
   </target>
@@ -599,7 +562,7 @@ Builds the project via ant (obviously).
       EXAMPLE: ant test -Dtestcase=esg.node.orp.connector.ESGorpTest
       (unless="tests_uptodate")
     -->
-  <target name="test" depends="make_test"
+  <target name="test" depends="make_test,test_check"
 	  description="(Runs unit tests: JUnit)">
     <delete dir="${test_results_dir}" />
     <mkdir dir="${test_results_dir}"/>
@@ -658,9 +621,10 @@ Builds the project via ant (obviously).
       <doctitle><![CDATA[<h1>${module}</h1>]]></doctitle>
       <bottom><![CDATA[<i><a href="http://esg-repo.llnl.gov/esg" target="_top">ESG</a> / <a href="http://esg-repo.llnl.gov/" target="_top">BSD OpenSource License</a></i>]]></bottom>
       <tag name="todo" scope="all" description="To do:"/>
-      <group title="ESG SAML Component Packages" packages="esg.orp*"/>
-      <group title="ESG SAML Common Packages" packages="esg.orp.common*"/>
-      <group title="ESG SAML Utility Packages" packages="esg.orp.util*"/>
+      <group title="ESG ORP Component Packages" packages="esg.orp*"/>
+      <group title="ESG ORP Connection Packages" packages="esg.node.orp.connection*"/>
+      <group title="ESG ORP Common Packages" packages="esg.orp.common*"/>
+      <group title="ESG ORP Utility Packages" packages="esg.orp.util*"/>
       <link offline="true" href="http://java.sun.com/javase/6/docs/api/" packagelistLoc="${java.io.tmpdir}"/>
       <link href="http://java.sun.com/javase/6/docs/api/"/>
     </javadoc>
@@ -679,7 +643,7 @@ Builds the project via ant (obviously).
 	<include name="**/*.jar"/>
 	<exclude name="**/junit*.jar"/>
       </fileset>
-      <pathelement path="${dist_dir}/${module}-${version_num}.jar"/>
+      <pathelement path="${dist_dir}/${module}.${version_num}.jar"/>
     </path>
     
     <pathconvert property="__cp" refid="jar_cp" pathsep="${line.separator}"/>
@@ -704,30 +668,7 @@ Builds the project via ant (obviously).
     <echo message="Web Site -> http://esg-repo.llnl.gov/esg/${module}/index.html"/>
   </target>
 
-	<target name="make_web_dir" depends="make, init" 
-			description="(Assembles the WEB-INF directory to run the web application in place.)">
 
-	    <mkdir dir="${basedir}/WebContent" />
-	    <mkdir dir="${basedir}/WebContent/WEB-INF" />
-	  	<property name="web_deploy_dir" value="${basedir}/WebContent/WEB-INF"/>
-
-		<!-- web configuration files -->
-	  	<copy file="${conf_dir}/${module}-web.xml" tofile="${web_deploy_dir}/web.xml"/>
-	    <copy todir="${web_deploy_dir}">
-	      <fileset dir="${conf_dir}" includes="**/*.xml, **/*.properties" excludes="**/${module}-web.xml"/>
-	    </copy>
-		
-		<!-- web views -->
-	    <copy todir="${web_deploy_dir}/views">
-	      <fileset dir="${web_dir}/WEB-INF/views" />
-	    </copy>
-
-		<!-- web lib -->
-	    <copy todir="${web_deploy_dir}/lib" flatten="true">
-	      <fileset dir="${lib_dir}" includes="**/*.jar" excludes="**/junit*.jar,**/*sources.jar,**/*javadoc.jar"/>
-	    </copy>
-	  	
-	  </target>
 
 
   <!--

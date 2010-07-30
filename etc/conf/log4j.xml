@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration threshold="all" xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!--  Appenders  -->
+	<!-- Log to standard output -->
+	<appender name="orplog" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="[%p] %C: %m%n" />
+		</layout>
+	</appender>
+	<!-- Log to application-specific file
+	<appender name="orplog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="${catalina.base}/logs/orp/application.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %C [%p]: %m%n" />
+		</layout>
+	</appender> -->
+
+	<!-- Loggers -->
+	<logger name="esg" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="orplog" />
+	</logger>
+	<logger name="org.openid4java" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="orplog" />
+	</logger>
+	<logger name="org.springframework.security" additivity="false">
+		<level value="DEBUG" />
+		<appender-ref ref="orplog" />
+	</logger>
+	<logger name="org.opensaml" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="orplog" />
+	</logger>
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="orplog" />
+	</root>
+
+</log4j:configuration>
