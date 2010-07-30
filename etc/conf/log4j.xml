@@ -21,15 +21,15 @@
 
 	<!-- Loggers -->
 	<logger name="esg" additivity="false">
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="orplog" />
 	</logger>
 	<logger name="org.openid4java" additivity="false">
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="orplog" />
 	</logger>
 	<logger name="org.springframework.security" additivity="false">
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="orplog" />
 	</logger>
 	<logger name="org.opensaml" additivity="false">

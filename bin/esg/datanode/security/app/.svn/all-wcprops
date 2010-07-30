@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/repository/!svn/ver/8550/orp/OpenidRelyingParty/testsrc/esg/datanode/security/app
+END
+authorizationStatementDeny.xml
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/repository/!svn/ver/8550/orp/OpenidRelyingParty/testsrc/esg/datanode/security/app/authorizationStatementDeny.xml
+END
+authorizationStatementPermit.xml
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/repository/!svn/ver/8550/orp/OpenidRelyingParty/testsrc/esg/datanode/security/app/authorizationStatementPermit.xml
+END
+SAMLAuthorizationServiceFilterCollaboratorTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/repository/!svn/ver/8728/orp/OpenidRelyingParty/testsrc/esg/datanode/security/app/SAMLAuthorizationServiceFilterCollaboratorTest.java
+END

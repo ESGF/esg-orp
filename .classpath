@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java/main"/>
+	<classpathentry kind="src" path="src/java/test"/>
 	<classpathentry kind="lib" path="dist/esg-orp-common.0.0.1.jar"/>
 	<classpathentry kind="lib" path="dist/esg-orp-connector.0.0.1.jar"/>
 	<classpathentry kind="lib" path="dist/esg-orp-fe.0.0.1.jar"/>

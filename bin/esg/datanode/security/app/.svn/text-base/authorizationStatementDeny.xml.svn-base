@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><soap11:Envelope xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap11:Body>
+      <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="fbc17c1e-cdfe-45d8-bbbf-1a8d77efbc23" InResponseTo="edd75edd-6f52-476e-a07a-169caa4f7ed0" IssueInstant="2010-03-01T17:21:13.845Z" Version="2.0">
+         <saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" Format="urn:oasis:names:tc:SAML:1.1:nameid-format:x509SubjectName">CN=esg-cet.ucar.edu, OU=Services, DC=doegrids, DC=org</saml:Issuer>
+         <samlp:Status>
+            <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+         </samlp:Status>
+         <saml:Assertion xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" ID="33e5b645-804f-4edd-a27d-54ddfa93aa22" IssueInstant="2010-03-01T17:21:13.929Z" Version="2.0">
+            <saml:Issuer Format="urn:oasis:names:tc:SAML:1.1:nameid-format:x509SubjectName">CN=esg-cet.ucar.edu, OU=Services, DC=doegrids, DC=org</saml:Issuer>
+            <saml:Subject>
+               <saml:NameID Format="urn:esg:openid">https://esg.ucar.edu/myopenid/rootAdmin</saml:NameID>
+            </saml:Subject>
+            <saml:Conditions NotBefore="2010-03-01T17:21:13.929Z" NotOnOrAfter="2010-03-02T17:21:13.929Z"/>
+            <saml:AuthzDecisionStatement Decision="Deny" Resource="http://tds.prototype.ucar.edu/thredds/fileServer/datazone/narccap/data/CRCM/cgcm3-current/table1/sic_CRCM_1968010106.nc">
+               <saml:Action>Read</saml:Action>
+            </saml:AuthzDecisionStatement>
+         </saml:Assertion>
+      </samlp:Response>
+   </soap11:Body>
+</soap11:Envelope>
