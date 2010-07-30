@@ -31,6 +31,7 @@ TAGS
 *.md5
 semantic.cache*
 generated/
+/bin
 /build
 /dist
 /docs-generated
