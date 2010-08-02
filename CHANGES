@@ -32,3 +32,4 @@ Insert experimental filter X509PreAuthenticationFilter
 	
 1.2.1
 Migrated code to ESGF GIT repository, restructured to be compiled by Ivy
+Updated dependencies on Spring and Tiles jars
