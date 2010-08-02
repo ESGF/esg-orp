@@ -115,10 +115,15 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="joda-time" name="joda-time" rev="1.6"/>
     <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1"/>
     <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1"/>
-    <!-- <dependency org="xml-security" name="xmlsec" rev="1.4.2"/> -->
     <dependency org="velocity" name="velocity" rev="1.5"/>
+    <dependency org="xml-security" name="xmlsec" rev="1.4.2"/>
 
     <dependency org="net.sf.retrotranslator" name="retrotranslator-runtime" rev="1.2.7"/>
+
+    <dependency org="org.openid4java" name="openid4java" rev="0.9.6"/>
+
+    <dependency org="edu.ucar.unidata" name="tds" rev="4.1"/>
+    <dependency org="org.esgf" name="esg-saml" rev="1.2.1"/>
 
   </dependencies>
 
