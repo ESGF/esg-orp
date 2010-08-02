@@ -82,5 +82,8 @@
 	<classpathentry kind="lib" path="lib/fetched/standard-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/tds-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xmlsec-1.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/xalan-2.5.D1.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/xercesImpl-2.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/xmlParserAPIs-2.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
