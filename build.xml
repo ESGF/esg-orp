@@ -438,10 +438,11 @@ Builds the project via ant (obviously).
     <copy todir="${dist_dir}/tmplib" overwrite="true" flatten="yes">
       <fileset dir="${lib_dir}" includes="**/*.jar" excludes="**/junit*.jar,**/*sources.jar,**/*javadoc.jar"/>
     </copy>
-
+  	<echo message="${conf_dir}"/>
     <delete file="${dist_dir}/${module}.war"/>
     <war destfile="${dist_dir}/${module}.war" webxml="${conf_dir}/${module}-web.xml">
       <fileset dir="${web_dir}" excludes="WEB-INF/**/web.xml/**,**semantic.cache**"/>
+      <webinf dir="${conf_dir}" includes="**/*.xml" excludes="${module}-web.xml"/>
       <lib dir="${dist_dir}/tmplib">
         <include name="**/*.jar"/>
         <exclude name="**/*-test*.jar,**/*-common*.jar"/>

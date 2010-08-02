@@ -1,0 +1,116 @@
+body {
+   background-repeat: no-repeat;
+   background-position: center center;
+   background-attachment: fixed;
+   background-color: #FFFFFF ;
+   color: #212121;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 12px;
+   margin: 0px;
+   padding: 0px;
+   min-width: 800px;
+}
+
+.yui-skin-sam .yuimenubar .yuimenubarnav .bd {
+    align: center;
+    text-align: center;
+    padding: 2em;
+}
+
+a {
+   color: #0066CC;
+   text-decoration: none;
+}
+
+a:hover { 
+   /* color: #6633CC; */
+   text-decoration: none; 
+}
+
+.line { width: 100%; height: 1px; color: #909090;  background-color: #909090; padding: 0px; margin: 0px; border: none; }
+
+.uri {  
+	font-size: 10pt; 
+	color: #0068AE; 
+	text-decoration: none; 
+}
+
+.yui-skin-sam .yui-fixed-panel .hd, .yui-skin-sam .yui-fixed-panel .bd, .yui-skin-sam .yui-fixedpanel .ft {
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-color: #808080;
+	border-right-color: #808080;
+	border-bottom-color: #808080;
+	border-left-color: #808080;
+	margin-top: 0pt;
+	/* This was causing both IE6 & IE7 not to have any borders on the grey boxes.  It will also line the grey boxes up better
+	   with the blue boxes. NCH 04-18-08 */
+	/* margin-right: -1px; */
+	margin-bottom: 0pt;
+	/* margin-left: -1px; */
+}
+
+.yui-skin-sam .yui-fixed-panel .hd {
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #cccccc;
+}
+
+.yui-skin-sam .yui-fixed-panel .hd {
+	padding-top: 0pt;
+	padding-right: 10px;
+	padding-bottom: 0pt;
+	padding-left: 10px;
+	font-size: 93%;
+	line-height: 2;
+	font-weight: bold;
+	color: #000000;
+	background-color: transparent;
+	background-image: url(http://yui.yahooapis.com/2.5.1/build/assets/skins/sam/sprite.png);
+	background-repeat: repeat-x;
+	background-attachment: scroll;
+	background-x-position: 0pt;
+	background-y-position: -200px;
+}
+
+
+.yui-skin-sam .yui-fixed-panel .bd, .yui-skin-sam .yui-fixed-panel .ft {
+	background-color: #f2f2f2;
+}
+
+.yui-skin-sam .yui-fixed-panel .bd {
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+
+.yui-skin-sam .yui-fixed-panel .ft {
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 1px;
+	border-style: solid;
+	border-color: #808080;
+	padding-top: 5px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	font-size: 77%;
+}
+
+/* special text fonts */
+.page-title { text-align: left; font-size:14px; font-weight: bold; color:#2647a0; }
+
+.section-title { font-size:13px; font-weight: bold; color:#212121; }
+
+.error { color: #ff0000; }
+
+.highlight { color: #2647a0; }
+
+.required { color: #2647a0; }
