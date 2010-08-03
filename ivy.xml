@@ -82,8 +82,6 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="commons-io" name="commons-io" rev="1.4"/>
     <dependency org="commons-lang" name="commons-lang" rev="2.5"/>
 
-    <!-- <dependency org="org.openid4java" name="openid4java" rev="0.9.6" transitive="false" /> -->
-
     <dependency org="org.springframework" name="spring-core" rev="3.0.1.RELEASE" transitive="false" />
     <dependency org="org.springframework" name="spring-web" rev="3.0.1.RELEASE" transitive="false" />
     <dependency org="org.springframework" name="spring-webmvc" rev="3.0.1.RELEASE" transitive="false" />
@@ -121,12 +119,14 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.slf4j" name="slf4j-api" rev="1.6.1"/>
     <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1"/>
     <dependency org="velocity" name="velocity" rev="1.5"/>
-    <dependency org="xml-security" name="xmlsec" rev="1.4.2"/>
-
+    <dependency org="xml-security" name="xmlsec" rev="1.4.2"/>    
+    <dependency org="xalan" name="serializer" rev="2.9.1" />
+    <dependency org="xalan" name="xalan" rev="2.7.1"  />
+    <dependency org="xerces" name="xercesImpl" rev="2.9.1" />
+    
     <dependency org="net.sf.retrotranslator" name="retrotranslator-runtime" rev="1.2.7"/>
-
     <dependency org="org.openid4java" name="openid4java" rev="0.9.6"/>
-
+    
     <dependency org="edu.ucar.unidata" name="tds" rev="4.1"/>
     <dependency org="org.esgf" name="esg-saml" rev="1.2.1"/>
 
