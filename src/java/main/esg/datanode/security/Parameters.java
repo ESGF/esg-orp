@@ -47,6 +47,7 @@ public interface Parameters {
     final static String AUTHORIZATION_REQUEST_ATTRIBUTE = "eske.model.security.AuthorizationToken"; // legacy value compatible with old TDS filter
     final static String AUTHENTICATION_REQUEST_ATTRIBUTE = "esg.openid";
     final static String AUTHENTICATION_ONLY_FLAG = "authenticationOnlyFlag";
+    final static String AUTHORIZED_IP = "authorizedIp";
 	
 	// shared parameters
 	final static String OPENID_REDIRECT = "redirect";
