@@ -1,5 +1,15 @@
+>>> DESCRIPTION
+
 This package contains the ESG OpenidRelyingParty (ORP) web application, which can be used to secure a generic data application server
 running in a Tomcat container in conjunction with the ESG access control filters, and any Openid Identity Provider.
+
+>>> PREREQUISITES
+
+o Fairly recent distribution of Ant: 1.7+
+
+o Java 1.6 or above.
+
+>> INSTALLATION
 
 By default, the application is configured to use a self-signed example keystore located in the classpath as esg/keystore-localhost
 (a corresponding example trustore containing that certificate is available as WEB-INF/jssecacerts). 
@@ -12,11 +22,3 @@ When deployed on localhost, the default application URL is: https://localhost:84
 Note that by default the application writes out very verbose logs to facilitate debugging in early deployment. 
 These settings can be changed in the file WEB-ING/log4j.xml
 
-
---------------------------------------------------------------------------------
-OpenSAML requires an xml parser that supports JAXP 1.3 and DOM3.
-The JVM is currently configured to use the Sun XML parser, which is known
-to be buggy and can not be used with OpenSAML.  Please endorse a functional
-JAXP library(ies) such as Xerces and Xalan.  For instructions on how to endorse
-a new parser see http://java.sun.com/j2se/1.5.0/docs/guide/standards/index.html
---------------------------------------------------------------------------------
