@@ -19,8 +19,10 @@
 package esg.datanode.security.orp;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,9 +64,9 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		// validate username/password combination
 		if (isValid(username, password)) {
 			
-			final GrantedAuthority[] authorities = new GrantedAuthority[] { 
-					new GrantedAuthorityImpl(ROLES[0]), new GrantedAuthorityImpl(ROLES[1]) 
-			};
+			final Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+			authorities.add( new GrantedAuthorityImpl(ROLES[0]) );
+			authorities.add( new GrantedAuthorityImpl(ROLES[1]) );
 			authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
 			final UserDetails details = userDetailsService.loadUserByUsername(username);
 			((UsernamePasswordAuthenticationToken)authentication).setDetails(details);

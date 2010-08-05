@@ -34,3 +34,7 @@ Insert experimental filter X509PreAuthenticationFilter
 Migrated code to ESGF GIT repository, restructured to be compiled by Ivy
 Updated dependencies on Spring and Tiles jars
 Inserted AuthenticationByIPFilter to be used for LAS.
+
+1.1.2.1
+Changed numbering schema to start with datanode number.
+Resolved warnings due to deprecated constructors in Spring Security package.

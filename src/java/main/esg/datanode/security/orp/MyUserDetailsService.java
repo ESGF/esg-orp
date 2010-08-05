@@ -58,7 +58,7 @@ public class MyUserDetailsService implements UserDetailsService {
 				authorities.add( new GrantedAuthorityImpl(authority) );
 			}
 		}
-		return new User(userName, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities.toArray(new GrantedAuthority[]{}));
+		return new User(userName, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		
 	}
 
