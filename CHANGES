@@ -38,3 +38,4 @@ Inserted AuthenticationByIPFilter to be used for LAS.
 1.1.2.1
 Changed numbering schema to start with datanode number.
 Resolved warnings due to deprecated constructors in Spring Security package.
+Renaming package from "esg.datanode.security" to "esg.orp".
