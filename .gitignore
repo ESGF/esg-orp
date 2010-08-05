@@ -37,4 +37,5 @@ generated/
 /docs-generated
 /lib/fetched
 /WebContent
+/.cobertura.ser
 
