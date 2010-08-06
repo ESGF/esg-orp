@@ -12,16 +12,16 @@
     
     <!-- Configurable properties -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:esg/datanode/security/orp/config/application.properties" />
+		<property name="location" value="classpath:esg/orp/orp/config/application.properties" />
 	</bean>
     
  	<!-- Web Servlets configuration -->
-  	<import resource="classpath:esg/datanode/security/orp/config/web-context.xml" />
+  	<import resource="classpath:esg/orp/orp/config/web-context.xml" />
   	
   	<!-- Security configuration -->
-  	<import resource="classpath:esg/datanode/security/orp/config/security-context.xml" />
+  	<import resource="classpath:esg/orp/orp/config/security-context.xml" />
   	
   	<!-- Application-specific configuration -->
-  	<import resource="classpath:esg/datanode/security/orp/config/application-context-specific.xml"/>
+  	<import resource="classpath:esg/orp/orp/config/application-context-specific.xml"/>
 
 </beans>
