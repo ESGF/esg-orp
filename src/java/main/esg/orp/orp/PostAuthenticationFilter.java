@@ -101,6 +101,10 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 							
 					// build signed authentication statement		
 					final String authstmt = samlStatementFacade.buildSignedAuthenticationStatement(openid);
+					if (LOG.isDebugEnabled()) {
+						LOG.debug("Authentication statement:");
+						LOG.debug(authstmt);
+					}
 					
 					// set cookie (value must be encoded)
 					final Cookie cookie = new Cookie(Parameters.OPENID_SAML_COOKIE, URLEncoder.encode(authstmt,"UTF-8"));
