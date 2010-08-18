@@ -39,3 +39,4 @@ Inserted AuthenticationByIPFilter to be used for LAS.
 Changed numbering schema to start with datanode number.
 Resolved warnings due to deprecated constructors in Spring Security package.
 Renaming package from "esg.datanode.security" to "esg.orp".
+Fixed HTTP parameter name ("openid_identifier") for automatic redirect from the ORP to the IdP, if present.
