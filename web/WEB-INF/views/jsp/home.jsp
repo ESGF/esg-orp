@@ -19,7 +19,7 @@
 	
 		<c:if test="${param[openid] != null}">
 			<c:url value="${target_url}" var="myurl">
-				<c:param name="openid_identity" value="${param[openid]}"/>
+				<c:param name="openid_identifier" value="${param[openid]}"/>
 			</c:url>
 			<script type="text/javascript">
 				window.location= "${myurl}";
