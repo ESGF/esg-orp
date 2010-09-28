@@ -440,7 +440,7 @@ Builds the project via ant (obviously).
     <mkdir dir="${dist_dir}/tmplib"/>
 
     <copy todir="${dist_dir}/tmplib" overwrite="true" flatten="yes">
-      <fileset dir="${lib_dir}" includes="**/*.jar" excludes="**/junit*.jar,**/*sources.jar,**/*javadoc.jar"/>
+      <fileset dir="${lib_dir}" includes="**/*.jar" excludes="servlet-api*.jar,**/junit*.jar,**/*sources.jar,**/*javadoc.jar"/>
     </copy>
   	<echo message="${conf_dir}"/>
     <delete file="${dist_dir}/${module}.war"/>
@@ -452,6 +452,14 @@ Builds the project via ant (obviously).
         <exclude name="**/*-test*.jar,**/*-common*.jar"/>
       </lib>
       <classes dir="${build_dir}"/>
+      <manifest>
+	<attribute name="Organization" value="${organization}"/>
+	<attribute name="Author"       value="${author}"/>
+	<attribute name="Project"      value="${project_name} ${module}"/>
+	<attribute name="Module"       value="${module}"/>
+	<attribute name="Version"      value="${version_num}"/>
+	<attribute name="Release-Name" value="${release_name}"/>
+      </manifest>
     </war>
     <delete dir="${dist_dir}/tmplib"/>
   </target>
