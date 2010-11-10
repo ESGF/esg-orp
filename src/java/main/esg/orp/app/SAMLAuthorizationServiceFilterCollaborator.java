@@ -27,10 +27,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import esg.orp.Parameters;
-import esg.saml.authz.service.api.SAMLAuthorization;
-import esg.saml.authz.service.api.SAMLAuthorizations;
-import esg.saml.authz.service.impl.SAMLAuthorizationServiceClientSoapImpl;
-import esg.saml.common.SOAPServiceClient;
+import esg.security.authz.service.api.SAMLAuthorization;
+import esg.security.authz.service.api.SAMLAuthorizations;
+import esg.security.authz.service.impl.SAMLAuthorizationServiceClientSoapImpl;
+import esg.security.common.SOAPServiceClient;
 
 public class SAMLAuthorizationServiceFilterCollaborator implements AuthorizationServiceFilterCollaborator {
 	

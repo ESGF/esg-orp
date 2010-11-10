@@ -37,9 +37,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 import esg.orp.Parameters;
-import esg.saml.auth.service.api.SAMLAuthenticationStatementFacade;
-import esg.saml.auth.service.impl.SAMLAuthenticationStatementFacadeImpl;
-import esg.saml.common.SAMLInvalidStatementException;
+import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
+import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
+import esg.security.common.SAMLInvalidStatementException;
 
 /**
  * Filter used to establish user authentication.

@@ -27,9 +27,8 @@ import org.junit.Test;
 import org.opensaml.xml.ConfigurationException;
 import org.springframework.core.io.ClassPathResource;
 
-import esg.orp.app.SAMLAuthorizationServiceFilterCollaborator;
-import esg.saml.common.SAMLBuilder;
-import esg.saml.common.SAMLUnknownPrincipalException;
+import esg.security.common.SAMLBuilder;
+import esg.security.common.SAMLUnknownPrincipalException;
 
 
 public class SAMLAuthorizationServiceFilterCollaboratorTest {

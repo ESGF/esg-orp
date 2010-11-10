@@ -50,8 +50,8 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.util.WebUtils;
 
 import esg.orp.Parameters;
-import esg.saml.auth.service.api.SAMLAuthenticationStatementFacade;
-import esg.saml.auth.service.impl.SAMLAuthenticationStatementFacadeImpl;
+import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
+import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
 
 /**
  * Filter that detects a positive user authentication and sets a domain-wide session cookie.
