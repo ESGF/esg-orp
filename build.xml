@@ -295,8 +295,8 @@ Builds the project via ant (obviously).
     </javac>
 
     <copy todir="${build_dir}" filtering="${filter}" overwrite="true">
-      <fileset dir="${conf_dir}" includes="**/*.properties,**/*.template,**/*.xml"/>
-      <fileset dir="${src_dir}" includes="**/*.properties,**/*.template,**/*.xml"/>
+      <fileset dir="${conf_dir}" includes="**/*.properties,**/*.template,**/*.xml" />
+      <fileset dir="${src_dir}" includes="**/*.properties,**/*.template,**/*.xml" />
     </copy>
 
 
@@ -320,7 +320,7 @@ Builds the project via ant (obviously).
     <jar destfile="${dist_dir}/${module}-${version_num}.jar">
       <fileset dir="${build_dir}"
 	       includes="esg/**,**/*.properties"
-	       excludes="**/test/**"/>
+	       excludes="**/log4j.properties, **/test/**"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
 	<attribute name="Author"       value="${author}"/>
