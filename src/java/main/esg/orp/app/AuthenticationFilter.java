@@ -22,7 +22,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.cert.CertPath;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
+import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -40,6 +45,7 @@ import esg.orp.Parameters;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
 import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
 import esg.security.common.SAMLInvalidStatementException;
+import esg.security.utils.ssl.CertUtils;
 
 /**
  * Filter used to establish user authentication.
@@ -62,6 +68,7 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 	private SAMLAuthenticationStatementFacade samlStatementFacade = new SAMLAuthenticationStatementFacadeImpl();
 
 	private final Log LOG = LogFactory.getLog(this.getClass());
+	private Certificate orpCert;
 			
 	/**
 	 * {@inheritDoc}
@@ -92,15 +99,28 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 			} else {
 				
 				// extract OpenID from cookie, store in request
+				final String authnStatement = URLDecoder.decode(cookie.getValue(),"UTF-8");
 				if (LOG.isDebugEnabled()) LOG.debug("Authentication COOKIE FOUND in request: name="+cookie.getName()+" value="+cookie.getValue());
-				try {
-					final String authnStatement = URLDecoder.decode(cookie.getValue(),"UTF-8");
-					final boolean validateSignature = true;
-					final String openid = samlStatementFacade.parseAuthenticationStatement(authnStatement, validateSignature);
-					if (LOG.isDebugEnabled()) LOG.debug("Extracted openid="+openid);
-					req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, openid);
-				} catch(SAMLInvalidStatementException e) {
-					throw new ServletException(e);
+				
+				String localSaml = (String)req.getSession(true).getAttribute(Parameters.OPENID_SAML_COOKIE);
+				if (!authnStatement.equals(localSaml)) {
+					//fast validation didn't work SAML is new or has changed.
+					try {
+						
+						final String openid = samlStatementFacade.parseAuthenticationStatement(retrieveORPCert(), authnStatement);
+						if (LOG.isDebugEnabled()) LOG.debug("Extracted openid="+openid);
+						req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, openid);
+						
+						//cache SAML
+						req.getSession().setAttribute(Parameters.OPENID_SAML_COOKIE, authnStatement);
+						
+					} catch(SAMLInvalidStatementException e) {
+						throw new ServletException(e);
+					}
+					
+				} else {
+					//fast validation
+					if (LOG.isDebugEnabled()) LOG.debug("Fast validating user.");
 				}
 				
 			}
@@ -111,6 +131,36 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 			this.assertIsValid(req);
 		}		
 
+	}
+
+	/**
+	 * @return The X509 public certificate from the server hosting the ORP application. The server
+	 * must already have a trusted Certificate chain for this to work. If not it will fail.
+	 * @throws ServletException if this procedure fails
+	 */
+	private Certificate retrieveORPCert() throws ServletException {
+		if (orpCert == null) {
+			//get it (lazy initialization
+			try {
+				CertPath certPath = CertUtils.retrieveCertificates(openidRelyingPartyUrl, true);
+				if (certPath != null) {
+					orpCert = certPath.getCertificates().get(0);
+					//ok we have something
+					if (LOG.isDebugEnabled()) LOG.debug(
+							String.format("Gathered ORP public Cert chain(#%d) from %s. Server DN%s",
+									certPath.getCertificates().size(), openidRelyingPartyUrl,
+									((X509Certificate)orpCert).getSubjectDN()));
+				}
+			} catch (SSLPeerUnverifiedException e) {
+				LOG.error("The server at " + openidRelyingPartyUrl + " is not trusted.");
+				throw new ServletException(e);
+			} catch (CertificateException e) {
+				throw new ServletException(e);
+			} catch (IOException e) {
+				throw new ServletException(e);
+			}
+		}
+		return orpCert;
 	}
 
 	public void init(FilterConfig filterConfig) throws ServletException { 

@@ -54,6 +54,9 @@ public interface Parameters {
 	final static String OPENID_IDENTITY = "openid";
 	final static String OPENID_SAML_COOKIE = "esg.openid.saml.cookie";
 	
+	// new cookies
+	final static String ORP_SESSION_ID_COOKIE = "esg.session.cookie";
+	
 	// test file
 	final static String TEST_FILE = "esg-saml-test-file.xml";
 	final static String TEST_OPENID = "http://JoeTester.myopenid.com/";
