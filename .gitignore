@@ -37,3 +37,5 @@ generated/
 /lib/fetched
 /WebContent
 /.cobertura.ser
+/build.local.xml
+/esg
