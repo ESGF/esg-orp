@@ -318,9 +318,10 @@ Builds the project via ant (obviously).
     </delete>
     <mkdir dir="${dist_dir}" />
     <jar destfile="${dist_dir}/${module}-${version_num}.jar">
+    	<!-- Do the jar really need any properties? -->
       <fileset dir="${build_dir}"
 	       includes="esg/**,**/*.properties"
-	       excludes="**/log4j.properties, **/test/**"/>
+	       excludes="**/log4j.properties, **/test/**, **/commons-logging.properties"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
 	<attribute name="Author"       value="${author}"/>
