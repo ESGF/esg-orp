@@ -101,18 +101,21 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 				// extract OpenID from cookie, store in request
 				final String authnStatement = URLDecoder.decode(cookie.getValue(),"UTF-8");
 				if (LOG.isDebugEnabled()) LOG.debug("Authentication COOKIE FOUND in request: name="+cookie.getName()+" value="+cookie.getValue());
-				
-				String localSaml = (String)req.getSession(true).getAttribute(Parameters.OPENID_SAML_COOKIE);
-				if (!authnStatement.equals(localSaml)) {
-					//fast validation didn't work SAML is new or has changed.
+
+				//extract the openId from the session (this means we were already validated)
+                final String openid = (String)req.getSession(true).getAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE);
+				//extract the cookie from the session (to be sure we haven't got a new one)
+				final String localSaml = (String)req.getSession(true).getAttribute(Parameters.OPENID_SAML_COOKIE);
+				if (openid == null || !authnStatement.equals(localSaml)) {
+					//either SAML is new, has changed or we are seeing an old cookie (server restart) which might be still valid.
 					try {
+						final String oid = samlStatementFacade.parseAuthenticationStatement(retrieveORPCert(), authnStatement);
+						if (LOG.isDebugEnabled()) LOG.debug("Extracted openid="+oid);
+						req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, oid);
 						
-						final String openid = samlStatementFacade.parseAuthenticationStatement(retrieveORPCert(), authnStatement);
-						if (LOG.isDebugEnabled()) LOG.debug("Extracted openid="+openid);
-						req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, openid);
-						
-						//cache SAML
+						//auth ok! cache SAML
 						req.getSession().setAttribute(Parameters.OPENID_SAML_COOKIE, authnStatement);
+						req.getSession().setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, oid);
 						
 					} catch(SAMLInvalidStatementException e) {
 						throw new ServletException(e);
@@ -121,8 +124,10 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 				} else {
 					//fast validation
 					if (LOG.isDebugEnabled()) LOG.debug("Fast validating user.");
+					//we need to set this for later
+					req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, openid);
+					
 				}
-				
 			}
 
 		} else {
@@ -132,6 +137,7 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 		}		
 
 	}
+	
 
 	/**
 	 * @return The X509 public certificate from the server hosting the ORP application. The server
@@ -140,7 +146,7 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 	 */
 	private Certificate retrieveORPCert() throws ServletException {
 		if (orpCert == null) {
-			//get it (lazy initialization
+			//get the cert,  lazy initialization
 			try {
 				CertPath certPath = CertUtils.retrieveCertificates(openidRelyingPartyUrl, true);
 				if (certPath != null) {
@@ -150,6 +156,8 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 							String.format("Gathered ORP public Cert chain(#%d) from %s. Server DN%s",
 									certPath.getCertificates().size(), openidRelyingPartyUrl,
 									((X509Certificate)orpCert).getSubjectDN()));
+				} else {
+				    LOG.error("cannot extract Certificate from:" + openidRelyingPartyUrl);
 				}
 			} catch (SSLPeerUnverifiedException e) {
 				LOG.error("The server at " + openidRelyingPartyUrl + " is not trusted.");
