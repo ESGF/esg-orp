@@ -211,19 +211,17 @@ Builds the project via ant (obviously).
     <mkdir dir="${lib_fetched_dir}"/>
     <ivy:retrieve sync="true"/>
     <path id="main_classpath">
-      <fileset dir="${lib_dir}">
+      <fileset dir="${lib_fetched_dir}">
 	  	<include name="**/*.jar"/>
 		<exclude name="**/junit*.jar"/>
 		<exclude name="**/*javadoc.jar"/>
 		<exclude name="**/*sources.jar"/>
       </fileset>
-      <!-- <fileset dir="${weblib_dir}">
+      <fileset dir="${lib_dir}">
    		<include name="**/*.jar"/>
-   		<exclude name="**/junit*.jar"/>
-   		<exclude name="**/*javadoc.jar"/>
-   		<exclude name="**/*sources.jar"/>
+   		<exclude name="${lib_fetched_dir}/*"/>
        </fileset>
-       -->
+      
       <pathelement path="${build_dir}"/>
     </path>
     
