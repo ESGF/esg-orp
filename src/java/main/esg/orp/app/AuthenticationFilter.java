@@ -26,6 +26,7 @@ import java.security.cert.CertPath;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.servlet.FilterChain;
@@ -42,6 +43,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 import esg.orp.Parameters;
+import esg.security.authn.service.api.SAMLAuthentication;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
 import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
 import esg.security.common.SAMLInvalidStatementException;
@@ -98,38 +100,38 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 
 			} else {
 				
-				// extract OpenID from cookie, store in request
+				// extract auth statement from cookie
 				final String authnStatement = URLDecoder.decode(cookie.getValue(),"UTF-8");
 				if (LOG.isDebugEnabled()) LOG.debug("Authentication COOKIE FOUND in request: name="+cookie.getName()+" value="+cookie.getValue());
 
-				//extract the openId from the session (this means we were already validated)
-                final String openid = (String)req.getSession(true).getAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE);
-				//extract the cookie from the session (to be sure we haven't got a new one)
-				final String localSaml = (String)req.getSession(true).getAttribute(Parameters.OPENID_SAML_COOKIE);
-				if (openid == null || !authnStatement.equals(localSaml)) {
+				//extract the authentication info from the session (this means we were already validated)
+				final SAMLAuthentication authentication = (SAMLAuthentication)req.getSession(true).getAttribute(Parameters.SESSION_AUTH);
+				
+				//if first time || the cookie changed || the cookie expired
+				if (authentication == null || !authentication.getSaml().equals(authnStatement) || authentication.getValidTo().before(new Date())) {
 					//either SAML is new, has changed or we are seeing an old cookie (server restart) which might be still valid.
-					try {
-						final String oid = samlStatementFacade.parseAuthenticationStatement(retrieveORPCert(), authnStatement);
-						if (LOG.isDebugEnabled()) LOG.debug("Extracted openid="+oid);
-						req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, oid);
-						
-						//auth ok! cache SAML
-						req.getSession().setAttribute(Parameters.OPENID_SAML_COOKIE, authnStatement);
-						req.getSession().setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, oid);
-						
+
+				    //Authenticate cookie and get the authentication information
+				    final SAMLAuthentication currentAuth;
+                    try {
+						currentAuth = samlStatementFacade.getAuthentication(retrieveORPCert(), authnStatement);
 					} catch(SAMLInvalidStatementException e) {
+					    //authentication failed
 						throw new ServletException(e);
 					}
+                    
+                    //auth ok! cache SAML and pass id in request to next filter/servlet
+                    if (LOG.isDebugEnabled())  LOG.debug("Extracted authentication=" + currentAuth);
+                    req.getSession().setAttribute(Parameters.SESSION_AUTH, currentAuth);
+                    req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, currentAuth.getIdentity());
 					
 				} else {
-					//fast validation
+					//Everything's fine, go for fast validation
 					if (LOG.isDebugEnabled()) LOG.debug("Fast validating user.");
-					//we need to set this for later
-					req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, openid);
-					
+					//we need to set this next filter/servlet though
+					req.setAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE, authentication.getIdentity());
 				}
 			}
-
 		} else {
 			// authorize this request
 			if (LOG.isDebugEnabled()) LOG.debug("URL="+url+" is NOT secure, request is authorized");

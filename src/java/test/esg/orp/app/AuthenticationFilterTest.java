@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opensaml.xml.security.x509.BasicX509Credential;
 
+import esg.security.authn.service.api.SAMLAuthentication;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
 import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
 import esg.security.common.SAMLInvalidStatementException;
@@ -153,18 +154,18 @@ public class AuthenticationFilterTest {
                 af, "samlStatementFacade");
         try {
             //this is the call we want to mimic
-            fac.parseAuthenticationStatement(
+            fac.getAuthentication(
                     (Certificate) invoke(af, "retrieveORPCert"), wrongCookie);
             fail("Shouldn't have validated");
         } catch (SAMLInvalidStatementException e) {
             // ok, expected
         }
         //this is the call we want to mimic
-        String oid = fac.parseAuthenticationStatement(
+        SAMLAuthentication authentication = fac.getAuthentication(
                 (Certificate) invoke(af, "retrieveORPCert"), rightCookie);
 
         // everything fine? (it should be if we get this far.
-        assertEquals(myOpenID, oid);
+        assertEquals(myOpenID, authentication.getIdentity());
 
         server.stop();
     }
