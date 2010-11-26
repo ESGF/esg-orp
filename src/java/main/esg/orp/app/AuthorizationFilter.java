@@ -55,7 +55,8 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 		if (openid!=null) {
 			
 			if (LOG.isDebugEnabled()) LOG.debug("Found authentication attribute, openid="+openid);				
-			final String url = this.getUrl(req);
+			final String url = transform(this.getUrl(req));
+			
 			final boolean authorized = authorizationService.authorize(openid, url, Action.READ_ACTION);
 			if (LOG.isDebugEnabled()) LOG.debug("Openid="+openid+" url="+url+" operation="+Action.READ_ACTION+" authorization result="+authorized);					
 			if (authorized) this.assertIsValid(req);
@@ -65,7 +66,19 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 			
 	}
 
-	public void init(FilterConfig filterConfig) throws ServletException { 
+	private String transform(String url) {
+        int c = url.indexOf('?');
+        if (c > -1) {
+            url = url.substring(0, c);
+        }
+        
+        //work around
+        url = url.replace("fileServer", "dodsC").replace(".ascii", "").replace(".dods", "");
+        
+        return url;
+    }
+
+    public void init(FilterConfig filterConfig) throws ServletException { 
 		
 		super.init(filterConfig); 
 		
