@@ -92,8 +92,8 @@
 				<value>https://dev.dycore.ucar.edu/openid/provider.htm</value>
 				<value>https://dev.esg-cet.ucar.edu/openid/provider.htm</value>
 				<value>https://esg-cet.ucar.edu/openid/provider.htm</value>
-				<value>https://localhost:8443/ESG-CET/openid/provider.htm</value>
-				<value>https://localhost:8443/ESG-JPL/openid/provider.htm</value>
+				<value>https://ipcc-ar5.dkrz.de/openid/provider.htm</value>
+				<value>https://albedo2.dkrz.de/esgcet/openid/provider.htm</value>
 				<value>https://tempesta.scd.ucar.edu:8443/ESG-CET/openid/provider.htm</value>
 				<value>https://ndgbeta.badc.rl.ac.uk/openid/openidserver</value>
 				<value>https://ndg3beta.badc.rl.ac.uk/OpenID/Provider/server</value>
