@@ -7,5 +7,6 @@
 # distribution server.
 
 [orp]
+./esg-orp
 ../dist/esg-orp.war
 ../build/esg/orp/orp/config/application.properties
