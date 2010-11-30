@@ -10,3 +10,4 @@
 ./esg-orp
 ../dist/esg-orp.war
 ../build/esg/orp/orp/config/application.properties
+../etc/endorsed.tgz
