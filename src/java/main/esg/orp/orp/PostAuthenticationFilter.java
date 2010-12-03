@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -50,6 +51,7 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.util.WebUtils;
 
 import esg.orp.Parameters;
+import esg.orp.TomcatConfiguration;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
 import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
 
@@ -165,8 +167,19 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 	 * Initialization method allows for suer customization of keystore parameters.
 	 * @throws ServletException
 	 */
-	public void init() throws Exception { 
-						
+	public void init() throws Exception {
+	    
+	    if (keystoreFile == null || keystoreFile.startsWith("@")) {
+	        //if set in the file, use the file. If not try getting it from tomcat.
+	        //*************   TOMCAT 6 Specific code ****************
+            Properties tomProps = TomcatConfiguration.getProperties();
+            if (tomProps != null) {
+                // Properties were read. Parse them and set tomcats defaults.
+                setKeystoreFile(tomProps.getProperty("keystoreFile"));
+                setKeystorePassword(tomProps.getProperty("keystorePass", "changeit"));
+                setKeystoreAlias(tomProps.getProperty("keyAlias", "tomcat"));
+            }
+	    }
 		final File keystore = new File(keystoreFile);
 		samlStatementFacade.setSigningCredential(keystore, keystorePassword, keystoreAlias);
 		if (LOG.isDebugEnabled()) LOG.debug("Will sign statements with keystore="+keystoreFile+" alias="+keystoreAlias);
