@@ -82,10 +82,4 @@ public class TomcatConfiguration {
         return props;
     }
 
-    public static void main(String[] args) {
-        System.setProperty("CATALINA_HOME",
-                "/pf/k/k204198/local1/tomcat_workingdir_test");
-        Properties props = TomcatConfiguration.getProperties();
-        System.out.println(java.util.Arrays.toString(props.keySet().toArray()));
-    }
 }
