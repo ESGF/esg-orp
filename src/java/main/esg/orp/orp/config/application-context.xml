@@ -12,7 +12,7 @@
     
     <!-- Configurable properties -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:../orp.properties" />
+		<property name="location" value="classpath:orp.properties" />
 	</bean>
     
  	<!-- Web Servlets configuration -->
