@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.security.KeyPair;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,9 @@ import javax.net.ssl.TrustManagerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensaml.xml.security.x509.BasicX509Credential;
+
+import sun.security.x509.CertificateValidity;
+import sun.security.x509.X509CertInfo;
 
 import esg.security.authn.service.api.SAMLAuthentication;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
@@ -95,6 +99,112 @@ public class AuthenticationFilterTest {
 
     }
 
+    /**
+     * When the certificate of the server is directly trusted the SSL connection
+     * doesn't appear to verify it's validity thus accepting even expired ones.
+     * We verify this though after retrieved and if it's expired or still not
+     * valid we are going to reject it no matter what.
+     * 
+     * @throws Exception not expected
+     */
+    @Test
+    public void testExpiredCertificateRetrieval() throws Exception {
+        // yep, it was a long day :-)
+        long day = 24 * 60 * 60 * 1000L;
+        long year = 365 * day;
+
+        KeyPair kp = TrivialCertGenerator.generateRSAKeyPair();
+        
+        // =========================
+        // ***** check expired *****
+        // =========================
+        
+        X509CertInfo info = TrivialCertGenerator.getDefaultInfo(kp,
+                "L=DE, CN=localhost");
+        Date notBefore = new Date(System.currentTimeMillis() - year);
+        Date notAfter = new Date(System.currentTimeMillis() - day);
+        info.set(X509CertInfo.VALIDITY, new CertificateValidity(notBefore,
+                notAfter));
+        Certificate cert = TrivialCertGenerator.createCertificate(info,
+                kp.getPrivate());
+
+        // set the server with the expired certificate
+        EchoSSLServer server = new EchoSSLServer();
+        server.setServerCertificate(kp.getPrivate(), cert);
+
+        // set the proper HTTPsconnnection to trust the test server
+        {
+
+            TrustManagerFactory tmf = TrustManagerFactory
+                    .getInstance("SunX509");
+            tmf.init(TrivialCertGenerator.packKeyStore(null, null, null,
+                    server.getCertificateChain())); // trust the certifica
+            SSLContext sslc = SSLContext.getInstance("SSL");
+
+            sslc.init(null, tmf.getTrustManagers(), null);
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslc
+                    .getSocketFactory());
+        }
+
+        // start server
+        server.start();
+
+        // empty at start
+        assertNull(getField(af, "orpCert"));
+
+        // point to our server
+        setField(af, "openidRelyingPartyUrl",
+                "https://localhost:" + server.getPort());
+
+        // get the certificate (should be null)
+        Certificate c = (Certificate) invoke(af, "retrieveORPCert");
+        assertNull(c);
+
+
+        // =================================
+        // ***** check still not valid *****
+        // =================================
+        
+        notBefore = new Date(System.currentTimeMillis() + year);
+        notAfter = new Date(notBefore.getTime() + year);
+        info.set(X509CertInfo.VALIDITY, new CertificateValidity(notBefore,
+                notAfter));
+        cert = TrivialCertGenerator.createCertificate(info, kp.getPrivate());
+        server.setServerCertificate(kp.getPrivate(), cert);
+
+        // set the proper HTTPsconnnection to trust the test server
+        {
+
+            TrustManagerFactory tmf = TrustManagerFactory
+                    .getInstance("SunX509");
+            tmf.init(TrivialCertGenerator.packKeyStore(null, null, null,
+                    server.getCertificateChain())); // trust the certifica
+            SSLContext sslc = SSLContext.getInstance("SSL");
+
+            sslc.init(null, tmf.getTrustManagers(), null);
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslc
+                    .getSocketFactory());
+        }
+
+        // start server
+        server.restart();
+
+        // empty at start
+        assertNull(getField(af, "orpCert"));
+
+        // point to our server
+        setField(af, "openidRelyingPartyUrl",
+                "https://localhost:" + server.getPort());
+
+        // get the certificate (should be null)
+        c = (Certificate) invoke(af, "retrieveORPCert");
+        assertNull(c);
+
+        // stop the server
+        server.stop();
+
+    }
+
     @Test
     public void testAttemptValidation() throws Exception {
         String myOpenID = "https://somehost/someidP/MyId";
@@ -149,18 +259,18 @@ public class AuthenticationFilterTest {
         setField(af, "openidRelyingPartyUrl",
                 "https://localhost:" + server.getPort());
 
-        //get the object we want to test
+        // get the object we want to test
         SAMLAuthenticationStatementFacade fac = (SAMLAuthenticationStatementFacade) getField(
                 af, "samlStatementFacade");
         try {
-            //this is the call we want to mimic
-            fac.getAuthentication(
-                    (Certificate) invoke(af, "retrieveORPCert"), wrongCookie);
+            // this is the call we want to mimic
+            fac.getAuthentication((Certificate) invoke(af, "retrieveORPCert"),
+                    wrongCookie);
             fail("Shouldn't have validated");
         } catch (SAMLInvalidStatementException e) {
             // ok, expected
         }
-        //this is the call we want to mimic
+        // this is the call we want to mimic
         SAMLAuthentication authentication = fac.getAuthentication(
                 (Certificate) invoke(af, "retrieveORPCert"), rightCookie);
 

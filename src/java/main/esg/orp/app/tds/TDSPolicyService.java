@@ -18,6 +18,9 @@
  ******************************************************************************/
 package esg.orp.app.tds;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,12 +36,23 @@ import esg.orp.app.PolicyServiceFilterCollaborator;
  * to be used with a Thredds Data Server (TDS) application server.
  */
 public class TDSPolicyService implements PolicyServiceFilterCollaborator {
+	public static final String PROP_TRIM_REGEX = "trimURIRegEx";
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
+    private Pattern pattern;
 
 	public void destroy() {}
 
-	public void init(FilterConfig filterConfig) {}
+	public void init(FilterConfig filterConfig) {
+	    
+	    final String suffix= filterConfig.getInitParameter(PROP_TRIM_REGEX);
+        if (suffix != null) {
+            final String regEx = "^(.*\\.nc)(" + suffix.replace(',', '|') + ")$";
+            if (LOG.isDebugEnabled()) LOG.debug("Setting trim regEx to " + regEx);
+            pattern = Pattern.compile(regEx);
+        }
+	    
+	}
 
 	/**
 	 * Implementation of {@link PolicyServiceFilterCollaborator} method that checks the resource control established by the TDS.
@@ -46,19 +60,25 @@ public class TDSPolicyService implements PolicyServiceFilterCollaborator {
 	public boolean isSecure(final HttpServletRequest request) {
 		
 		boolean isSecure = false;
-		final String uri = request.getPathInfo();
-		if (uri!=null) {
-			final String rc = DatasetHandler.findResourceControl(uri);
-			if (StringUtils.hasText(rc)) isSecure = true;
-			log("URI="+uri+" resource control="+rc+" is secure="+isSecure);
-		}
+		String uri = request.getPathInfo();
+        if (uri != null) {
+            if (pattern != null) {
+                Matcher m = pattern.matcher(uri);
+                if (m.find()) {
+                    //trim as required
+                    uri = m.group(1);
+                    LOG.debug("Uri changed.");
+                }
+            }
+            final String rc = DatasetHandler.findResourceControl(uri);
+
+            if (StringUtils.hasText(rc)) isSecure = true;
+            if (LOG.isDebugEnabled()) LOG.debug("URI=" + uri
+                    + " resource control=" + rc + " is secure=" + isSecure);
+        }
 
 		return isSecure;
 		
-	}
-	
-	private void log(final String message) {
-		if (LOG.isDebugEnabled()) LOG.debug(message);
 	}
 
 }

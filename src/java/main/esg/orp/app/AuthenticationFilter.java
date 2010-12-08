@@ -153,6 +153,16 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 				CertPath certPath = CertUtils.retrieveCertificates(openidRelyingPartyUrl, true);
 				if (certPath != null) {
 					orpCert = certPath.getCertificates().get(0);
+					//verify the validity 
+					if (orpCert instanceof X509Certificate) {
+					    try {
+					        ((X509Certificate)orpCert).checkValidity();
+					    } catch (Exception e) {
+                            // validation failed
+					        LOG.warn("Certificate is invalid: " + e.getLocalizedMessage());
+					        return orpCert = null;
+                        }
+					}
 					//ok we have something
 					if (LOG.isDebugEnabled()) LOG.debug(
 							String.format("Gathered ORP public Cert chain(#%d) from %s. Server DN%s",
