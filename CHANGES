@@ -1,42 +1,57 @@
 1.0.0
-Initial distribution
+Change numbering schema again to start with 1.0 :-)
+moved properties from WEB-INF/esg/orp/orp/config/application.properties to WEB-INF/orp.properties
+auth filter: get's ORP certificate by connecting per SSL to the ORP (thus validating the certificate)
+auth filter: Certificate is cached and check for expiration before being used.
+auth filter: SAML cookie is cached along with other information (cookie validity dates)
+  in the user session. Until the expiration date the cooki will be verbatim compared
+  with that from the user session. If it's the same one, no further authentication
+  takes place.
 
-1.1.0
-Inclusion of new components for expanded flexibility:
-	- FilterAuthorizationFilter as an alternative to the TDSAuthorizer
-	- NoAuthorizationFilterCollaborator to bypass authorization
-	
-1.1.8
-Enabled white listing of Identity Providers. 
-	- Required manual configuration of OpenIDAuthenticationFilter in security context.
-
-Moved retrieval and parsing of SAML authentication cookie from AuthorizationFilter to AuthenticationFilter.
-	- Makes authentication process more self-consistent (also lowers the chance of getting order of filters wrong)
-	- Requires the filter parameters "trustore" and "trustorePassword" to be set on the AuthenticationFilter instead of the AuthorizationFilter.
-	- If the SAML authentication cookie is found and succesfully parsed, the use openid identity is saved at request scope as the value of
-	  the attribute named "esg.openid" - can be retrieved by any downstream component including the metrics filter.
-	  
-1.1.9
-Added BSD Open Source License license
-Insert experimental filter X509PreAuthenticationFilter
-	- Detects client X509 certificate and sets authorization flag (bypass redirection to ORP)
-	- Only works for HTTPS requests
-	- Must be inserted before AuthenticationFilter
-	- DO NOT USE IN PRODUCTION
-	
-1.2.0
-- Moved XML configuration files to ORP specific directory: esg/datanode/security/orp/config
-- Moved application.properties to ORP specific directory: esg/datanode/security/orp/config
-- Changed name of LOG output stream
-- Introduced support for OpenID attribute exchange
-	
-1.2.1
-Migrated code to ESGF GIT repository, restructured to be compiled by Ivy
-Updated dependencies on Spring and Tiles jars
-Inserted AuthenticationByIPFilter to be used for LAS.
 
 1.1.2.1
 Changed numbering schema to start with datanode number.
 Resolved warnings due to deprecated constructors in Spring Security package.
 Renaming package from "esg.datanode.security" to "esg.orp".
 Fixed HTTP parameter name ("openid_identifier") for automatic redirect from the ORP to the IdP, if present.
+
+1.2.1
+Migrated code to ESGF GIT repository, restructured to be compiled by Ivy
+Updated dependencies on Spring and Tiles jars
+Inserted AuthenticationByIPFilter to be used for LAS.
+
+1.2.0
+- Moved XML configuration files to ORP specific directory: esg/datanode/security/orp/config
+- Moved application.properties to ORP specific directory: esg/datanode/security/orp/config
+- Changed name of LOG output stream
+- Introduced support for OpenID attribute exchange
+    
+1.1.9
+Added BSD Open Source License license
+Insert experimental filter X509PreAuthenticationFilter
+    - Detects client X509 certificate and sets authorization flag (bypass redirection to ORP)
+    - Only works for HTTPS requests
+    - Must be inserted before AuthenticationFilter
+    - DO NOT USE IN PRODUCTION
+
+1.1.8
+Enabled white listing of Identity Providers. 
+    - Required manual configuration of OpenIDAuthenticationFilter in security context.
+
+Moved retrieval and parsing of SAML authentication cookie from AuthorizationFilter to AuthenticationFilter.
+    - Makes authentication process more self-consistent (also lowers the chance of getting order of filters wrong)
+    - Requires the filter parameters "trustore" and "trustorePassword" to be set on the AuthenticationFilter instead of the AuthorizationFilter.
+    - If the SAML authentication cookie is found and succesfully parsed, the use openid identity is saved at request scope as the value of
+      the attribute named "esg.openid" - can be retrieved by any downstream component including the metrics filter.
+
+1.1.0
+Inclusion of new components for expanded flexibility:
+    - FilterAuthorizationFilter as an alternative to the TDSAuthorizer
+    - NoAuthorizationFilterCollaborator to bypass authorization
+
+1.0.0
+Initial distribution
+
+	
+	  
+	
