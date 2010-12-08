@@ -427,7 +427,7 @@ Builds the project via ant (obviously).
     </jar>
   </target>  
 
-  <target name="make_all_jars" depends="make_jar,make_test_jar,make_fe_jar,make_connector_jar"/>
+  <target name="make_all_jars" depends="make_jar,make_test_jar"/>
 
   <target name="make_war" depends="make,init"
           description="(Creates war file of this project)">
@@ -440,8 +440,9 @@ Builds the project via ant (obviously).
   	<echo message="${conf_dir}"/>
     <delete file="${dist_dir}/${module}.war"/>
     <war destfile="${dist_dir}/${module}.war" webxml="${conf_dir}/${module}-web.xml">
+    	<!-- Add configuration files to WEB-INF -->
       <fileset dir="${web_dir}" excludes="WEB-INF/**/web.xml/**,**semantic.cache**"/>
-      <webinf dir="${conf_dir}" includes="**/*.xml" excludes="${module}-web.xml"/>
+      <webinf dir="${conf_dir}" includes="**/*.xml, orp.properties" excludes="${module}-web.xml"/>
       <lib dir="${dist_dir}/tmplib">
         <include name="**/*.jar"/>
         <exclude name="**/*-test*.jar,**/*-common*.jar"/>
