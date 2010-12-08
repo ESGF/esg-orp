@@ -8,5 +8,7 @@
 
 [orp]
 ./esg-orp
+../dist/esg-orp-1.0.0.tar.gz
 ../dist/esg-orp.war
 ../build/esg/orp/orp/config/application.properties
+../etc/endorsed.tgz
