@@ -11,6 +11,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Encapsulates Tomcat properties. For the time being we extract only the
+ * properties we require.
+ * The current implementation parses the server.xml file to avoid library
+ * dependencies. This might change in the future.
+ *
+ */
 public class TomcatConfiguration {
     private static final Log LOG = LogFactory.getLog(TomcatConfiguration.class);
     private static final String DEF_LOCATION = "/usr/local/tomcat";
@@ -18,11 +25,14 @@ public class TomcatConfiguration {
     private static boolean init = false;
 
     /**
+     * Tries to load tomcat properties from $CATALINA_HOME/conf/server.xml.
      * @return loaded properties or null if failed.
      */
     private static void load() {
-        String tomcat = System.getenv("CATALINA_HOME");
-        if (tomcat == null) tomcat = System.getProperty("CATALINA_HOME");
+        //look first for java property as this is intentionally set
+        String tomcat = System.getProperty("CATALINA_HOME");
+        //if not found check for the environment property
+        if (tomcat == null) tomcat = System.getenv("CATALINA_HOME");
 
         if (tomcat == null) {
             LOG.warn("CATALINA_HOME wasn't set attemping default location: "
@@ -56,14 +66,16 @@ public class TomcatConfiguration {
                 }
             }
         } catch (Exception e) {
-            LOG.error(
-                    "Could not parse xml file: " + serverXML.getAbsolutePath(),
-                    e);
+            LOG.error("Could not parse xml file: " 
+                    + serverXML.getAbsolutePath(),e);
         }
 
         return;
     }
 
+    /**
+     * @return the properties found or null if no properties could be found.
+     */
     public static Properties getProperties() {
         if (!init) {
             load();
@@ -73,11 +85,19 @@ public class TomcatConfiguration {
         else return properties;
     }
 
+    /**
+     * @param item node in server.xml
+     * @return properties extracted from current node (attribute=value pairs)
+     */
     private static Properties parseProperties(Node item) {
         Properties props = new Properties();
         for (int i = 0; i < item.getAttributes().getLength(); i++) {
             props.put(item.getAttributes().item(i).getNodeName(), item
                     .getAttributes().item(i).getNodeValue());
+            if (LOG.isDebugEnabled())
+                LOG.debug(String.format("Loading tomcat attribute: %s=%s", 
+                    item.getAttributes().item(i).getNodeName(), 
+                    item.getAttributes().item(i).getNodeValue()));
         }
         return props;
     }
