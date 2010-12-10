@@ -392,7 +392,7 @@ Builds the project via ant (obviously).
     <war destfile="${dist_dir}/${module}.war" webxml="${build_dir}/${module}-web.xml">
     	<!-- Add configuration files to WEB-INF -->
       <fileset dir="${web_dir}" excludes="WEB-INF/**/web.xml/**,**semantic.cache**"/>
-      <webinf dir="${build_dir}" includes="log4j.xml" excludes="${module}-web.xml"/>
+      <webinf dir="${conf_dir}" includes="**/*.xml" excludes="${module}-web.xml"/>
       <lib dir="${dist_dir}/tmplib">
         <include name="**/*.jar"/>
         <exclude name="**/*-test*.jar,**/*-common*.jar"/>
