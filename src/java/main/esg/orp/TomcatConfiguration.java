@@ -1,6 +1,8 @@
 package esg.orp;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -60,6 +62,12 @@ public class TomcatConfiguration {
                 if ("true".equals(connProps.getProperty("secure", ""))) {
                     if (properties.isEmpty()) {
                         properties.putAll(connProps);
+                        if (LOG.isDebugEnabled()) {
+                            StringWriter sw = new StringWriter();
+                            properties.list(new PrintWriter(sw));
+                            LOG.debug("Proties loaded:");
+                            LOG.debug(sw.toString());
+                        }
                     } else {
                         LOG.fatal("More than one secured connector. Property loading failed");
                     }
@@ -70,7 +78,7 @@ public class TomcatConfiguration {
                     + serverXML.getAbsolutePath(),e);
         }
 
-        return;
+        if (properties.isEmpty()) LOG.error("No tomcat properties were loaded.");
     }
 
     /**
@@ -94,10 +102,6 @@ public class TomcatConfiguration {
         for (int i = 0; i < item.getAttributes().getLength(); i++) {
             props.put(item.getAttributes().item(i).getNodeName(), item
                     .getAttributes().item(i).getNodeValue());
-            if (LOG.isDebugEnabled())
-                LOG.debug(String.format("Loading tomcat attribute: %s=%s", 
-                    item.getAttributes().item(i).getNodeName(), 
-                    item.getAttributes().item(i).getNodeValue()));
         }
         return props;
     }
