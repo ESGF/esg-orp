@@ -1,10 +1,13 @@
-1.0.0
+1.0.1
 Change numbering schema again to start with 1.0 :-)
-moved properties from WEB-INF/esg/orp/orp/config/application.properties to WEB-INF/orp.properties
+moved properties from WEB-INF/esg/orp/orp/config/application.properties to 
+  WEB-INF/classes/esg-orp.properties
+If properties not present or configured, try to parse CATALINA_HOME/conf/server.xml 
+  retrieving the data from the first connector which is declared as secured.
 auth filter: get's ORP certificate by connecting per SSL to the ORP (thus validating the certificate)
 auth filter: Certificate is cached and check for expiration before being used.
 auth filter: SAML cookie is cached along with other information (cookie validity dates)
-  in the user session. Until the expiration date the cooki will be verbatim compared
+  in the user session. Until the expiration date the cookie will be verbatim compared
   with that from the user session. If it's the same one, no further authentication
   takes place.
 
