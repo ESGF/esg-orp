@@ -313,7 +313,7 @@ Builds the project via ant (obviously).
 
     <copy todir="${build_dir}" filtering="${filter}" overwrite="true">
       <fileset dir="${conf_dir}" includes="**/*.properties,**/*.template,**/*.xml" />
-      <fileset dir="${src_dir}" includes="**/*.properties,**/*.template,**/*.xml" />
+      <fileset dir="${src_dir}"  includes="**/*.properties,**/*.template,**/*.xml" />
     </copy>
 
 
@@ -376,56 +376,6 @@ Builds the project via ant (obviously).
     </jar>
   </target>
   
-  <target name="make_fe_jar" depends="make"
-	  description="(Creates the jar file distribution for client Front End GUI)">
-    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-fe-${version_num}.jar"/> 
-    <delete> 
-      <fileset dir="." includes="${dist_dir}/${module}-fe-${version_num}.jar"/>
-    </delete>
-    <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-fe-${version_num}.jar">
-      <fileset dir="${build_dir}" 
-	       includes="esg/orp/**,esg/**/common/**,**/*.properties"
-	       excludes="**/test/**,**/${module}.properties/**"/>
-      <manifest>
-	<attribute name="Organization" value="${organization}"/>
-	<attribute name="Author"       value="${author}"/>
-	<attribute name="Project"      value="${project_name}"/>
-	<attribute name="Module"       value="${module} fe"/>
-	<attribute name="Version"      value="${version_num}"/>
-	<attribute name="Release-Name" value="${release_name}"/>
-	<attribute name="Main-Class"   value="${main_class}"/>
-	<section name="esg/orp/">
-	  <attribute name="Sealed" value="false"/>
-	</section>
-      </manifest>
-    </jar>
-  </target>
-
-  <target name="make_connector_jar" depends="make"
-	  description="(Creates the jar file distribution for node connector component to orp [non-java] component)">
-    <echo message="JAR -  ${build_dir} ->> ${dist_dir}/${module}-connector-${version_num}.jar"/> 
-    <delete> 
-      <fileset dir="." includes="${dist_dir}/${module}-connector-${version_num}.jar"/>
-    </delete>
-    <mkdir dir="${dist_dir}" />
-    <jar destfile="${dist_dir}/${module}-connector-${version_num}.jar">
-      <fileset dir="${build_dir}" 
-	       includes="esg/node/**/connector/**,esg/**/common/**,**/*.properties"
-	       excludes="**/test/**,**/${module}.properties/**"/>
-      <manifest>
-	<attribute name="Organization" value="${organization}"/>
-	<attribute name="Author"       value="${author}"/>
-	<attribute name="Project"      value="${project_name} ${module} connector"/>
-	<attribute name="Module"       value="${module}"/>
-	<attribute name="Version"      value="${version_num}"/>
-	<attribute name="Release-Name" value="${release_name}"/>
-	<section name="esg/node/orp/connector/">
-	  <attribute name="Sealed" value="false"/>
-	</section>
-      </manifest>
-    </jar>
-  </target>  
 
   <target name="make_all_jars" depends="make_jar,make_test_jar"/>
 
@@ -442,11 +392,12 @@ Builds the project via ant (obviously).
     <war destfile="${dist_dir}/${module}.war" webxml="${build_dir}/${module}-web.xml">
     	<!-- Add configuration files to WEB-INF -->
       <fileset dir="${web_dir}" excludes="WEB-INF/**/web.xml/**,**semantic.cache**"/>
+      <webinf dir="${build_dir}" includes="log4j.xml" excludes="${module}-web.xml"/>
       <lib dir="${dist_dir}/tmplib">
         <include name="**/*.jar"/>
         <exclude name="**/*-test*.jar,**/*-common*.jar"/>
       </lib>
-      <classes dir="${build_dir}" excludes="${module}-web.xml"/>
+      <classes dir="${build_dir}" excludes="${module}-web.xml,log4j.xml"/>
       <manifest>
 	<attribute name="Organization" value="${organization}"/>
 	<attribute name="Author"       value="${author}"/>

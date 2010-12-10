@@ -10,5 +10,5 @@
 ./esg-orp
 ../dist/esg-orp-1.0.1.tar.gz
 ../dist/esg-orp.war
-../build/esg/orp/orp/config/application.properties
+../build/esg-orp.properties
 ../etc/endorsed.tgz
