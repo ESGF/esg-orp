@@ -156,11 +156,24 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 	 * Method to check that the keystore parameters have been properly initialized by the user.
 	 */
 	public void afterPropertiesSet() throws Exception {
-		
-		Assert.hasText(keystoreFile, "Parameter keystoreFile not initialized");
-		Assert.hasText(keystoreAlias, "Parameter keystoreAlias not initialized");
-		Assert.hasText(keystorePassword, "Parameter keystorePassword not initialized");
-		
+	    
+	       if (keystoreFile == null || keystoreFile.isEmpty() || keystoreFile.startsWith("@")) {
+	            //if set in the file, use the file. If not try getting it from tomcat.
+	            //*************   TOMCAT 6 Specific code ****************
+	            Properties tomProps = TomcatConfiguration.getProperties();
+	            if (tomProps != null) {
+	                // Properties were read. Parse them and set tomcats defaults.
+	                setKeystoreFile(tomProps.getProperty("keystoreFile"));
+	                setKeystorePassword(tomProps.getProperty("keystorePass", "changeit"));
+	                setKeystoreAlias(tomProps.getProperty("keyAlias", "tomcat"));
+	            }
+	        }
+	        
+	        //at this point we need the properties to be properly set/found
+	        Assert.hasText(keystoreFile, "Parameter keystoreFile not initialized");
+	        Assert.hasText(keystoreAlias, "Parameter keystoreAlias not initialized");
+	        Assert.hasText(keystorePassword, "Parameter keystorePassword not initialized");
+
 	}
 	
 	/**
@@ -168,19 +181,7 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 	 * @throws ServletException
 	 */
 	public void init() throws Exception {
-	    
-	    if (keystoreFile == null || keystoreFile.startsWith("@")) {
-	        //if set in the file, use the file. If not try getting it from tomcat.
-	        //*************   TOMCAT 6 Specific code ****************
-            Properties tomProps = TomcatConfiguration.getProperties();
-            if (tomProps != null) {
-                // Properties were read. Parse them and set tomcats defaults.
-                setKeystoreFile(tomProps.getProperty("keystoreFile"));
-                setKeystorePassword(tomProps.getProperty("keystorePass", "changeit"));
-                setKeystoreAlias(tomProps.getProperty("keyAlias", "tomcat"));
-            }
-	    }
-		final File keystore = new File(keystoreFile);
+        final File keystore = new File(keystoreFile);
 		samlStatementFacade.setSigningCredential(keystore, keystorePassword, keystoreAlias);
 		if (LOG.isDebugEnabled()) LOG.debug("Will sign statements with keystore="+keystoreFile+" alias="+keystoreAlias);
 		
@@ -200,7 +201,6 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 			}
 			
 		}
-	
 	}
 
 	/**

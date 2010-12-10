@@ -11,8 +11,16 @@
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> 
     
     <!-- Configurable properties -->
-	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location" value="classpath:esg-orp.properties" />
+		<property name="properties">
+			<props>
+				<prop key="keystoreFile" />
+				<prop key="keystorePassword" />
+				<prop key="keystoreAlias" />
+			</props>
+		</property>
 	</bean>
     
  	<!-- Web Servlets configuration -->
