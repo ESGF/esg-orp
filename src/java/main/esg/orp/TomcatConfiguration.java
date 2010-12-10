@@ -65,7 +65,7 @@ public class TomcatConfiguration {
                         if (LOG.isDebugEnabled()) {
                             StringWriter sw = new StringWriter();
                             properties.list(new PrintWriter(sw));
-                            LOG.debug("Proties loaded:");
+                            LOG.debug("Properties loaded:");
                             LOG.debug(sw.toString());
                         }
                     } else {
