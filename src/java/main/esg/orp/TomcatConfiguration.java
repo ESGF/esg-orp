@@ -33,6 +33,7 @@ public class TomcatConfiguration {
     private static void load() {
         //look first for java property as this is intentionally set
         String tomcat = System.getProperty("CATALINA_HOME");
+        if (tomcat == null) tomcat = System.getProperty("catalina.home");
         //if not found check for the environment property
         if (tomcat == null) tomcat = System.getenv("CATALINA_HOME");
 
