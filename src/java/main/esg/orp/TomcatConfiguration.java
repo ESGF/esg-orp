@@ -32,18 +32,20 @@ public class TomcatConfiguration {
      */
     private static void load() {
         //look first for java property as this is intentionally set
-        String tomcat = System.getProperty("CATALINA_HOME");
-        if (tomcat == null) tomcat = System.getProperty("catalina.home");
+        String catalinaHome = System.getProperty("CATALINA_HOME");
+        if (catalinaHome == null) catalinaHome = System.getProperty("catalina.home");
         //if not found check for the environment property
-        if (tomcat == null) tomcat = System.getenv("CATALINA_HOME");
+        if (catalinaHome == null) catalinaHome = System.getenv("CATALINA_HOME");
 
-        if (tomcat == null) {
+        if (catalinaHome == null) {
             LOG.warn("CATALINA_HOME wasn't set attemping default location: "
                     + DEF_LOCATION);
             // use datanode default installation location
-            tomcat = DEF_LOCATION;
+            catalinaHome = DEF_LOCATION;
+        } else {
+        	LOG.info("CATALINA_HOME believed to be at: " + catalinaHome);
         }
-        File serverXML = new File(tomcat, "conf/server.xml");
+        File serverXML = new File(catalinaHome, "conf/server.xml");
         if (!serverXML.canRead() || !serverXML.isFile()) {
             LOG.error(serverXML.getAbsolutePath() + " not found");
             return;
