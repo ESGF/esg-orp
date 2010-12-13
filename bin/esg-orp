@@ -69,7 +69,7 @@
 #              stop_tomcat(), start_tomcat(), $workdir,
 
 openid_relying_party_dist_url="http://198.128.245.140/dist/orp/esg-orp.war"
-#openid_relying_party_property_file_dist_url="http://198.128.245.140/dist/orp/esg-orp.properties"
+openid_relying_party_property_file_dist_url="http://198.128.245.140/dist/orp/esg-orp.properties"
 openid_relying_party_app_home="${CATALINA_HOME}/webapps/OpenidRelyingParty"
 install_logfile=${ESG_INSTALL_LOGFILE:-"/etc/esg.install_log"}
 
@@ -139,14 +139,14 @@ setup_orp() {
     stop_tomcat
 
     #----------------------------
-    #local fetch_file=${openid_relying_party_property_file_dist_url##*/}
-    #checked_get ${fetch_file} ${openid_relying_party_property_file_dist_url}
-    #
-    ##NOTE: The saving of the last config file must be done *BEFORE* we untar the new distro!
-    #if ((upgrade)) && [ -e WEB-INF/classes/esg/orp/orp/config/${fetch_file} ]; then
-    #    cp WEB-INF/classes/${fetch_file} WEB-INF/classes/${fetch_file}.saved
-    #    chmod 600 WEB-INF/classes/esg/orp/orp/config/${fetch_file}*
-    #fi
+    local fetch_file=${openid_relying_party_property_file_dist_url##*/}
+    checked_get ${fetch_file} ${openid_relying_party_property_file_dist_url}
+    
+    #NOTE: The saving of the last config file must be done *BEFORE* we untar the new distro!
+    if ((upgrade)) && [ -e WEB-INF/classes/${fetch_file} ]; then
+        cp WEB-INF/classes/${fetch_file} WEB-INF/classes/${fetch_file}.saved
+        chmod 600 WEB-INF/classes/${fetch_file}*
+    fi
 
     mkdir -p ${openid_relying_party_app_home}
     [ $? != 0 ] && return 1
@@ -158,28 +158,28 @@ setup_orp() {
     #----------------------------
     #Property file fetching and token replacement...
     #----------------------------
-    #pushd WEB-INF/classes >& /dev/null
-    #
-    #cp ${fetch_file} ${fetch_file}.tmpl
-    #if((upgrade)) && [ -e ${fetch_file}.saved ]; then
-    #    #reuse the last properties file...
-    #    #pull it out of the tar archive we made a few lines up
-    #    cp ${fetch_file}.saved ${fetch_file}
-    #else
-    #    #----------------------
-    #    #edit the property file...
-    #    pwd
-    #    echo -n "Replacing tokens... "
-    #    eval "perl -p -i -e 's#\\@\\@keystoreFile\\@\\@#${keystore_file}#g' ${fetch_file}"; echo -n "*"
-    #    eval "perl -p -i -e 's#\\@\\@keystorePassword\\@\\@#${keystore_password}#g' ${fetch_file}"; echo -n "*"
-    #    eval "perl -p -i -e 's#\\@\\@keystoreAlias\\@\\@#${keystore_alias}#g' ${fetch_file}"; echo -n "*"
-    #    echo " [OK]"
-    #    #----------------------
-    #fi
-    #chown -R ${tomcat_user} ${openid_relying_party_app_home}
-    #chgrp -R ${tomcat_group} ${openid_relying_party_app_home}
-    #unset fetch_file
-    #popd >& /dev/null
+    pushd WEB-INF/classes >& /dev/null
+    
+    cp ${fetch_file} ${fetch_file}.tmpl
+    if((upgrade)) && [ -e ${fetch_file}.saved ]; then
+        #reuse the last properties file...
+        #pull it out of the tar archive we made a few lines up
+        cp ${fetch_file}.saved ${fetch_file}
+    else
+        #----------------------
+        #edit the property file...
+        pwd
+        echo -n "Replacing tokens... "
+        eval "perl -p -i -e 's#\\@\\@keystoreFile\\@\\@#${keystore_file}#g' ${fetch_file}"; echo -n "*"
+        eval "perl -p -i -e 's#\\@\\@keystorePassword\\@\\@#${keystore_password}#g' ${fetch_file}"; echo -n "*"
+        eval "perl -p -i -e 's#\\@\\@keystoreAlias\\@\\@#${keystore_alias}#g' ${fetch_file}"; echo -n "*"
+        echo " [OK]"
+        #----------------------
+    fi
+    chown -R ${tomcat_user} ${openid_relying_party_app_home}
+    chgrp -R ${tomcat_group} ${openid_relying_party_app_home}
+    unset fetch_file
+    popd >& /dev/null
     #----------------------------
     
 
