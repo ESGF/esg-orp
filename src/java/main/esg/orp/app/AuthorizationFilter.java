@@ -72,8 +72,8 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
             url = url.substring(0, c);
         }
         
-        //work around
-        url = url.replace("fileServer", "dodsC").replace(".ascii", "").replace(".dods", "");
+        // temporary work around to enable authorization on opendap URLs
+        url = url.replace("dodsC", "fileServer").replace(".ascii", "").replace(".dods", "");
         
         return url;
     }
