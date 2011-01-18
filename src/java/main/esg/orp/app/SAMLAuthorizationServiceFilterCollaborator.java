@@ -53,7 +53,7 @@ public class SAMLAuthorizationServiceFilterCollaborator implements Authorization
 		
 	public SAMLAuthorizationServiceFilterCollaborator() {
 		
-		encoder = new SAMLAuthorizationServiceClientSoapImpl("test issuer");
+		encoder = new SAMLAuthorizationServiceClientSoapImpl("ESGF Authorization Filter");
 		transmitter = new SOAPServiceClient();
 		
 	}
