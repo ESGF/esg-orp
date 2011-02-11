@@ -120,6 +120,10 @@
 					<p class="error">ERROR: <c:out value="${sessionScope[last_exception_key].message}"/>
 					<p>&nbsp;</p>
 				</c:if>
+				
+				<c:if test="${sessionScope['redirect']!=null}">
+					<p/>&nbsp;<p/>The following URL requires authentication: <c:out value="${sessionScope['redirect']}"/><p/>&nbsp;<p/>
+				</c:if>
 			
 				<!-- user is NOT authenticated -->
 				<form method="post" action="<c:url value='${target_url}'/>">
@@ -133,10 +137,10 @@
 								  </td>
 								</tr>
 								<tr>
-									<td align="right" valign="absmiddle"><img src='<c:url value="/themes/openid_small.gif"/>'/></td>
+									<td align="right" valign="middle"><img src='<c:url value="/themes/openid_small.gif"/>'/></td>
 									<td align="right" class="required">OpenID</td>
 									<td align="left">
-										<input type="text" name="openid_identifier" size="50" value="${openidCookie.value}"/>
+										<input type="text" name="openid_identifier" size="60" value="${openidCookie.value}"/>
 									</td>
 									<td><input type="submit" value="GO" id="openid-button"/></td>
 								</tr>
@@ -148,7 +152,12 @@
 							</table>
 						</div>
 					</div>
-				</form>			
+				</form>		
+				
+				<c:if test="${sessionScope['redirect']!=null}">
+					<p/>&nbsp;<p/>After logging in, you will be redirect to: <c:out value="${sessionScope['redirect']}"/><p/>&nbsp;<p/>
+				</c:if>
+					
 											
 			</c:otherwise>
 		</c:choose>

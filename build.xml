@@ -703,6 +703,7 @@ Builds the project via ant (obviously).
 
 	    <mkdir dir="${basedir}/WebContent" />
 	    <mkdir dir="${basedir}/WebContent/WEB-INF" />
+		<mkdir dir="${basedir}/WebContent/themes" />
 	  	<property name="web_deploy_dir" value="${basedir}/WebContent/WEB-INF"/>
 
 		<!-- web configuration files -->
@@ -715,6 +716,11 @@ Builds the project via ant (obviously).
 		<copy file="${web_dir}/index.jsp" tofile="${basedir}/WebContent/index.jsp"/>
 	    <copy todir="${web_deploy_dir}/views">
 	      <fileset dir="${web_dir}/WEB-INF/views" />
+	    </copy>
+		
+		<!-- images and css -->
+	    <copy todir="${basedir}/WebContent/themes">
+	      <fileset dir="${web_dir}/themes" />
 	    </copy>
 		
 		<!-- web lib -->
