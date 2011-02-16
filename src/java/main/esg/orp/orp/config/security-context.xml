@@ -84,6 +84,8 @@
 		<property name="idpWhiteList">
 			<list value-type="java.lang.String">
 				<value>https://esg-gateway.jpl.nasa.gov/openid/provider.htm</value>
+				<value>https://esg-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
+				<value>https://test-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
 				<value>https://esg.prototype.ucar.edu/openid/provider.htm</value>
 			    <value>https://esg.ucar.edu/openid/provider.htm</value>
 				<value>https://openid.prototype.ucar.edu/openid/provider.htm</value>

@@ -155,7 +155,7 @@
 				</form>		
 				
 				<c:if test="${sessionScope['redirect']!=null}">
-					<p/>&nbsp;<p/>After logging in, you will be redirect to: <c:out value="${sessionScope['redirect']}"/><p/>&nbsp;<p/>
+					<p/>&nbsp;<p/>After logging in, you will be redirected to: <c:out value="${sessionScope['redirect']}"/><p/>&nbsp;<p/>
 				</c:if>
 					
 											
