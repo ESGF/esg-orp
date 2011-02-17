@@ -83,26 +83,40 @@
 	    <!-- list of IdPs trusted by the ORP -->
 		<property name="idpWhiteList">
 			<list value-type="java.lang.String">
+			
+				<!-- PCMDI -->
+				<value>https://pcmdi3.llnl.gov/esgcet/openid/provider.htm</value>
+				
+				<!-- BADC -->
+				<value>https://cmip-gw.badc.rl.ac.uk/openid/openidserver</value>
+				<value>https://ndgbeta.badc.rl.ac.uk/openid/openidserver</value>
+				<value>https://ndg3beta.badc.rl.ac.uk/OpenID/Provider/server</value>
+				<value>https://ceda.ac.uk/OpenID/Provider/server</value>
+				
+				<!-- DKRZ -->
+				<value>https://ipcc-ar5.dkrz.de/openid/provider.htm</value>
+				<value>https://albedo2.dkrz.de/esgcet/openid/provider.htm</value>
+				
+				<!-- NASA/JPL -->
 				<value>https://esg-gateway.jpl.nasa.gov/openid/provider.htm</value>
 				<value>https://esg-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
 				<value>https://test-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
-				<value>https://esg.prototype.ucar.edu/openid/provider.htm</value>
+				
+				<!-- NCAR -->
+				<value>https://www.earthsystemgrid.org/openid/provider.htm</value>
 			    <value>https://esg.ucar.edu/openid/provider.htm</value>
-				<value>https://openid.prototype.ucar.edu/openid/provider.htm</value>
-				<value>https://cadis.prototype.ucar.edu/openid/provider.htm</value>
-				<value>https://dycore.ucar.edu/openid/provider.htm</value>
-				<value>https://dev.dycore.ucar.edu/openid/provider.htm</value>
-				<value>https://dev.esg-cet.ucar.edu/openid/provider.htm</value>
-				<value>https://esg-cet.ucar.edu/openid/provider.htm</value>
-				<value>https://ipcc-ar5.dkrz.de/openid/provider.htm</value>
-				<value>https://albedo2.dkrz.de/esgcet/openid/provider.htm</value>
-				<value>https://tempesta.scd.ucar.edu:8443/ESG-CET/openid/provider.htm</value>
-				<value>https://ndgbeta.badc.rl.ac.uk/openid/openidserver</value>
-				<value>https://ndg3beta.badc.rl.ac.uk/OpenID/Provider/server</value>
-				<value>https://curator.ucar.edu/openid/provider.htm</value>
-				<value>https://pcmdi3.llnl.gov/esgcet/openid/provider.htm</value>
-				<value>https://esg-gw.ornl.teragrid.org/openid/provider.htm</value>		
-				<value>https://ceda.ac.uk/OpenID/Provider/server</value>	
+			    <value>https://curator.ucar.edu/openid/provider.htm</value>
+				
+				<!-- NCI -->
+				<value>https://esg.nci.org.au/esgcet/openid/provider.htm</value>
+				
+				<!-- NERSC -->
+				<value>https://esg.nersc.gov/esgcet/openid/provider.htm</value>
+				
+				<!-- ORNL -->
+				<value>https://esg2-gw.ccs.ornl.gov/esgcet/openid/provider.htm</value>
+				<value>https://esg-gw.ornl.teragrid.org/openid/provider.htm</value>			
+					
 			</list>
 		</property>
 	</bean>
