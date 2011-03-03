@@ -206,3 +206,24 @@ write_orp_install_log() {
     dedup ${install_logfile}
     return 0
 }
+
+#--------------------------------------
+# Clean / Uninstall this module...
+#--------------------------------------
+
+clean_orp_webapp_subsystem() {
+    init
+    local doit="N"
+    if [ -e ${openid_relying_party_app_home} ]; then
+        read -p "remove ESGF ORP web service? (${openid_relying_party_app_home}) [y/N]: " doit
+        if [ "doit" = "Y" ] || [ "$doit" = "y" ]; then
+            echo "removing ${openid_relying_party_app_home}"
+            if [ -n ${openid_relying_party_app_home} ]; then
+                rm -rf ${openid_relying_party_app_home}
+                [ $? != 0 ] && echo "ERROR: Unable to remove ${openid_relying_party_app_home}" && return 1
+                perl -n -i -e'print unless m!webapp:OpenidRelyingParty!' ${install_logfile}
+            fi
+        fi
+    fi 
+    return 0
+}
