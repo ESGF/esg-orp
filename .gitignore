@@ -39,3 +39,8 @@ generated/
 /.cobertura.ser
 /build.local.xml
 /esg
+
+################################
+#Generated from templated files
+################################
+bin/post.manif
