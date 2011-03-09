@@ -68,7 +68,7 @@
 #              script that has the definition of checked_get(),
 #              stop_tomcat(), start_tomcat(), $workdir,
 
-openid_relying_party_dist_url="http://198.128.245.140/dist/orp/esg-orp.war"
+openid_relying_party_dist_url="http://198.128.245.140/dist/esg-orp/esg-orp.war"
 openid_relying_party_property_file_dist_url="http://198.128.245.140/dist/orp/esg-orp.properties"
 openid_relying_party_app_home="${CATALINA_HOME}/webapps/OpenidRelyingParty"
 install_logfile=${ESG_INSTALL_LOGFILE:-"/etc/esg.install_log"}
