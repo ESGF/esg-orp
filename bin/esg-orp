@@ -131,11 +131,6 @@ setup_orp() {
 	echo "Upgrading the OpenID Relying Party WebApp..."
     fi
     
-    local endorsed_jars=endorsed.tgz
-    checked_get ${endorsed_jars} ${openid_relying_party_dist_url%/*}/${endorsed_jars}
-    #set to the absolute file name...
-    endorsed_jars=$(readlink -f ${endorsed_jars})
-
     stop_tomcat
 
     #----------------------------
@@ -181,15 +176,6 @@ setup_orp() {
     unset fetch_file
     popd >& /dev/null
     #----------------------------
-    
-
-    if [ -d ${tomcat_install_dir}/webapps/thredds/WEB-INF/lib ]; then
-        #move over SAML libraries...
-        tar xzf ${endorsed_jars} -C ${tomcat_install_dir}/webapps/thredds/WEB-INF/lib
-        mv -v ${tomcat_install_dir}/webapps/thredds/WEB-INF/lib/endorsed/*.jar ${tomcat_install_dir}/webapps/thredds/WEB-INF/lib/
-        rmdir ${tomcat_install_dir}/webapps/thredds/WEB-INF/lib/endorsed
-        chown -R ${tomcat_user}:${tomcat_group} ${tomcat_install_dir}/webapps/thredds/WEB-INF/lib
-    fi
 
     popd >& /dev/null
     echo
