@@ -86,6 +86,11 @@
 			
 				<!-- PCMDI -->
 				<value>https://pcmdi3.llnl.gov/esgcet/openid/provider.htm</value>
+				<value>https://esgf-node1.llnl.gov/esgf-idp/idp/openidServer.htm</value>
+				<value>https://esgf-node2.llnl.gov/esgf-idp/idp/openidServer.htm</value>
+				<value>https://esgf-node3.llnl.gov/esgf-idp/idp/openidServer.htm</value>
+				<value>https://esgf-node4.llnl.gov/esgf-idp/idp/openidServer.htm</value>
+				<value>https://esgf-node5.llnl.gov/esgf-idp/idp/openidServer.htm</value>
 				
 				<!-- BADC -->
 				<value>https://cmip-gw.badc.rl.ac.uk/openid/openidserver</value>
@@ -115,7 +120,13 @@
 				
 				<!-- ORNL -->
 				<value>https://esg2-gw.ccs.ornl.gov/esgcet/openid/provider.htm</value>
-				<value>https://esg-gw.ornl.teragrid.org/openid/provider.htm</value>			
+				<value>https://esg-gw.ornl.teragrid.org/openid/provider.htm</value>	
+			    <value>https://esg-vm-demo01.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
+			    <value>https://esg-vm-demo02.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
+			    <value>https://esg-vm-demo03.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
+			    <value>https://scotty.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
+			    <value>https://bones.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
+			    <value>https://sisko.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
 					
 			</list>
 		</property>
