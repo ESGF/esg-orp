@@ -166,7 +166,7 @@ setup_orp() {
         pwd
         echo -n "Replacing tokens... "
         eval "perl -p -i -e 's#\\@\\@keystoreFile\\@\\@#${keystore_file}#g' ${fetch_file}"; echo -n "*"
-        eval "perl -p -i -e 's#\\@\\@keystorePassword\\@\\@#${keystore_password:-security_admin_password}#g' ${fetch_file}"; echo -n "*"
+        eval "perl -p -i -e 's#\\@\\@keystorePassword\\@\\@#${keystore_password:-${security_admin_password}}#g' ${fetch_file}"; echo -n "*"
         eval "perl -p -i -e 's#\\@\\@keystoreAlias\\@\\@#${keystore_alias}#g' ${fetch_file}"; echo -n "*"
         echo " [OK]"
         #----------------------
