@@ -75,7 +75,7 @@ install_logfile=${ESG_INSTALL_LOGFILE:-"/etc/esg.install_log"}
 
 date_format=${date_format:-"+%Y_%m_%d_%H%M%S"}
 
-orp_version=${orp_version:-"1.0.3"}
+orp_version=${orp_version:-"1.0.4"}
 
 #arg (1) - install = 0 [default]
 #          upgrade = 1 
