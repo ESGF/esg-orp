@@ -161,15 +161,7 @@ setup_orp() {
         #pull it out of the tar archive we made a few lines up
         cp ${fetch_file}.saved ${fetch_file}
     else
-        #----------------------
-        #edit the property file... #NOTE: I really don't like the global scoping of the admin password... but... hmm...
-        pwd
-        echo -n "Replacing tokens... "
-        eval "perl -p -i -e 's#\\@\\@keystoreFile\\@\\@#${keystore_file}#g' ${fetch_file}"; echo -n "*"
-        eval "perl -p -i -e 's#\\@\\@keystorePassword\\@\\@#${keystore_password:-${security_admin_password}}#g' ${fetch_file}"; echo -n "*"
-        eval "perl -p -i -e 's#\\@\\@keystoreAlias\\@\\@#${keystore_alias}#g' ${fetch_file}"; echo -n "*"
-        echo " [OK]"
-        #----------------------
+        update_credentials $(readlink -f ${fetch_file})
     fi
     chown -R ${tomcat_user} ${openid_relying_party_app_home}
     chgrp -R ${tomcat_group} ${openid_relying_party_app_home}
@@ -195,6 +187,30 @@ write_orp_install_log() {
     write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}"
     write_as_property relyingparty_app_home ${openid_relying_party_app_home}
     return 0
+}
+
+#--------------------------------------
+# Callout function from esg-node
+#--------------------------------------
+#This function is called by esg-node before starting tomcat!
+#This is how we make sure we are always using the proper credentials.
+orp_startup_hook() {
+    #----------------------
+    #edit the property file... #NOTE: I really don't like the global scoping of the admin password... but... hmm...
+    echo -n "ORP Startup Hook: Syncing Credential Tokens... "
+
+    local target_properties_file=${1:?"function esg-orp.orp_startup_hook() requries a target file"}
+
+    [ -e "${target_properties_file}" ] && cp ${target_properties_file} ${target_properties_file}.bak
+
+    local keystore_file=$(sed -n 's#.*keystoreFile="\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "o" || echo -n "x"
+    local keystore_pass=$(sed -n 's#.*keystorePass="\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "o" || echo -n "x"
+
+    sed -i 's#^[ ]*\(keystoreFile=\).*$#\1'${keystore_file}'#'   ${target_properties_file} && echo -n ":" || echo -n "8"
+    sed -i 's#^[ ]*\(keystorePass=\).*$#\1'${keystore_pass}'#'   ${target_properties_file} && echo -n "-" || echo -n "."
+    sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias}'#' ${target_properties_file} && echo -n ")" || echo -n "("
+    echo
+    #----------------------
 }
 
 #--------------------------------------
