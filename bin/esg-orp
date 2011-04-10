@@ -161,7 +161,7 @@ setup_orp() {
         #pull it out of the tar archive we made a few lines up
         cp ${fetch_file}.saved ${fetch_file}
     else
-        update_credentials $(readlink -f ${fetch_file})
+        orp_startup_hook() $(readlink -f ${fetch_file})
     fi
     chown -R ${tomcat_user} ${openid_relying_party_app_home}
     chgrp -R ${tomcat_group} ${openid_relying_party_app_home}
@@ -199,7 +199,7 @@ orp_startup_hook() {
     #edit the property file... #NOTE: I really don't like the global scoping of the admin password... but... hmm...
     echo -n "ORP Startup Hook: Syncing Credential Tokens... "
 
-    local target_properties_file=${1:?"function esg-orp.orp_startup_hook() requries a target file"}
+    local target_properties_file=${1:-"${openid_relying_party_app_home}/WEB-INF/classes/esg-orp.properties"}
 
     [ -e "${target_properties_file}" ] && cp ${target_properties_file} ${target_properties_file}.bak
 
