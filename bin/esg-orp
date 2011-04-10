@@ -161,7 +161,7 @@ setup_orp() {
         #pull it out of the tar archive we made a few lines up
         cp ${fetch_file}.saved ${fetch_file}
     else
-        orp_startup_hook() $(readlink -f ${fetch_file})
+        orp_startup_hook $(readlink -f ${fetch_file})
     fi
     chown -R ${tomcat_user} ${openid_relying_party_app_home}
     chgrp -R ${tomcat_group} ${openid_relying_party_app_home}
@@ -207,7 +207,7 @@ orp_startup_hook() {
     local keystore_pass=$(sed -n 's#.*keystorePass="\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "o" || echo -n "x"
 
     sed -i 's#^[ ]*\(keystoreFile=\).*$#\1'${keystore_file}'#'   ${target_properties_file} && echo -n ":" || echo -n "8"
-    sed -i 's#^[ ]*\(keystorePass=\).*$#\1'${keystore_pass}'#'   ${target_properties_file} && echo -n "-" || echo -n "."
+    sed -i 's#^[ ]*\(keystorePassword=\).*$#\1'${keystore_pass}'#'   ${target_properties_file} && echo -n "-" || echo -n "."
     sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias}'#' ${target_properties_file} && echo -n ")" || echo -n "("
     echo
     #----------------------
