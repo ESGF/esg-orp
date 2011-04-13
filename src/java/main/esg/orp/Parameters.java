@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Earth System Grid Federation
+ * Copyright (c) 2011 Earth System Grid Federation
  * ALL RIGHTS RESERVED. 
  * U.S. Government sponsorship acknowledged.
  * 
