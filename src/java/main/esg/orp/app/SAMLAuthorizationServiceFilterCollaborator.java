@@ -86,7 +86,6 @@ public class SAMLAuthorizationServiceFilterCollaborator implements Authorization
     			
     		} catch(Exception e) {
     			LOG.warn(e.getMessage(), e);
-    			return false;
     		}
 	    }
 		
@@ -136,6 +135,9 @@ public class SAMLAuthorizationServiceFilterCollaborator implements Authorization
 	    // remove white spaces and split at ","
 		endpoints = filterConfig.getInitParameter(Parameters.AUTHORIZATION_SERVICE_URL).replaceAll("\\s+", "").split(",");
 		Assert.isTrue(endpoints.length>0, "Missing Authorization Service URL(s) in filter configuration");
+		for (int i=0; i<endpoints.length; i++) {
+		    log("Authorization Filter configured with service endpoint="+endpoints[i]);
+		}
 
 	}
 	
