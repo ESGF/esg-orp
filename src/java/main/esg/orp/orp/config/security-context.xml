@@ -127,6 +127,10 @@
 			    <value>https://scotty.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
 			    <value>https://bones.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
 			    <value>https://sisko.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
+			    
+			    <!-- NOAA -->
+			    <value>https://hydra.fsl.noaa.gov/esgf-idp/idp/openidServer.htm</value>
+                <value>https://dev-hydra.esrl.svc/esgf-idp/idp/openidServer.htm</value>
 					
 			</list>
 		</property>

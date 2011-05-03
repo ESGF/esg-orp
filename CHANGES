@@ -1,3 +1,7 @@
+1.0.5 
+Modified Authorization Filter to query multiple endpoints, sequentially.
+Added NOAA endpoints to white list.
+
 1.0.4 Added PCMDI and ORNL ESGF nodes endpoints
 
 1.0.3 Improved help text in login page to display redirect URL to user (http://esgf.org/bugzilla/show_bug.cgi?id=38)

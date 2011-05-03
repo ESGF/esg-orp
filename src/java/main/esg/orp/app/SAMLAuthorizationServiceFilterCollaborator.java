@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensaml.saml2.core.DecisionTypeEnumeration;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import esg.orp.Parameters;
 import esg.security.authz.service.api.SAMLAuthorization;
@@ -32,12 +31,17 @@ import esg.security.authz.service.api.SAMLAuthorizations;
 import esg.security.authz.service.impl.SAMLAuthorizationServiceClientSoapImpl;
 import esg.security.common.SOAPServiceClient;
 
+/**
+ * This filter can be configured with a comma-separated list of Authorization Services to query, in sequence.
+ * 
+ * @author Luca Cinquini
+ */
 public class SAMLAuthorizationServiceFilterCollaborator implements AuthorizationServiceFilterCollaborator {
 	
 	/**
-	 * The URL of the remote SAML Authorization Service.
+	 * The URLs of the remote SAML Authorization Services to query.
 	 */
-	private String endpoint;
+	private String[] endpoints;
 	
 	/**
 	 * Client used to encode/decode the authorization request into/from the SAML/SOAP document.
@@ -63,22 +67,31 @@ public class SAMLAuthorizationServiceFilterCollaborator implements Authorization
 	 */
 	public boolean authorize(final String user, final String url, final String operation)  {
 		
-		log("Authorizing user="+user+" url="+url+" operation="+operation);
+	    for (final String endpoint : endpoints) {
+	        
+    		log("Authorizing user="+user+" url="+url+" operation="+operation+" with service="+endpoint);
+    		
+    		try {
+    			
+    			String soapRequest = encoder.buildAuthorizationRequest(user, url, operation);
+    			log(soapRequest);
+    			String soapResponse = transmitter.doSoap(endpoint, soapRequest);
+    			log(soapResponse);
+    			
+    			// parse the authorization statements
+    			if (parseAuthorizationStatement(soapResponse, user, url, operation)) {
+    			    // return first positive authorization statement
+    			    return true;
+    			}
+    			
+    		} catch(Exception e) {
+    			LOG.warn(e.getMessage(), e);
+    			return false;
+    		}
+	    }
 		
-		try {
-			
-			String soapRequest = encoder.buildAuthorizationRequest(user, url, operation);
-			log(soapRequest);
-			String soapResponse = transmitter.doSoap(endpoint, soapRequest);
-			log(soapResponse);
-			
-			// parse the authorization statements
-			return this.parseAuthorizationStatement(soapResponse, user, url, operation);
-			
-		} catch(Exception e) {
-			LOG.warn(e.getMessage(), e);
-			return false;
-		}
+		// return negative authorization by default
+		return false; 
 	
 	}
 	
@@ -120,8 +133,9 @@ public class SAMLAuthorizationServiceFilterCollaborator implements Authorization
 
 	public void init(FilterConfig filterConfig) {
 				
-		endpoint = filterConfig.getInitParameter(Parameters.AUTHORIZATION_SERVICE_URL);
-		Assert.isTrue(StringUtils.hasText(endpoint), "Missing Authorization Service URL in filter configuration");
+	    // remove white spaces and split at ","
+		endpoints = filterConfig.getInitParameter(Parameters.AUTHORIZATION_SERVICE_URL).replaceAll("\\s+", "").split(",");
+		Assert.isTrue(endpoints.length>0, "Missing Authorization Service URL(s) in filter configuration");
 
 	}
 	
