@@ -1,6 +1,8 @@
 1.0.5 
 Modified Authorization Filter to query multiple endpoints, sequentially.
 Added NOAA endpoints to white list.
+Commenting out keystore location properties in esg-orp.properties
+Updating dependency on esgf-security module.
 
 1.0.4 Added PCMDI and ORNL ESGF nodes endpoints
 
