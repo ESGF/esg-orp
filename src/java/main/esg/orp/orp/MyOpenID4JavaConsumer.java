@@ -81,6 +81,7 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 			for (final String url : idpWhiteList) {
 				if (url.equals(_idpUrl)) return idpurl;
 			}
+			LOG.warn("URL: "+_idpUrl+" not found in white list of trusted Identity Providers");
 			throw new OpenIDConsumerException("URL: "+_idpUrl+" not found in white list of trusted Identity Providers");
 			
 		}
