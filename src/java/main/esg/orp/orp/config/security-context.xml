@@ -59,7 +59,7 @@
 	</bean>
 	
 	<!-- Custom implementation of OpenID4JavaConsumer that allows specification of a white list of trusted Identity Providers. -->
-	<bean id="myOpenID4JavaConsumer" class="esg.orp.orp.MyOpenID4JavaConsumer">
+	<bean id="myOpenID4JavaConsumer" class="esg.orp.orp.MyOpenID4JavaConsumer" init-method="init">
 		<!-- list of user attributes to be retrieved as part of the OpenID exchange -->
 	    <constructor-arg index="0">
 	    	<list value-type="org.springframework.security.openid.OpenIDAttribute">
@@ -81,10 +81,11 @@
 	    	</list>
 	    </constructor-arg>
 	    <!-- list of IdPs trusted by the ORP -->
+	    <property name="idpWhiteListFile" value="/esg/config/idpWhiteList.xml" />
+	    <!-- 
 		<property name="idpWhiteList">
 			<list value-type="java.lang.String">
 			
-				<!-- PCMDI -->
 				<value>https://pcmdi3.llnl.gov/esgcet/openid/provider.htm</value>
 				<value>https://esgf-node1.llnl.gov/esgf-idp/idp/openidServer.htm</value>
 				<value>https://esgf-node2.llnl.gov/esgf-idp/idp/openidServer.htm</value>
@@ -92,33 +93,26 @@
 				<value>https://esgf-node4.llnl.gov/esgf-idp/idp/openidServer.htm</value>
 				<value>https://esgf-node5.llnl.gov/esgf-idp/idp/openidServer.htm</value>
 				
-				<!-- BADC -->
 				<value>https://cmip-gw.badc.rl.ac.uk/openid/openidserver</value>
 				<value>https://ndgbeta.badc.rl.ac.uk/openid/openidserver</value>
 				<value>https://ndg3beta.badc.rl.ac.uk/OpenID/Provider/server</value>
 				<value>https://ceda.ac.uk/OpenID/Provider/server</value>
 				
-				<!-- DKRZ -->
 				<value>https://ipcc-ar5.dkrz.de/openid/provider.htm</value>
 				<value>https://albedo2.dkrz.de/esgcet/openid/provider.htm</value>
 				
-				<!-- NASA/JPL -->
 				<value>https://esg-gateway.jpl.nasa.gov/openid/provider.htm</value>
 				<value>https://esg-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
 				<value>https://test-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
 				
-				<!-- NCAR -->
 				<value>https://www.earthsystemgrid.org/openid/provider.htm</value>
 			    <value>https://esg.ucar.edu/openid/provider.htm</value>
 			    <value>https://curator.ucar.edu/openid/provider.htm</value>
 				
-				<!-- NCI -->
 				<value>https://esg.nci.org.au/esgcet/openid/provider.htm</value>
 				
-				<!-- NERSC -->
 				<value>https://esg.nersc.gov/esgcet/openid/provider.htm</value>
 				
-				<!-- ORNL -->
 				<value>https://esg2-gw.ccs.ornl.gov/esgcet/openid/provider.htm</value>
 				<value>https://esg-gw.ornl.teragrid.org/openid/provider.htm</value>	
 			    <value>https://esg-vm-demo01.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
@@ -128,12 +122,12 @@
 			    <value>https://bones.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
 			    <value>https://sisko.ccs.ornl.gov/esgf-idp/idp/openidServer.htm</value>
 			    
-			    <!-- NOAA -->
 			    <value>https://hydra.fsl.noaa.gov/esgf-idp/idp/openidServer.htm</value>
                 <value>https://dev-hydra.esrl.svc/esgf-idp/idp/openidServer.htm</value>
 					
 			</list>
 		</property>
+		-->
 	</bean>
 
 	

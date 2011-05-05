@@ -43,7 +43,6 @@ import org.opensaml.xml.security.x509.BasicX509Credential;
 
 import sun.security.x509.CertificateValidity;
 import sun.security.x509.X509CertInfo;
-
 import esg.security.authn.service.api.SAMLAuthentication;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
 import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;

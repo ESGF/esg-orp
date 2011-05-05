@@ -1,3 +1,8 @@
+1.1.0
+Inserted capability of reading white list of trusted Identity Providers from local file.
+The location of the file is specified in the Spring XML configuration, currently encoded as /esg/config/idpWhiteList.xml.
+Every time the file is updated, the white list will be reloaded the first time it needs to be used.
+
 1.0.5 
 Modified Authorization Filter to query multiple endpoints, sequentially.
 Added NOAA endpoints to white list.

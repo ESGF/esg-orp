@@ -18,16 +18,23 @@
  ******************************************************************************/
 package esg.orp.orp;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
 import org.openid4java.consumer.ConsumerException;
 import org.springframework.security.openid.OpenID4JavaConsumer;
 import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDConsumerException;
+
+import esg.security.utils.xml.Parser;
 
 /**
  * Subclass of {@link OpenID4JavaConsumer} that allows optional white-listing of OpenID providers.
@@ -38,7 +45,18 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 	
-	private List<String> idpWhiteList;
+	/**
+	 * Location on local system of IdP white list file.
+	 * If provided, it populates the list from the file content.
+	 */
+	private File idpWhiteListFile = null;
+	private final static Namespace NS = Namespace.getNamespace("http://www.esgf.org/whitelist");
+	private long idpWhiteListFileLastModTime = 0L; // Unix Epoch
+	
+	/**
+	 * List of trusted IdP providers.
+	 */
+	private List<String> idpWhiteList = new ArrayList<String>();
 
 	public MyOpenID4JavaConsumer() throws ConsumerException {
 		super();
@@ -56,7 +74,8 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 		if (LOG.isDebugEnabled()) LOG.debug("Resolved IdP URL="+idpurl);
 		
 		// optional white-listing
-		if (idpWhiteList!=null) {
+		init(); // check whether white list needs re-initialization
+		if (idpWhiteList!=null && idpWhiteList.size()>0) {
 			
 			final String _idpUrl = idpurl.substring(0,idpurl.indexOf("?"));
 			for (final String url : idpWhiteList) {
@@ -72,11 +91,56 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 
 	/**
 	 * Method to set a list of trusted Identity Providers.
-	 * If not set, all providers will be trusted.
 	 * @param idpWhiteList
 	 */
 	public void setIdpWhiteList(List<String> idpWhiteList) {
 		this.idpWhiteList = idpWhiteList;
 	}
+
+	/** Method to read the list of trusted Identity Providers from a URL
+	 * 
+	 * @param idpWhiteListURL
+	 */
+    public void setIdpWhiteListFile(final File idpWhiteListFile) {
+        this.idpWhiteListFile = idpWhiteListFile;
+    }
+    
+    /**
+     * Method that re-initializes the list of of trusted Identity Providers from the given URL, if it has changed. 
+     * This method obtains a lock on the instance white list object before running.
+     */
+    public void init() {
+        
+        if (idpWhiteListFile!=null && idpWhiteListFile.lastModified()>idpWhiteListFileLastModTime) {
+            
+            // read white list from file
+            if (LOG.isInfoEnabled()) LOG.info("Attempting to read IdP white list from: "+idpWhiteListFile.getAbsolutePath());
+            final List<String> _idpWhiteList = new ArrayList<String>();
+            try {
+                
+                final Document doc = Parser.toJDOM(idpWhiteListFile.getAbsolutePath(), false);
+                final Element root = doc.getRootElement();
+                for (final Object value : root.getChildren("value", NS)) {
+                    final String idp = ((Element)value).getTextNormalize();
+                    if (LOG.isInfoEnabled()) LOG.info("Trusted IdP="+idp);
+                    _idpWhiteList.add(idp);
+               }
+            
+               // replace white list
+               if (_idpWhiteList.size()>0) {
+                   synchronized (idpWhiteList) {
+                       idpWhiteList = _idpWhiteList;
+                       idpWhiteListFileLastModTime = idpWhiteListFile.lastModified();
+                   }
+               }
+               
+            } catch(Exception e) {
+               LOG.warn("Cannot reinitialize white list of trustedt Identity Providers");
+               LOG.warn(e.getMessage());
+            }
+            
+        }
+        
+    }
 	
 }

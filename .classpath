@@ -82,5 +82,6 @@
 	<classpathentry kind="lib" path="lib/fetched/serializer-2.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xalan-2.7.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/esgf-security-1.2.8.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/jdom-1.1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
