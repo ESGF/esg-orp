@@ -75,13 +75,13 @@ install_logfile=${ESG_INSTALL_LOGFILE:-"/etc/esg.install_log"}
 
 date_format=${date_format:-"+%Y_%m_%d_%H%M%S"}
 
-orp_version=${orp_version:-"1.1.0"}
+esg_orp_version=${esg_orp_version:-"1.1.0"}
 
 #arg (1) - install = 0 [default]
 #          upgrade = 1 
 setup_orp() {
-    echo -n "Checking for Openid Relying Party ${orp_version}"
-    check_webapp_version "OpenidRelyingParty" ${orp_version}
+    echo -n "Checking for Openid Relying Party ${esg_orp_version}"
+    check_webapp_version "OpenidRelyingParty" ${esg_orp_version}
     local ret=$?
     ((ret == 0)) && (( ! force_install )) && echo " [OK]" && return 0
 
@@ -179,8 +179,8 @@ setup_orp() {
 }
 
 write_orp_install_log() {
-    local orp_version=$(sed -n '/^Version:[ ]*\(.*\)/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | xargs)
-    echo "$(date ${date_format}) webapp:OpenidRelyingParty=${orp_version} ${openid_relying_party_app_home}" >> ${install_logfile}
+    local esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | xargs)
+    echo "$(date ${date_format}) webapp:OpenidRelyingParty=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_logfile}
     dedup ${install_logfile}
     get_property esgf_https_port
     [ -n "${esgf_https_port}" ] && local port=":${esgf_https_port}"
