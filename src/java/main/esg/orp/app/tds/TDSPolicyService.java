@@ -62,6 +62,10 @@ public class TDSPolicyService implements PolicyServiceFilterCollaborator {
 		boolean isSecure = false;
 		String uri = request.getPathInfo();
         if (uri != null) {
+            
+            // check access control before URI change
+            if (LOG.isDebugEnabled()) LOG.debug("URI=" + uri + " resource control=" + DatasetHandler.findResourceControl(uri) );
+            
             if (pattern != null) {
                 Matcher m = pattern.matcher(uri);
                 if (m.find()) {
@@ -70,11 +74,11 @@ public class TDSPolicyService implements PolicyServiceFilterCollaborator {
                     LOG.debug("Uri changed.");
                 }
             }
+            // check access control after URI change
             final String rc = DatasetHandler.findResourceControl(uri);
-
             if (StringUtils.hasText(rc)) isSecure = true;
-            if (LOG.isDebugEnabled()) LOG.debug("URI=" + uri
-                    + " resource control=" + rc + " is secure=" + isSecure);
+            if (LOG.isDebugEnabled()) LOG.debug("URI=" + uri + " resource control=" + rc + " is secure=" + isSecure);
+            
         }
 
 		return isSecure;
