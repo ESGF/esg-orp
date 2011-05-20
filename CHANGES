@@ -1,3 +1,8 @@
+1.1.2
+Modified TDSPolicyService to allow securing of opendap aggregations. The URI of an aggregation request 
+("/obs4cmip5.NASA-JPL.AQUA.AIRS.mon.hus.1.aggregation.1.dods") is reduced to the dataset id of the THREDDS catalog
+("obs4cmip5.NASA-JPL.AQUA.AIRS.mon.hus.1.aggregation.1") which is correctly restricted by the TDS
+
 1.1.0
 Inserted capability of reading white list of trusted Identity Providers from local file.
 The location of the file is specified in the Spring XML configuration, currently encoded as /esg/config/idpWhiteList.xml.
