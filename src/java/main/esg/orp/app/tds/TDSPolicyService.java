@@ -47,7 +47,7 @@ public class TDSPolicyService implements PolicyServiceFilterCollaborator {
 	    
 	    final String suffix= filterConfig.getInitParameter(PROP_TRIM_REGEX);
         if (suffix != null) {
-            final String regEx = "^(.*\\.nc)(" + suffix.replace(',', '|') + ")$";
+            final String regEx = "^\\/(.*)(" + suffix.replace(',', '|') + ")$";
             if (LOG.isDebugEnabled()) LOG.debug("Setting trim regEx to " + regEx);
             pattern = Pattern.compile(regEx);
         }
