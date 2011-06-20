@@ -81,7 +81,7 @@
 	    	</list>
 	    </constructor-arg>
 	    <!-- list of IdPs trusted by the ORP -->
-	    <property name="idpWhiteListFile" value="/esg/config/idpWhiteList.xml" />
+	    <property name="idpWhiteListFile" value="/esg/config/esgf_idp.xml" />
 	    <!-- 
 		<property name="idpWhiteList">
 			<list value-type="java.lang.String">
