@@ -49,6 +49,7 @@ import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
 import esg.security.common.SAMLInvalidStatementException;
 import esg.security.utils.ssl.EchoSSLServer;
 import esg.security.utils.ssl.TrivialCertGenerator;
+import esg.orp.app.DummyPolicyServiceFilterCollaborator;
 
 public class AuthenticationFilterTest {
     private AuthenticationFilter af;
