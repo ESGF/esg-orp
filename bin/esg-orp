@@ -78,7 +78,7 @@ if $(echo "${esg_dist_url}" | grep "http://198.128.245.140/dist" >& /dev/null); 
 openid_relying_party_dist_url="${esg_dist_url}/esg-orp/esg-orp.war"
 openid_relying_party_property_file_dist_url="${esg_dist_url}/esg-orp/esg-orp.properties"
 openid_relying_party_app_home="${CATALINA_HOME}/webapps/OpenidRelyingParty"
-install_logfile=${ESG_INSTALL_LOGFILE:-"/etc/esg.install_log"}
+install_manifest=${install_manifest:-"${esg_root_dir}/esgf-install-manifest"}
 
 date_format=${date_format:-"+%Y_%m_%d_%H%M%S"}
 
@@ -187,8 +187,8 @@ setup_orp() {
 
 write_orp_install_log() {
     local esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | xargs)
-    echo "$(date ${date_format}) webapp:OpenidRelyingParty=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_logfile}
-    dedup ${install_logfile}
+    echo "$(date ${date_format}) webapp:OpenidRelyingParty=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_manifest}
+    dedup ${install_manifest}
     get_property esgf_https_port
     [ -n "${esgf_https_port}" ] && local port=":${esgf_https_port}"
     write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}"
@@ -235,7 +235,7 @@ clean_orp_webapp_subsystem() {
             if [ -n ${openid_relying_party_app_home} ]; then
                 rm -rf ${openid_relying_party_app_home}
                 [ $? != 0 ] && echo "ERROR: Unable to remove ${openid_relying_party_app_home}" && return 1
-                perl -n -i -e'print unless m!webapp:OpenidRelyingParty!' ${install_logfile}
+                perl -n -i -e'print unless m!webapp:OpenidRelyingParty!' ${install_manifest}
             fi
         fi
     fi 
