@@ -48,6 +48,7 @@ public interface Parameters {
     final static String AUTHENTICATION_REQUEST_ATTRIBUTE = "esg.openid";
     final static String AUTHENTICATION_ONLY_FLAG = "authenticationOnlyFlag";
     final static String AUTHORIZED_IP = "authorizedIp";
+    final static String IP_WHITELIST = "ip_whitelist";
 	
 	// shared parameters
 	final static String OPENID_REDIRECT = "redirect";

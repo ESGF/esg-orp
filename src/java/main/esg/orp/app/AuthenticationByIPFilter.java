@@ -28,8 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 
 import esg.orp.Parameters;
+import esg.security.registry.service.api.RegistryService;
+import esg.security.registry.service.impl.RegistryServiceLocalXmlImpl;
 
 /**
  * Filter that establishes authentication by checking if the request originates from a trusted IP address.
@@ -42,8 +45,8 @@ import esg.orp.Parameters;
 public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 	
 	
-	private PolicyServiceFilterCollaborator policyService;
-	private String authorizedIP;
+	String authorizedIP = null;
+	RegistryService registryService = null;
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 			
@@ -52,24 +55,14 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 	 */
 	public void attemptValidation(final HttpServletRequest req, final HttpServletResponse resp, final FilterChain chain) 
 				throws IOException, ServletException {
-				
-		final String url = this.getUrl(req);
-		
-		// check URL policy
-		if (policyService.isSecure(req)) {
-			
-			if (LOG.isDebugEnabled()) LOG.debug("URL="+url+" is secure");
-			
-			String addr = req.getRemoteAddr();
-			if ( authorizedIP.equals(addr) ) {
-				req.setAttribute(Parameters.AUTHORIZATION_REQUEST_ATTRIBUTE, true);
-			}
-
-		} else {
-			// authorize this request
-			if (LOG.isDebugEnabled()) LOG.debug("URL="+url+" is NOT secure, request is authorized");
-			this.assertIsValid(req);
-		}		
+						
+		// check IP address versus IP white list
+		final String addr = req.getRemoteAddr();
+		if (   (authorizedIP!=null && authorizedIP.equals(addr))
+		    || (registryService!=null && registryService.getLasServers().contains(addr)) ) {
+                if (LOG.isDebugEnabled()) LOG.debug("Remote host IP: "+addr+" found in white list, request is authorized");
+                this.assertIsValid(req);
+		}
 
 	}
 
@@ -77,21 +70,28 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 		
 		super.init(filterConfig);
 		
-		// read trusted IP address from filter configuration
-		this.authorizedIP = this.getMandatoryFilterParameter(Parameters.AUTHORIZED_IP);
+		/**
+		 *  <init-param>
+         *    <param-name>authorizedIp</param-name>
+         *    <param-value>137.78.210.102</param-value>
+         *  </init-param>
+		 */
+		if (StringUtils.hasText(filterConfig.getInitParameter(Parameters.AUTHORIZED_IP))) {	
+		    this.authorizedIP = filterConfig.getInitParameter(Parameters.AUTHORIZED_IP);
+		}
 		
-		
-		// instantiate and initialize PolicyService
-		try {
-			final String policyServiceClass = this.getMandatoryFilterParameter(Parameters.POLICY_SERVICE);
-			this.policyService = (PolicyServiceFilterCollaborator)Class.forName(policyServiceClass).newInstance();
-			this.policyService.init(filterConfig);
-		} catch(ClassNotFoundException e) {
-			throw new ServletException(e.getMessage());
-		} catch(InstantiationException e) {
-			throw new ServletException(e.getMessage());
-		} catch(IllegalAccessException e) {
-			throw new ServletException(e.getMessage());
+	    /**
+         *  <init-param>
+         *    <param-name>ip_whitelist</param-name>
+         *    <param-value>/esg/content/las/conf/server/las_servers.xml</param-value>
+         *  </init-param>
+         */
+		if (StringUtils.hasText(filterConfig.getInitParameter(Parameters.IP_WHITELIST))) {   
+		    try {
+		        registryService = new RegistryServiceLocalXmlImpl(filterConfig.getInitParameter(Parameters.IP_WHITELIST));
+		    } catch(Exception e) {
+		        throw new ServletException(e.getMessage());
+		    }
 		}
 		
 	}
