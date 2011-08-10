@@ -112,12 +112,13 @@ setup_orp() {
 	    return 0
 	fi
 	
-	local dobackup="N"
-	read -p "Do you want to make a back up of the existing distribution?? [y/N] " dobackup
-	if [ "${dobackup}" = "Y" ] || [ "${dobackup}" = "y" ]; then
-	    echo "Creating a backup archive of this web application $openid_relying_party_app_home"
+        local dobackup="Y"
+        read -p "Do you want to make a back up of the existing distribution?? [Y/n] " dobackup
+        [ -z "${dobackup}" ] && dobackup=${default}
+        if [ "${dobackup}" = "Y" ] || [ "${dobackup}" = "y" ]; then
+            echo "Creating a backup archive of this web application $security_app_home"
 	    backup ${openid_relying_party_app_home}
-	fi
+        fi
 
 	echo
     fi
