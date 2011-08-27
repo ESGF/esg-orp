@@ -43,6 +43,7 @@ public interface Parameters {
 	final static String TRUSTORE_FILE = "trustoreFile";
 	final static String TRUSTORE_PASSWORD = "trustorePassword";
 	final static String OPENID_RP_URL = "openidRelyingPartyUrl";
+	final static String REGISTRATION_RELAY_URL = "registrationRelayUrl";
 	final static String AUTHORIZATION_SERVICE_URL = "authorizationServiceUrl";
     final static String AUTHORIZATION_REQUEST_ATTRIBUTE = "eske.model.security.AuthorizationToken"; // legacy value compatible with old TDS filter
     final static String AUTHENTICATION_REQUEST_ATTRIBUTE = "esg.openid";
