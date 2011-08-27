@@ -135,6 +135,8 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 			if (session.getAttribute(Parameters.OPENID_REDIRECT)!=null) {
 				final String redirect = (String)session.getAttribute(Parameters.OPENID_REDIRECT);
 				if (LOG.isDebugEnabled()) LOG.debug("Redirecting to: "+redirect);
+				// remove "redirect" parameter from session
+				session.removeAttribute(Parameters.OPENID_REDIRECT);
 				resp.sendRedirect( redirect );
 			} else {
 				chain.doFilter(request, response);

@@ -45,6 +45,7 @@ public class RegistrationFilter implements Filter {
         if (authzAtt==null || authzAtt.booleanValue()==false) {
             
             if (!response.isCommitted()) {
+                if (LOG.isDebugEnabled()) LOG.debug("Redirecting to: "+registrationRelayUrl);
                 resp.sendRedirect(registrationRelayUrl);
             }
         

@@ -1,3 +1,6 @@
+1.2.0 
+Inserted RegistrationFilter for redirection to registration relay page
+
 1.1.4
 Changed AuthenticationByIPFilter to read a dynamic list of LAS servers IP addresses.
 Upgraded Spring dependency to 3.0.5
