@@ -43,6 +43,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 import esg.orp.Parameters;
+import esg.orp.Utils;
 import esg.security.authn.service.api.SAMLAuthentication;
 import esg.security.authn.service.api.SAMLAuthenticationStatementFacade;
 import esg.security.authn.service.impl.SAMLAuthenticationStatementFacadeImpl;
@@ -78,7 +79,7 @@ public class AuthenticationFilter extends AccessControlFilterTemplate {
 	public void attemptValidation(final HttpServletRequest req, final HttpServletResponse resp, final FilterChain chain) 
 				throws IOException, ServletException {
 				
-		final String url = this.getUrl(req);
+		final String url = Utils.getFullRequestUrl(req);
 		
 		// check URL policy
 		if (policyService.isSecure(req)) {

@@ -1,6 +1,7 @@
 package esg.orp.app;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,11 +18,15 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import esg.orp.Parameters;
+import esg.orp.Utils;
 
 /**
  * Filter that redirects the request to a registration relay page,
  * if the request has not been already authorized by the upstream filter chain.
- * This filter must come LAST in the access control filter chain.
+ * This filter must come LAST in the access control filter chain
+ * because it redirects the browser to another web application.
+ * 
+ * Requires the mandatory filter configuration parameter "registrationRelayUrl".
  * 
  * @author Luca Cinquini
  *
@@ -45,8 +50,10 @@ public class RegistrationFilter implements Filter {
         if (authzAtt==null || authzAtt.booleanValue()==false) {
             
             if (!response.isCommitted()) {
-                if (LOG.isDebugEnabled()) LOG.debug("Redirecting to: "+registrationRelayUrl);
-                resp.sendRedirect(registrationRelayUrl);
+                String url = Utils.transformUrl( Utils.getFullRequestUrl(req) );
+                final String redirectUrl = registrationRelayUrl+ "?"+Parameters.RESOURCE+"="+URLEncoder.encode(url,"UTF-8"); 
+                if (LOG.isDebugEnabled()) LOG.debug("Redirecting to: "+redirectUrl);
+                resp.sendRedirect(redirectUrl);
             }
         
         // request authorized > keep processing

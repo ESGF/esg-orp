@@ -36,6 +36,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import esg.orp.Parameters;
+import esg.orp.Utils;
 
 /**
  * Abstract template for access control filters deployed in front of a restricted web application.
@@ -55,7 +56,7 @@ public abstract class AccessControlFilterTemplate implements Filter {
 		final HttpServletResponse resp = (HttpServletResponse)response;
 		final HttpSession session = req.getSession();
 		final Boolean authzAtt = (Boolean)request.getAttribute(Parameters.AUTHORIZATION_REQUEST_ATTRIBUTE);
-		if (LOG.isDebugEnabled()) LOG.debug("Establishing access control for URL="+this.getUrl(req)+" session id="+session.getId()+" current authorization attribute="+authzAtt);
+		if (LOG.isDebugEnabled()) LOG.debug("Establishing access control for URL="+Utils.getFullRequestUrl(req)+" session id="+session.getId()+" current authorization attribute="+authzAtt);
 
 		// proceed only if not authorized already by upstream filters
 		if (authzAtt==null || authzAtt.booleanValue()==false) {
@@ -101,13 +102,5 @@ public abstract class AccessControlFilterTemplate implements Filter {
 		return value;
 	}
 	
-	/**
-	 * Utility method to compose the full HTTP request URL.
-	 * @param req
-	 * @return
-	 */
-	protected String getUrl(final HttpServletRequest req) {
-		return req.getRequestURL().toString() + (StringUtils.hasText(req.getQueryString()) ? "?"+req.getQueryString() : "");
-	}
 
 }

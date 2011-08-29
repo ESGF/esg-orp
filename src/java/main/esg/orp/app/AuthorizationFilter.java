@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opensaml.saml2.core.Action;
 
 import esg.orp.Parameters;
+import esg.orp.Utils;
 
 /**
  * Filter used to authorize an already authenticated user to access a given resource (for the given operation).
@@ -55,7 +56,7 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 		if (openid!=null) {
 			
 			if (LOG.isDebugEnabled()) LOG.debug("Found authentication attribute, openid="+openid);				
-			final String url = transform(this.getUrl(req));
+			final String url = Utils.transformUrl(Utils.getFullRequestUrl(req));
 			
 			final boolean authorized = authorizationService.authorize(openid, url, Action.READ_ACTION);
 			if (LOG.isDebugEnabled()) LOG.debug("Openid="+openid+" url="+url+" operation="+Action.READ_ACTION+" authorization result="+authorized);					
@@ -66,17 +67,6 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 			
 	}
 
-	private String transform(String url) {
-        int c = url.indexOf('?');
-        if (c > -1) {
-            url = url.substring(0, c);
-        }
-        
-        // temporary work around to enable authorization on opendap URLs
-        url = url.replace("dodsC", "fileServer").replace(".ascii", "").replace(".dods", "");
-        
-        return url;
-    }
 
     public void init(FilterConfig filterConfig) throws ServletException { 
 		

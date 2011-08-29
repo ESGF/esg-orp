@@ -158,6 +158,6 @@
 		<property name="keystoreAlias" value="${keystoreAlias}"/>
 	</bean>
 	
-	
+	<bean id="registrationRelayController" class="esg.orp.orp.RegistrationRelayController" />
 
 </beans>
