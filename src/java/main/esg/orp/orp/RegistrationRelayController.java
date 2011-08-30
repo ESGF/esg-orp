@@ -44,7 +44,7 @@ public class RegistrationRelayController {
         if (LOG.isDebugEnabled()) LOG.debug("Requested resource="+resource);
         final String action = "Read";
         // FIXME ?
-        final String url = "https://"+request.getServerName()+":8443/esgf-security/secure/policyService.htm"
+        final String url = "https://"+request.getServerName()+":"+request.getServerPort()+"/esgf-security/secure/policyService.htm"
         //final String url = "http://"+request.getServerName()+":8080/esgf-security/policyService.htm"
                          + "?resource="+resource
                          + "&action="+action;
