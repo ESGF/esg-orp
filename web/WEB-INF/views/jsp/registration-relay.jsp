@@ -164,7 +164,9 @@
 		<tiles:putAttribute type="string" name="pageTitle" value="Registration Relay Page" />
 		<authz:authentication property="principal" var="principal"/>
 				
-		The URL you are trying to access: <b><c:out value="${param['resource']}"/></b> is restricted.
+		The URL you are trying to access:
+		<br/><b><c:out value="${param['resource']}"/></b> 
+		<br/>is restricted.
 		<p/>
 		To obtain access to these data, please register with one of the following groups:
 		<p/>
@@ -205,7 +207,7 @@
 		</div>
 		
 		&nbsp;<p/>
-		Your openid: <b><c:out value="${principal}"/></b>
+		Your openid: <b><c:out value="${principal.username}"/></b>
 		<p/>
 		Thank you for your interest in accessing these data.
 		
