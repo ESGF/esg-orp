@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<license>
+	<title>CMIP5 data Terms of Use for Research Purposes Only</title>
+	<body>
+
+		These data are for use in research projects only.
+		A 'research project' is any project carried out by
+		an individual or organized by a university,
+		a scientific institute, or similar organization
+		(private or public) for non-commercial research
+		purposes only. Results based on these data must be
+		submitted for publication in the open literature
+		without any delay linked to commercial objectives.
+
+		In first making reference to the data obtained
+		from the CMIP3 archive, please include the phrase
+		"the World Climate Research Program's (WCRP's)
+		Coupled Model Intercomparison Project phase 3
+		(CMIP3) multi-model dataset".
+		Subsequent references within the same publication
+		might refer to the data with terms such as
+		"CMIP3 data", "the CMIP3 multi-model dataset",
+		"the CMIP3 archive", or the "CMIP3 dataset".
+
+		Whenever you publish research based on model
+		output from the CMIP3 database, you should
+		include the following acknowledgement:
+
+		"We acknowledge the modeling groups for making
+		their model output available for analysis,
+		the Program for Climate Model Diagnosis and
+		Intercomparison (PCMDI) for collecting and
+		archiving this data, and the WCRP's Working Group
+		on Coupled Modelling (WGCM) for organizing the
+		model data analysis activity. The WCRP CMIP3
+		multi-model dataset is supported by the Office
+		of Science, U.S. Department of Energy."
+
+		[Note that the acronyms, WCRP and CMIP3, should
+		have already appeared in the main text of your
+		article, where they were presumably defined.]
+
+	</body>
+</license>
