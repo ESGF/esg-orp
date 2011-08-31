@@ -188,7 +188,7 @@
 									<form method="post" action="${url}" id="form_${count}">
 										<input type="hidden" name="group" value="${entry.key.type}"/>
 										<input type="hidden" name="role" value="${entry.key.value}"/>
-										<input type="hidden" name="user" value="${principal}"/>
+										<input type="hidden" name="user" value="${principal.username}"/>
 										<input type="button" value="Register" id="button_${count}" />
 									</form>
 								</td>
