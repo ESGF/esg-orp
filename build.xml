@@ -701,6 +701,7 @@ Builds the project via ant (obviously).
 	    <mkdir dir="${basedir}/WebContent" />
 	    <mkdir dir="${basedir}/WebContent/WEB-INF" />
 		<mkdir dir="${basedir}/WebContent/themes" />
+		<mkdir dir="${basedir}/WebContent/images" />
 	  	<property name="web_deploy_dir" value="${basedir}/WebContent/WEB-INF"/>
 
 		<!-- web configuration files -->
@@ -718,6 +719,9 @@ Builds the project via ant (obviously).
 		<!-- images and css -->
 	    <copy todir="${basedir}/WebContent/themes">
 	      <fileset dir="${web_dir}/themes" />
+	    </copy>
+	    <copy todir="${basedir}/WebContent/images">
+	      <fileset dir="${web_dir}/images" />
 	    </copy>
 		
 		<!-- web lib -->

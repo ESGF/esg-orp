@@ -12,6 +12,7 @@
 
 <tiles:insertDefinition name="center-layout">
 
+
 	<tiles:putAttribute type="string" name="title" value="OpenID Login Page" />
 	
 	<!-- automatic redirect if "openid" parameter is detected -->

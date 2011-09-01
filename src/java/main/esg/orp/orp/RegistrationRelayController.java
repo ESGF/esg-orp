@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -48,7 +50,7 @@ public class RegistrationRelayController {
     private final static String REGISTRATION_RESPONSE_URI = "/registration-response.htm";
     
     /**
-     * GET method invokes the remote PolicyService, parses the XML response, and displays the group selection form.
+     * The GET method invokes the remote PolicyService, parses the XML response, and displays the group selection form.
      * 
      * @param resource : the URL of the resource to be accessed
      * @return
@@ -88,7 +90,8 @@ public class RegistrationRelayController {
     }
     
     /**
-     * POST method invokes the remote registration service, parses the XML response, and redirects to the view.
+     * The POST method invokes the remote registration service, parses the XML response, and redirects to the view.
+     * This method can only be invoked if the user is authenticated.
      * 
      * @param request
      * @param response
@@ -101,16 +104,26 @@ public class RegistrationRelayController {
         
         // retrieve POST request parameters
         final String user = request.getParameter(Parameters.HTTP_PARAMETER_USER);
+        if (!StringUtils.hasText(user)) 
+            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_USER);
         final String group = request.getParameter(Parameters.HTTP_PARAMETER_GROUP);
+        if (!StringUtils.hasText(group)) 
+            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_GROUP);
         final String role = request.getParameter(Parameters.HTTP_PARAMETER_ROLE);
+        if (!StringUtils.hasText(role)) 
+            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_ROLE);
         final String url = request.getParameter(Parameters.HTTP_PARAMETER_URL);
+        if (!StringUtils.hasText(url)) 
+            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_URL);
         final String resource = request.getParameter(Parameters.HTTP_PARAMETER_RESOURCE);
+        if (!StringUtils.hasText(resource)) 
+            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_RESOURCE);
         
-        // compare user to authentication information
+        // compare HTTP parameter to user authentication information
         final SecurityContext secCtx = SecurityContextHolder.getContext();
         final Authentication auth = secCtx.getAuthentication();
         if (LOG.isDebugEnabled()) LOG.debug("Security context authentication="+auth);
-        if (auth==null) throw new ServletException("User not authenticated");
+        if (auth==null || auth instanceof AnonymousAuthenticationToken) throw new ServletException("User not authenticated");
         if (!user.equals(auth.getName())) 
             throw new ServletException("Identity mismatch: post parameter="+user+" authentication identity="+auth.getName());
        

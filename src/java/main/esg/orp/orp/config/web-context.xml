@@ -36,6 +36,13 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
+	<!-- Message resources -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>messages</value>
+		</property>
+	</bean>
+	
 	<!-- Tiles Configurer -->
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="useMutableTilesContainer" value="true" />

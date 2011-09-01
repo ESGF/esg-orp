@@ -144,6 +144,7 @@
 			// retrieve access group
 			var group = formObj.group.value;
 			
+			// FIXME
 			if (group=='CMIP5 Research') {								
 				// retrieve specified license
 				showLicense("licenses/ipccResearchLicense.xml");
