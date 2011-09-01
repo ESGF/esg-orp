@@ -1,6 +1,7 @@
 package esg.orp.orp;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ import esg.security.registration.web.RegistrationResponseUtils;
  * @author Luca Cinquini
  */
 @Controller
-@RequestMapping("/registration-relay.htm") 
+@RequestMapping("/registration-request.htm") 
 public class RegistrationRelayController {
     
     private final Log LOG = LogFactory.getLog(this.getClass());
@@ -42,6 +43,9 @@ public class RegistrationRelayController {
     private final static String POLICY_ATTRIBUTES_KEY = "policyAttributes";
     private final static String POLICY_SERVICE_URI = "/esgf-security/secure/policyService.htm";
     private final static String ACTION = "Read";
+    
+    private final static String REGISTRATION_REQUEST_VIEW = "registration-request";
+    private final static String REGISTRATION_RESPONSE_URI = "/registration-response.htm";
     
     /**
      * GET method invokes the remote PolicyService, parses the XML response, and displays the group selection form.
@@ -79,7 +83,7 @@ public class RegistrationRelayController {
             throw new ServletException(e.getMessage());
         }
         
-        return "registration-relay";
+        return REGISTRATION_REQUEST_VIEW;
                 
     }
     
@@ -125,9 +129,14 @@ public class RegistrationRelayController {
             // deserialize XML
             final String result = RegistrationResponseUtils.deserialize(xmlResponse);
             
-            // FIXME
-            response.setContentType("text/xml");
-            response.getWriter().write( xmlResponse );
+            // GET-POST-REDIRECT
+            final String redirect = REGISTRATION_RESPONSE_URI 
+                                  + "?" + Parameters.HTTP_PARAMETER_GROUP + "=" + URLEncoder.encode(group,"UTF-8")
+                                  + "&" + Parameters.HTTP_PARAMETER_RESULT + "=" + URLEncoder.encode(result,"UTF-8")
+                                  + "&" + Parameters.HTTP_PARAMETER_RESOURCE + "=" + URLEncoder.encode(resource,"UTF-8");
+            if (LOG.isInfoEnabled()) LOG.info("Redirecting to URL:"+redirect);
+            
+            response.sendRedirect(redirect);
             
             
         } catch(Exception e) {

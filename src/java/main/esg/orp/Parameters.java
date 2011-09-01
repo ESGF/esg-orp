@@ -67,6 +67,7 @@ public interface Parameters {
     public final static String HTTP_PARAMETER_USER = "user";
     public final static String HTTP_PARAMETER_URL = "url";
     public final static String HTTP_PARAMETER_RESOURCE = "resource";
+    public final static String HTTP_PARAMETER_RESULT = "result";
 	
 	// test file
 	final static String TEST_FILE = "esg-saml-test-file.xml";

@@ -2,7 +2,7 @@
 
 <tiles:insertDefinition name="center-layout">
 
-	<tiles:putAttribute type="string" name="title" value="Registration Relay Page" />
+	<tiles:putAttribute type="string" name="title" value="Registration Request Page" />
 	
 	<tiles:putAttribute name="script">	
 		<style>
@@ -161,7 +161,7 @@
 		
 	<tiles:putAttribute name="body">
 		
-		<tiles:putAttribute type="string" name="pageTitle" value="Registration Relay Page" />
+		<tiles:putAttribute type="string" name="pageTitle" value="Registration Request Page" />
 		<authz:authentication property="principal" var="principal"/>
 				
 		The URL you are trying to access:
