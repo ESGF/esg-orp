@@ -130,7 +130,7 @@ public class RegistrationRelayController {
             final String result = RegistrationResponseUtils.deserialize(xmlResponse);
             
             // GET-POST-REDIRECT
-            final String redirect = REGISTRATION_RESPONSE_URI 
+            final String redirect = request.getContextPath() + REGISTRATION_RESPONSE_URI
                                   + "?" + Parameters.HTTP_PARAMETER_GROUP + "=" + URLEncoder.encode(group,"UTF-8")
                                   + "&" + Parameters.HTTP_PARAMETER_RESULT + "=" + URLEncoder.encode(result,"UTF-8")
                                   + "&" + Parameters.HTTP_PARAMETER_RESOURCE + "=" + URLEncoder.encode(resource,"UTF-8");
