@@ -32,7 +32,11 @@
 				
 				// set title and body of license dialog
 				licenseDialog.setHeader(response.results[0].title);
-			    licenseDialog.setBody(response.results[0].body);
+				body = response.results[0].body;
+				// replace double new lines charecter in text with HTML break
+				body = body.replace(/(\n\n)/gm,"<p>&nbsp;</p>");
+				body = "<div style='text-align:left'>" + body + "</div>";
+			    licenseDialog.setBody(body);
 				
 				// show license dialog
 				licenseDialog.show();
@@ -67,7 +71,7 @@
 		function initLicenseDialog() {
 		
 			licenseDialog = new YAHOO.widget.SimpleDialog("dlg", { 
-			    width: "60em", 
+			    width: "60em",
 			    effect:{ effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.25 }, 
 			    fixedcenter: true,
 			    modal: true,
