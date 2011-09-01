@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import esg.orp.Parameters;
 import esg.orp.utils.HttpUtils;
-import esg.security.authn.service.api.SAMLAuthentication;
 import esg.security.common.SAMLParameters;
 import esg.security.policy.service.api.PolicyAttribute;
 import esg.security.policy.web.PolicySerializer;
@@ -100,12 +102,13 @@ public class RegistrationRelayController {
         final String url = request.getParameter(Parameters.HTTP_PARAMETER_URL);
         final String resource = request.getParameter(Parameters.HTTP_PARAMETER_RESOURCE);
         
-        // compare user to session authentication
-        final SAMLAuthentication authentication = (SAMLAuthentication)request.getSession(true).getAttribute(Parameters.SESSION_AUTH);
-        if (authentication==null) throw new ServletException("User not authenticated");
-        if (!user.equals(authentication.getIdentity())) {
-            throw new ServletException("Identity mismatch: post parameter="+user+" session identity="+authentication.getIdentity());
-        }
+        // compare user to authentication information
+        final SecurityContext secCtx = SecurityContextHolder.getContext();
+        final Authentication auth = secCtx.getAuthentication();
+        if (LOG.isDebugEnabled()) LOG.debug("Security context authentication="+auth);
+        if (auth==null) throw new ServletException("User not authenticated");
+        if (!user.equals(auth.getName())) 
+            throw new ServletException("Identity mismatch: post parameter="+user+" authentication identity="+auth.getName());
        
         try {
         
