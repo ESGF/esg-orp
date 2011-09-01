@@ -123,7 +123,9 @@
 				</c:if>
 				
 				<c:if test="${sessionScope['redirect']!=null}">
-					<p/>&nbsp;<p/>The following URL requires authentication: <c:out value="${sessionScope['redirect']}"/><p/>&nbsp;<p/>
+					<p/>&nbsp;<p/>The following URL requires authentication: 
+					<br/><b><c:out value="${sessionScope['redirect']}"/></b>
+					<p/>&nbsp;<p/>
 				</c:if>
 			
 				<!-- user is NOT authenticated -->
@@ -156,7 +158,10 @@
 				</form>		
 				
 				<c:if test="${sessionScope['redirect']!=null}">
-					<p/>&nbsp;<p/>After logging in, you will be redirected to: <c:out value="${sessionScope['redirect']}"/><p/>&nbsp;<p/>
+					<p/>&nbsp;<p/>After logging in, you will be redirected to: 
+					<br/>
+					<b><c:out value="${sessionScope['redirect']}"/></b>
+					<p/>&nbsp;<p/>
 				</c:if>
 					
 											
