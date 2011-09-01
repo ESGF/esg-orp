@@ -56,10 +56,17 @@ public interface Parameters {
 	final static String OPENID_IDENTITY = "openid";
 	final static String OPENID_SAML_COOKIE = "esg.openid.saml.cookie";
 	final static String SESSION_AUTH = "authentication";
-	final static String RESOURCE = "resource";
 	
 	// new cookies
 	final static String ORP_SESSION_ID_COOKIE = "esg.session.cookie";
+	
+	// HTTP request parameters
+    public final static String HTTP_PARAMETER_XML = "xml";
+    public final static String HTTP_PARAMETER_GROUP = "group";
+    public final static String HTTP_PARAMETER_ROLE = "role";
+    public final static String HTTP_PARAMETER_USER = "user";
+    public final static String HTTP_PARAMETER_URL = "url";
+    public final static String HTTP_PARAMETER_RESOURCE = "resource";
 	
 	// test file
 	final static String TEST_FILE = "esg-saml-test-file.xml";

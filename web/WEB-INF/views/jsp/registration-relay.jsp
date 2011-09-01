@@ -185,10 +185,12 @@
 									Group: <b><c:out value="${entry.key.type}"/></b>
 								</td>
 								<td>
-									<form method="post" action="${url}" id="form_${count}">
+									<form method="post" id="form_${count}">
 										<input type="hidden" name="group" value="${entry.key.type}"/>
 										<input type="hidden" name="role" value="${entry.key.value}"/>
 										<input type="hidden" name="user" value="${principal.username}"/>
+										<input type="hidden" name="url" value="${url}"/>
+										<input type="hidden" name="resource" value="${resource}"/>
 										<input type="button" value="Register" id="button_${count}" />
 									</form>
 								</td>
