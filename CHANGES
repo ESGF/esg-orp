@@ -1,4 +1,8 @@
+1.2.1
+Changed application style to same look and feel as ESGF Identity provider.
+
 1.2.0 
+Inserted support for group registration workflow
 Inserted RegistrationFilter for redirection to registration relay page
 
 1.1.4

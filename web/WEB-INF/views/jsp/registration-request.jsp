@@ -4,11 +4,7 @@
 
 	<tiles:putAttribute type="string" name="title" value="Registration Request Page" />
 	
-	<tiles:putAttribute name="script">	
-		<style>
-			.yui-fixed-panel#registration-panel { width: 50em; text-align: left; margin:0 auto; align: center; }
-			.yui-fixed-panel#registration-panel td { padding: 0.3em; }
-		</style>		
+	<tiles:putAttribute name="script">		
 		
 		<script type="text/javascript">
 		
@@ -167,51 +163,53 @@
 	<tiles:putAttribute name="body">
 		
 		<tiles:putAttribute type="string" name="pageTitle" value="Registration Request Page" />
+		<h1>Group Registration Request</h1>
 		<authz:authentication property="principal" var="principal"/>
 				
+		<p>&nbsp;</p>
 		The URL you are trying to access:
 		<br/><b><c:out value="${param['resource']}"/></b> 
-		<br/>is restricted.
-		<p/>
-		To obtain access to these data, please register with one of the following groups:
-		<p/>
-		&nbsp;
-		<div class="yui-fixed-panel" id="registration-panel">
-			<div class="hd">Group Registration Application</div>
-			<div class="bd">
-				<table border="0" align="center" cellpadding="4" cellspacing="="4"">
-		
-					<c:set var="count" value="0"/>
-					<c:forEach var="entry" items="${policyAttributes}">
-						<c:forEach var="url" items="${entry.value}">
-							<c:set var="count" value="${count+1}"/>
-							<tr>
-								<td>
-									Group: <b><c:out value="${entry.key.type}"/></b>
-								</td>
-								<td>
-									<form method="post" id="form_${count}">
-										<input type="hidden" name="group" value="${entry.key.type}"/>
-										<input type="hidden" name="role" value="${entry.key.value}"/>
-										<input type="hidden" name="user" value="${principal.username}"/>
-										<input type="hidden" name="url" value="${url}"/>
-										<input type="hidden" name="resource" value="${resource}"/>
-										<input type="button" value="Register" id="button_${count}" />
-									</form>
-								</td>
-							</tr>
-							<!-- initialize YUI buttons -->
-							<script type="text/javascript">
-								var button_<c:out value="${count}"/> = new YAHOO.widget.Button("button_${count}");
-								YAHOO.util.Event.addListener("button_${count}", "click", register, YAHOO.util.Dom.get("form_${count}") );
-							</script>
-						</c:forEach>
-					</c:forEach>
+		<br/>is restricted. To obtain access to these data, please register with one of the following groups:
+		<p>&nbsp;</p>
 		
 		
-				</table>
-			</div>
-		</div>
+		<table align="center">
+			<tr>
+				<td>
+					<div class="panel">
+						<table border="0" align="center" cellpadding="4" cellspacing="="4"">
+							<caption>Status: not registered</caption>
+							<c:set var="count" value="0"/>
+							<c:forEach var="entry" items="${policyAttributes}">
+								<c:forEach var="url" items="${entry.value}">
+									<c:set var="count" value="${count+1}"/>
+									<tr>
+										<td>
+											Group: <b><c:out value="${entry.key.type}"/></b>
+										</td>
+										<td>
+											<form method="post" id="form_${count}">
+												<input type="hidden" name="group" value="${entry.key.type}"/>
+												<input type="hidden" name="role" value="${entry.key.value}"/>
+												<input type="hidden" name="user" value="${principal.username}"/>
+												<input type="hidden" name="url" value="${url}"/>
+												<input type="hidden" name="resource" value="${resource}"/>
+												<input type="button" value="Register" id="button_${count}" />
+											</form>
+										</td>
+									</tr>
+									<!-- initialize YUI buttons -->
+									<script type="text/javascript">
+										var button_<c:out value="${count}"/> = new YAHOO.widget.Button("button_${count}");
+										YAHOO.util.Event.addListener("button_${count}", "click", register, YAHOO.util.Dom.get("form_${count}") );
+									</script>
+								</c:forEach>
+							</c:forEach>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
 		
 		&nbsp;<p/>
 		Your openid: <b><c:out value="${principal.username}"/></b>

@@ -26,88 +26,48 @@
 				window.location= "${myurl}";
 			</script>		
 		</c:if>
-	
-		<script type="text/javascript">
-			function init() {
-
-				var openidButton = new YAHOO.widget.Button("openid-button");
-				var cookieButton = new YAHOO.widget.Button("cookie-button");
-			}
-			YAHOO.util.Event.onDOMReady(init);
-		</script>
-		<style>
-			.yui-fixed-panel#openid-panel { width: 50em; text-align: left; margin:0 auto; align: center; background-color: #FFFFFF; }
-			.yui-fixed-panel#openid-panel .bd  { background-color: #FFFFFF; }
-			.yui-fixed-panel#openid-panel td { padding: 0.3em; }			
-			.yui-fixed-panel#cookie-panel { width: 50em; text-align: left; margin:0 auto; align: center; }
-			.yui-fixed-panel#cookie-panel td { padding: 0.3em; }
-		</style>
 		
 	</tiles:putAttribute>
 
 	<!-- body -->
 	<tiles:putAttribute name="body">
 		
-		<tiles:putAttribute type="string" name="pageTitle" value="Data Access Login" />
-		<div style="height: 50px;">&nbsp;</div>
-			
+		<h1>Data Access Login</h1>
+					
 		<c:choose>
 		
 			<c:when test="${principal != null}">
 			
-				<!-- user is authenticated -->
-				<div align="center">
-					<p/>
-					<b>User is logged in</b><br/>OpenID: <c:out value="${principal.username}"/>
-					<p/>&nbsp;
-				</div>
-			
-				<c:choose>
-				
-					<c:when test="${cookie[saml_cookie] != null}">
-						
-						<!-- authentication cookie detected -->
-						<c:set value="${cookie[saml_cookie]}" var="mycookie"/>
-						<div class="yui-fixed-panel" id="cookie-panel">
-						    <div class="hd">Authentication Cookie</div>
-							<div class="bd">
-								<table border="0" align="center" cellpadding="4" cellspacing="="4"">
-								    <tr>
-									  <td align="right"><b>Name :</b></td>
-									  <td align="left"><c:out value="${mycookie.name}"/></td>
-									</tr>
+				<!-- User is authenticated -->
+				<table align="center">
+					<tr>
+						<td align="center">
+							<div class="panel">
+								
+								<table>
+									<caption>Status: logged-in</caption>
 									<tr>
-									  <td align="right"><b>Domain :</b></td>
-									  <td align="left"><c:out value="${mycookie.domain}"/></td>
+										<td>
+											<img src='<c:url value="/themes/openid.png"/>' width="80" hspace="10px"/>
+										</td>
+										<td>
+											<form name="logoutForm" action='<c:url value="/j_spring_security_logout"/>' >					
+												<table border="0" cellpadding="10px" cellspacing="10px" align="center">
+													<tr>
+														<td align="center">Thank you, you are now logged in.</td>
+													</tr>
+													<tr>
+														<td align="center">Your Openid:&nbsp;<b><c:out value="${principal.username}"/></b></td>
+													</tr>
+												</table>
+											</form>
+										</td>
 									</tr>
-									<tr>
-									  <td align="right"><b>Path :</b></td>
-									  <td align="left"><c:out value="${mycookie.path}"/></td>
-									</tr>
-									<tr>
-									  <td align="right"><b>Secure :</b></td>
-									  <td align="left"><c:out value="${mycookie.secure}"/></td>
-									</tr>
-									<tr>
-									  <td align="right"><b>Value :</b></td>
-									  <td align="left">
-									  	<c:out value="${fn:substring(mycookie.value,0,50)}"/>...
-									  </td>
-									</tr>
-									
 								</table>
 							</div>
-						</div>
-				
-					</c:when>
-					<c:otherwise>
-					
-						<!-- authentication cookie not detected, resubmit to send cookie to server -->
-						<a href="<c:url value='' />" id="cookie-button">Show Cookie</a>
-					
-					</c:otherwise>
-				
-				</c:choose>
+						</td>
+					</tr>
+				</table>
 
 			</c:when>
 			
@@ -116,45 +76,57 @@
 				<c:set value="${cookie[identity_cookie]}" var="openidCookie"/>
 				
 				<c:if test="${param['failed'] == 'true'}">
-					<div class="error">Login Failed</div>
 					<p>&nbsp;</p>
-					<p class="error">ERROR: <c:out value="${sessionScope[last_exception_key].message}"/>
-					<p>&nbsp;</p>
+					<div class="errorbox">
+						<p>&nbsp;</p>
+						<b>Login Failed</b>						
+						<p class="error">ERROR: <c:out value="${sessionScope[last_exception_key].message}"/>
+						<p>&nbsp;</p>
+					</div>
 				</c:if>
 				
 				<c:if test="${sessionScope['redirect']!=null}">
 					<p/>&nbsp;<p/>The following URL requires authentication: 
 					<br/><b><c:out value="${sessionScope['redirect']}"/></b>
-					<p/>&nbsp;<p/>
 				</c:if>
 			
+				<p>&nbsp;</p>Please enter your OpenID and you will be redirected to the login page at that site
+				
 				<!-- user is NOT authenticated -->
+				<p/>&nbsp;<p/>
 				<form method="post" action="<c:url value='${target_url}'/>">
-					<div class="yui-fixed-panel" id="openid-panel">
-					    <div class="hd">OpenID Login</div>
-						<div class="bd">
-							<table border="0" align="center">
-							    <tr>
-								  <td align="center" colspan="4">
-								  	Please enter your OpenID and you will be redirected to the login page at that site: 
-								  </td>
-								</tr>
-								<tr>
-									<td align="right" valign="middle"><img src='<c:url value="/themes/openid_small.gif"/>'/></td>
-									<td align="right" class="required">OpenID</td>
-									<td align="left">
-										<input type="text" name="openid_identifier" size="60" value="${openidCookie.value}"/>
-									</td>
-									<td><input type="submit" value="GO" id="openid-button"/></td>
-								</tr>
-								<tr>
-									<td align="center" colspan="4">
-										<input type="checkbox" name="rememberOpenid" checked="checked" /> <span class="highlight">Remember my OpenID</span> on this computer
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
+					<table align="center">
+						<tr>
+							<td>
+								<div class="panel">
+									<table border="0" align="center">
+										<caption>Status: not logged-in</caption>
+										<tr>
+											<td align="right" valign="middle">
+												<img src='<c:url value="/themes/openid.png"/>' width="80" />
+											</td>
+											<td>
+												<table>
+													<tr>
+														<td align="right" class="required">OpenID</td>
+														<td align="left">
+															<input type="text" name="openid_identifier" size="60" value="${openidCookie.value}"/>
+														</td>
+														<td><input type="submit" value="GO" /></td>													
+													</tr>
+													<tr>
+														<td align="center" colspan="4">
+															<input type="checkbox" name="rememberOpenid" checked="checked" /> <span class="highlight">Remember my OpenID</span> on this computer
+														</td>
+													</tr>													
+												</table>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
 				</form>		
 				
 				<c:if test="${sessionScope['redirect']!=null}">

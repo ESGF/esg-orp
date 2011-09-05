@@ -21,32 +21,14 @@
 	
 	<body class="yui-skin-sam">
 	
-		<!-- common header
-		<p><tiles:insertAttribute name="header" /></p> -->
+		<table align="center" width="900px">
 		
-		<!-- page title -->
-		<div style="padding: 1em; text-align: center; margin:0 auto; align: center;">
-		 	
-		 	<table align="center" width="974px" >
-		 		<tr>
-		 			<td>
-		 				<tiles:insertAttribute name="header" />
-		 			</td>
-		 		</tr>
-		 		<tr>
-		 			<td nowrap="nowrap" class="page-title"><tiles:getAsString name="pageTitle" /></td>
-				</tr>
-				<tr>
-					<td align="center"><hr class="line" /></td>
-				</tr>
-			</table>
-		</div>
+			<tr><td><tiles:insertAttribute name="header" /></td></tr>
+			<tr><td><hr class="line"/></td></tr>
+			<tr><td><tiles:insertAttribute name="body" /></td></tr>
+			<tr><td><tiles:insertAttribute name="footer" /></td></tr>
 		
-		<!-- page-specific body -->
-		<p><tiles:insertAttribute name="body" /></p>
-		
-		<!-- common footer -->
-		<p><tiles:insertAttribute name="footer" /></p>
+		</table>
 		
 	</body>
 	
