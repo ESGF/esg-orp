@@ -135,8 +135,13 @@ setup_orp() {
     openid_relying_party_dist_file=$(readlink -f ${openid_relying_party_dist_file})
 
     if((upgrade)); then
-	((no_new_update == 1)) && echo "nothing more to do, you are up2date" && return 1
-	echo "Upgrading the OpenID Relying Party WebApp..."
+        get_orp_support_libs ${openid_relying_party_app_home}/WEB-INF/lib
+        if (($? > 0)); then
+            echo "Upgrading in light of newly fetched libs!!"
+        else
+	    ((no_new_update == 1)) && echo "nothing more to do, you are up2date" && return 1
+	    echo "Upgrading the OpenID Relying Party WebApp..."
+        fi
     fi
     
     stop_tomcat
@@ -180,10 +185,51 @@ setup_orp() {
     popd >& /dev/null
     echo
 
+    get_orp_support_libs ${openid_relying_party_app_home}/WEB-INF/lib
+
     write_orp_install_log
 
     start_tomcat
     return 0
+}
+
+# Takes the destination dirctory you wish to have supported libs checked and downloaded to
+# returns the number of files downloaded (in this case max of 2)
+#         0 if there was no update of libs necessary
+get_orp_support_libs() {
+    local dest_dir=${1}
+    local ret=0
+
+    if [ -d ${dest_dir} ]; then
+        #----------------------------
+        #Fetching Dependent Security Jars from Distribution Site...
+        #----------------------------
+
+        #version values inherited from esg-node calling script
+        #-----
+        #esgf project generated jarfiles...
+        local esgf_security_jar=esgf-security-${esgf_security_version}.jar
+        local esgf_security_test_jar=esgf-security-test-${esgf_security_version}.jar
+        #-----
+
+        echo "getting (downloading) dependent library jars from ESGF Distribution Server (Security) to ${dest_dir} ..."
+        local make_backup_file=0 #Do NOT make backup file
+        checked_get ${dest_dir}/${esgf_security_jar} ${esg_dist_url}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
+        (( $? == 0 )) && ((ret++)) #yes, I did indeed fetch something new
+
+        checked_get ${dest_dir}/${esgf_security_test_jar} ${esg_dist_url}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
+        (( $? == 0 )) && ((ret++)) #yes, I did indeed fetch something new
+
+        #remove all other node manager jars that are not what we want
+        echo "cleaning up (removing) other, unnecessary, orp/security project jars from ${dest_dir} ..."
+        rm -vf $(/bin/ls ${dest_dir}/${esgf_security_jar%-*}-*.jar | grep -v ${esgf_security_version})
+        rm -vf $(/bin/ls ${dest_dir}/${esgf_security_test_jar%-*}-*.jar | grep -v ${esgf_security_version})
+        #---
+
+        chown -R ${tomcat_user}:${tomcat_group} ${dest_dir}
+    fi
+
+    return ${ret}
 }
 
 write_orp_install_log() {
