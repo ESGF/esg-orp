@@ -1,3 +1,6 @@
+1.2.2
+Fixed bug that prevented authorization of .das, .dds requests from gateway
+
 1.2.1
 Changed application style to same look and feel as ESGF Identity provider.
 
