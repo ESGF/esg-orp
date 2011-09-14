@@ -22,13 +22,14 @@ public class Utils {
      */
     public final static String transformUrl(String url) {
         
+        // remove everything after '?'
         int c = url.indexOf('?');
         if (c > -1) {
             url = url.substring(0, c);
         }
         
         // temporary work around to enable authorization on opendap URLs
-        url = url.replace("dodsC", "fileServer").replace("\\.ascii.*", "").replace("\\.dods.*", "").replace("\\.das.*", "").replace("\\.dds.*", "");
+        url = url.replaceAll("dodsC", "fileServer").replaceAll("\\.ascii", "").replaceAll("\\.dods", "").replaceAll("\\.das", "").replaceAll("\\.dds", "");
         
         return url;
     }
