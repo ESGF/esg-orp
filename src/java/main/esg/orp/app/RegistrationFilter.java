@@ -50,7 +50,8 @@ public class RegistrationFilter implements Filter {
         if (authzAtt==null || authzAtt.booleanValue()==false) {
             
             if (!response.isCommitted()) {
-                String url = Utils.transformUrl( Utils.getFullRequestUrl(req) );
+                //String url = Utils.transformUrl( Utils.getFullRequestUrl(req) );
+                String url = Utils.getFullRequestUrl(req);
                 final String redirectUrl = registrationRelayUrl+ "?"+Parameters.HTTP_PARAMETER_RESOURCE+"="+URLEncoder.encode(url,"UTF-8"); 
                 if (LOG.isDebugEnabled()) LOG.debug("Redirecting to: "+redirectUrl);
                 resp.sendRedirect(redirectUrl);

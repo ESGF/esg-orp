@@ -28,7 +28,7 @@ public class Utils {
         }
         
         // temporary work around to enable authorization on opendap URLs
-        url = url.replace("dodsC", "fileServer").replace(".ascii", "").replace(".dods", "").replace(".das", "").replace(".ddds", "");
+        url = url.replace("dodsC", "fileServer").replace("\\.ascii.*", "").replace("\\.dods.*", "").replace("\\.das.*", "").replace("\\.dds.*", "");
         
         return url;
     }
