@@ -240,7 +240,7 @@ write_orp_install_log() {
     dedup ${install_manifest}
     get_property esgf_https_port
     [ -n "${esgf_https_port}" ] && local port=":${esgf_https_port}"
-    write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}"
+    write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}/html.htm"
     write_as_property relyingparty_app_home ${openid_relying_party_app_home}
     return 0
 }
