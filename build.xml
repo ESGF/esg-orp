@@ -302,6 +302,7 @@ Builds the project via ant (obviously).
 	   classpathref="main_classpath"
 	   debug="on"
 	   verbose="off"
+           includeantruntime="false"
 	   nowarn="on">
       <compilerarg value="-Xlint"/>
     </javac>
@@ -513,6 +514,7 @@ Builds the project via ant (obviously).
 	   target="1.6"
 	   debug="on"
 	   verbose="off"
+           includeantruntime="false"
 	   nowarn="on"/>
   	
     <copy todir="${test_build_dir}" filtering="${filter}" overwrite="true">
