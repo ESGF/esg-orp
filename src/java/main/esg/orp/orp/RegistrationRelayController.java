@@ -84,7 +84,10 @@ public class RegistrationRelayController {
         } catch(Exception e) {
             throw new ServletException(e.getMessage());
         }
-        
+
+        // Set access denied status so that a client can detect that the requested resource has not been returned.
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
         return REGISTRATION_REQUEST_VIEW;
                 
     }
