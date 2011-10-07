@@ -42,6 +42,7 @@ import esg.orp.Utils;
 public class AuthorizationFilter extends AccessControlFilterTemplate {
 	
 	private AuthorizationServiceFilterCollaborator authorizationService;
+	private AuthorizationFilterUrlTransformer urlTransformer = null;
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 				
@@ -56,7 +57,12 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 		if (openid!=null) {
 			
 			if (LOG.isDebugEnabled()) LOG.debug("Found authentication attribute, openid="+openid);				
-			final String url = Utils.transformUrl(Utils.getFullRequestUrl(req));
+			String url = null;
+			if (urlTransformer != null) {
+				url = urlTransformer.transformUrl(Utils.getFullRequestUrl(req));
+			} else {
+				url = Utils.getFullRequestUrl(req);
+			}
 			
 			final boolean authorized = authorizationService.authorize(openid, url, Action.READ_ACTION);
 			if (LOG.isDebugEnabled()) LOG.debug("Openid="+openid+" url="+url+" operation="+Action.READ_ACTION+" authorization result="+authorized);					
@@ -77,6 +83,12 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 			final String authorizationServiceClass = this.getMandatoryFilterParameter(Parameters.AUTHORIZATION_SERVICE);
 			this.authorizationService = (AuthorizationServiceFilterCollaborator)Class.forName(authorizationServiceClass).newInstance();
 			this.authorizationService.init(filterConfig);
+
+			final String urlTransformerClass = this.getOptionalFilterParameter(Parameters.AUTHORIZATION_URL_TRANSFORMER);
+			if ((urlTransformerClass != null) && (!urlTransformerClass.isEmpty())) {
+				this.urlTransformer = (AuthorizationFilterUrlTransformer)Class.forName(urlTransformerClass).newInstance();
+				this.urlTransformer.init(filterConfig);
+			}
 		} catch(ClassNotFoundException e) {
 			throw new ServletException(e.getMessage());
 		} catch(InstantiationException e) {

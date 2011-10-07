@@ -101,6 +101,14 @@ public abstract class AccessControlFilterTemplate implements Filter {
 		Assert.isTrue(StringUtils.hasText(value), "Missing filter configuration parameter: "+name);
 		return value;
 	}
-	
 
+	/**
+	 * Retrieves the value of an optional filter configuration parameter.
+	 * @param name name of parameter
+	 * @return parameter value
+	 */
+	protected String getOptionalFilterParameter(final String name) {
+		final String value = filterConfig.getInitParameter(name);
+		return value;
+	}
 }
