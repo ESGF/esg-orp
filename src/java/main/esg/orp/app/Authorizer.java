@@ -10,10 +10,14 @@ public interface Authorizer {
     
     /**
      * Method to execute an authorization decision.
-     * @param url
+     * 
+     * @param user
+     * @param resource
+     * @param operation
+     * 
      * @return
      */
-    public boolean authorize(final String user, final String url, final String operation);
+    public boolean authorize(final String user, final String resource, final String operation);
 
 
 }
