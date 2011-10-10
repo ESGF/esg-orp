@@ -1,0 +1,183 @@
+ESGF Security Only Configuration for THREDDS
+============================================
+
+This describes a security configuration for THREDDS which uses ESGF security only. Authorization
+decisions are made by an external authorization service. A THREDDS Authorizer is not used; instead
+the authorization check is performed by esg.orp.app.FilterAuthorizationEnforcerer. This filter
+performs the same check for the authorization request attribute as TDSAuthorizer does, and returns
+the same HTTP access denied (403) status when the user is not authorized. THREDDS can then be
+configured with the thredds.servlet.restrict.AuthorizerNoop Authorizer implementation, which never
+denies access. In this configuration, any access restriction set in the catalogue will be ignored.
+
+A summary of this configuration is:
+
+Filters:
+o AuthenticationFilter
+  policyServiceClass=esg.orp.app.StrictPolicyService
+  Authentication is required for all services configured in filter mappings.
+o AuthorizationFilter
+  authorizationServiceClass=esg.orp.app.SAMLAuthorizationServiceFilterCollaborator
+o FilterAuthorizationEnforcerer
+
+Each filter is configured to map to the protected servlet(s).
+
+THREDDS  Authorizer:
+o AuthorizerNoop
+  Returns true, since security is handled by the filters.
+
+Enhancements
+============
+The following enhancements have been written to improve on the ESGF security only configuration.
+
+esg.orp.app.RegexPolicyService
+------------------------------
+
+This is a PolicyServiceFilterCollaborator implementation that classes URLs as being secured
+depending on whether they match any of the patterns specified with the an initialisation parameter
+for the AuthenticationFilter. Each pattern is a regular expression that is matched against the full
+resource URL. This provides a means to filter the URLs to which access control is to be applied.
+
+The patterns are specified using ONE of the initialisation parameters:
+
+authenticationRequiredPatterns
+
+  If patterns are specified with this parameter, then if the URL matches a pattern, authentication
+  is required. An example parameter value would be:
+
+  "[^?]*/fileServer/.*", "[^?]*/dodsC/[^?]*(?&lt;!\.html)(\?.*)?"
+
+  This makes any URL containing /fileServer/ secured and any URL containing /dodsC/ secured unless
+  the end of the URL, excluding any query string, is “.html”.
+
+authenticationNotRequiredPatterns
+
+  If patterns are specified with this parameter, then if the URL matches a pattern, authentication
+  is not required. An example parameter value would be:
+
+  "[^?]*(?&lt;=\.(html|css|gif))(\?.*)?"
+
+  This makes any URL secured unless it ends with one of the extensions .html, .css or .gif.
+
+Only one of authenticationRequiredPatterns and authenticationNotRequiredPatterns should be
+specified; if both are, an error is logged and authenticationRequiredPatterns is ignored. If neither
+is specified, authentication is required for all URLs.
+
+esg.orp.app.AuthorizationFilterUrlTransformer Interface
+-------------------------------------------------------
+
+The initialisation parameter, urlTransformer, has been added to AuthorizationFilter. If a value is
+set, an implementation of the AuthorizationFilterUrlTransformer interface will be called to
+transform the URL before it is sent to the authentication service.
+
+This interface is provided as a configurable replacement to the call to esg.orp.Utils.transformUrl,
+which performed a hard coded set of transformations. If the authorization service is configured in
+such a way that no transformation is needed, the initialisation parameter can be omitted and the URL
+is passed unchanged to the authorization service.
+
+esg.orp.app.RegexReplaceAuthorizationFilterUrlTransformer
+---------------------------------------------------------
+
+This is an implementation of AuthorizationFilterUrlTransformer that takes the value of the
+AuthorizationFilter initialisation parameter as a list of regular expressions and values to replace
+matches with. The replacements occur in the order defined by the parameter value.
+
+An example parameter value would be:
+
+"\?.*":"", "/dodsC/":"/fileServer/", "\.(asc|ascii|das|dds|dods|html)\Z":""
+
+This does the following:
+o Removes a ? and any characters following it.
+o Replaces /dodsC/ with /fileServer/ anywhere in the remainder of the URL.
+o Removes any of a set of extensions from the end of the URL: .asc, .ascii, das, dds, dods or html.
+
+Example Servlet Filter Configuration
+====================================
+Below is an example of a servlet filter configuration that could be used to configure the filters
+described above (part of a THREDDS web.xml file):
+
+  <!-- Authentication Filter -->
+  <filter>
+    <filter-name>authenticationFilter</filter-name>
+    <filter-class>esg.orp.app.AuthenticationFilter</filter-class>
+    <init-param>
+      <param-name>policyServiceClass</param-name>
+      <param-value>esg.orp.app.RegexPolicyService</param-value>
+    </init-param>
+    <init-param>
+      <param-name>authenticationNotRequiredPatterns</param-name>
+      <param-value>"[^?]*(?&lt;=\.(html|xml|css|gif))(\?.*)?"</param-value>
+<!--  Alternatively, e.g.:
+      <param-name>authenticationRequiredPatterns</param-name>
+      <param-value>"[^?]*/fileServer/.*", "[^?]*/dodsC/[^?]*(?&lt;!\.html)(\?.*)?"</param-value>
+-->
+    </init-param>
+    <init-param>
+      <param-name>openidRelyingPartyUrl</param-name>
+      <param-value>https://esg-datanode.jpl.nasa.gov/OpenidRelyingParty/home.htm</param-value>
+    </init-param>
+    <init-param>
+      <param-name>trustoreFile</param-name>
+      <param-value>/usr/local/datanode/apache-tomcat-6.0.26/jssecacerts</param-value>
+    </init-param>
+    <init-param>
+      <param-name>trustorePassword</param-name>
+      <param-value>changeit</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>authenticationFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Authorization Filter -->
+  <filter>
+    <filter-name>authorizationFilter</filter-name>
+    <filter-class>esg.orp.app.AuthorizationFilter</filter-class>
+    <init-param>
+      <param-name>authorizationServiceClass</param-name>
+      <param-value>esg.orp.app.SAMLAuthorizationServiceFilterCollaborator</param-value>
+    </init-param>
+    <init-param>
+      <param-name>urlTransformer</param-name>
+      <param-value>esg.orp.app.RegexReplaceAuthorizationFilterUrlTransformer</param-value>
+    </init-param>
+    <init-param>
+      <param-name>urlTransformerReplacements</param-name>
+      <param-value>"\?.*":"", "/dodsC/":"/fileServer/", "\.(asc|ascii|das|dds|dods|html)\Z":""</param-value>
+    </init-param>
+    <init-param>
+      <param-name>authorizationServiceUrl</param-name>
+      <param-value>https://esg-gateway.jpl.nasa.gov/saml/soap/secure/authorizationService.htm</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>authorizationFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Registration Filter -->
+  <filter>
+    <filter-name>registrationFilter</filter-name>
+    <filter-class>esg.orp.app.RegistrationFilter</filter-class>
+    <init-param>
+      <param-name>registrationRelayUrl</param-name>
+      <param-value>https://esg-datanode.jpl.nasa.gov/OpenidRelyingParty/registration-request.htm</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>registrationFilter</filter-name>
+    <servlet-name>/*</servlet-name>
+  </filter-mapping>
+
+  <!-- Authorization Enforcer -->
+  <filter>
+    <filter-name>enforcererFilter</filter-name>
+    <filter-class>esg.orp.app.FilterAuthorizationEnforcerer</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>enforcererFilter</filter-name>
+    <servlet-name>/*</servlet-name>
+  </filter-mapping>
+
+Note that if the registration filter is used, it should be configured before the authorization
+enforcer filter.
