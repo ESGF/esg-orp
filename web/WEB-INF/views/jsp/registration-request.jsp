@@ -169,53 +169,72 @@
 		<p>&nbsp;</p>
 		The URL you are trying to access:
 		<br/><b><c:out value="${param['resource']}"/></b> 
-		<br/>is restricted. To obtain access to these data, please register with one of the following groups:
+		<br/>is restricted. 
 		<p>&nbsp;</p>
 		
+		<!-- switch on number of attributes found -->
+		<c:choose>
 		
-		<table align="center">
-			<tr>
-				<td>
-					<div class="panel">
-						<table border="0" align="center" cellpadding="4" cellspacing="="4"">
-							<caption>Status: not registered</caption>
-							<c:set var="count" value="0"/>
-							<c:forEach var="entry" items="${policyAttributes}">
-								<c:forEach var="url" items="${entry.value}">
-									<c:set var="count" value="${count+1}"/>
-									<tr>
-										<td>
-											Group: <b><c:out value="${entry.key.type}"/></b>
-										</td>
-										<td>
-											<form method="post" id="form_${count}">
-												<input type="hidden" name="group" value="${entry.key.type}"/>
-												<input type="hidden" name="role" value="${entry.key.value}"/>
-												<input type="hidden" name="user" value="${principal.username}"/>
-												<input type="hidden" name="url" value="${url}"/>
-												<input type="hidden" name="resource" value="${resource}"/>
-												<input type="button" value="Register" id="button_${count}" />
-											</form>
-										</td>
-									</tr>
-									<!-- initialize YUI buttons -->
-									<script type="text/javascript">
-										var button_<c:out value="${count}"/> = new YAHOO.widget.Button("button_${count}");
-										YAHOO.util.Event.addListener("button_${count}", "click", register, YAHOO.util.Dom.get("form_${count}") );
-									</script>
-								</c:forEach>
-							</c:forEach>
-						</table>
-					</div>
-				</td>
-			</tr>
-		</table>
+			<c:when test="${fn:length(policyAttributes) == 0}">
+				Unfortunately, this URL is not associated with any known data access policy.
+				Please contact support to have this configuration issue fixed.			
+			</c:when>
 		
-		&nbsp;<p/>
-		Your openid: <b><c:out value="${principal.username}"/></b>
+			<c:otherwise>
+				To obtain access to these data, please register with one of the following groups:
+				
+				<table align="center">
+					<tr>
+						<td>
+							<div class="panel">
+								<table border="0" align="center" cellpadding="4" cellspacing="="4"">
+									<caption>Status: not registered</caption>
+									<c:set var="count" value="0"/>
+									<c:forEach var="entry" items="${policyAttributes}">
+										<c:forEach var="url" items="${entry.value}">
+											<c:set var="count" value="${count+1}"/>
+											<tr>
+												<td>
+													Group: <b><c:out value="${entry.key.type}"/></b>
+												</td>
+												<td>
+													<form method="post" id="form_${count}">
+														<input type="hidden" name="group" value="${entry.key.type}"/>
+														<input type="hidden" name="role" value="${entry.key.value}"/>
+														<input type="hidden" name="user" value="${principal.username}"/>
+														<input type="hidden" name="url" value="${url}"/>
+														<input type="hidden" name="resource" value="${resource}"/>
+														<input type="button" value="Register" id="button_${count}" />
+													</form>
+												</td>
+											</tr>
+											<!-- initialize YUI buttons -->
+											<script type="text/javascript">
+												var button_<c:out value="${count}"/> = new YAHOO.widget.Button("button_${count}");
+												YAHOO.util.Event.addListener("button_${count}", "click", register, YAHOO.util.Dom.get("form_${count}") );
+											</script>
+										</c:forEach>
+									</c:forEach>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+		
+			</c:otherwise>
+		
+		</c:choose>
+		
 		<p/>
 		Thank you for your interest in accessing these data.
 		
+		
+		<!-- display openid if available -->
+		&nbsp;<p/>
+		<authz:authentication property="principal" var="principal"/>
+		<c:if test="${principal!=null}">
+			&nbsp;<p/>Your openid: <b><c:out value="${principal.username}"/></b>
+		</c:if>		
 	
 	</tiles:putAttribute>
 

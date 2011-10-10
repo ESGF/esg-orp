@@ -233,12 +233,14 @@ get_orp_support_libs() {
 }
 
 write_orp_install_log() {
-    local esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | xargs)
+    local esg_orp_version=${esg_orp_version}
+    [ -z "${esg_orp_version}" ] && \
+        esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)$/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | tr -d "\015")
     echo "$(date ${date_format}) webapp:OpenidRelyingParty=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_manifest}
     dedup ${install_manifest}
     get_property esgf_https_port
     [ -n "${esgf_https_port}" ] && local port=":${esgf_https_port}"
-    write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}"
+    write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}/html.htm"
     write_as_property relyingparty_app_home ${openid_relying_party_app_home}
     return 0
 }

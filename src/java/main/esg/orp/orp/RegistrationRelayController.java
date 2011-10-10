@@ -60,6 +60,7 @@ public class RegistrationRelayController {
     public String doGet(final HttpServletRequest request, final HttpServletResponse response, final Model model) throws ServletException {  
 
         final String resource = request.getParameter(Parameters.HTTP_PARAMETER_RESOURCE);
+        if (!StringUtils.hasText(resource)) throw new ServletException("Missing mandatory HTTP request parameter: "+Parameters.HTTP_PARAMETER_RESOURCE);
         if (LOG.isDebugEnabled()) LOG.debug("Requested resource="+resource);
         
         // build policy service URL (hosted on the same servlet container)
@@ -82,7 +83,8 @@ public class RegistrationRelayController {
             model.addAttribute(POLICY_ATTRIBUTES_KEY, attributes);
             
         } catch(Exception e) {
-            throw new ServletException(e.getMessage());
+            LOG.warn(e.getMessage());
+            throw new ServletException(e);
         }
 
         // Set access denied status so that a client can detect that the requested resource has not been returned.

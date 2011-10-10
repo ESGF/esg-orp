@@ -64,6 +64,7 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 				url = Utils.getFullRequestUrl(req);
 			}
 			
+			if (LOG.isDebugEnabled()) LOG.debug("Requesting authorization for transformed URL="+url);
 			final boolean authorized = authorizationService.authorize(openid, url, Action.READ_ACTION);
 			if (LOG.isDebugEnabled()) LOG.debug("Openid="+openid+" url="+url+" operation="+Action.READ_ACTION+" authorization result="+authorized);					
 			if (authorized) this.assertIsValid(req);

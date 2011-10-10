@@ -1,3 +1,10 @@
+1.2.3
+Inserted generic Authorizer interface and SAML implementation, for use of framework outside of servlet filters.
+
+1.2.2
+Fixed bug that prevented authorization of .das, .dds requests from gateway.
+Improved messaging on registration user interface in the case no access control groups are returned.
+
 1.2.1
 Changed application style to same look and feel as ESGF Identity provider.
 

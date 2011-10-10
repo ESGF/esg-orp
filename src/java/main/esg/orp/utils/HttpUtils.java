@@ -106,7 +106,7 @@ public class HttpUtils {
           int statusCode = client.executeMethod(method);
 
           if (statusCode != HttpStatus.SC_OK) {
-            throw new Exception("HTTP GET request failed: url="+url+" error=" + method.getStatusLine());
+            throw new Exception("HTTP POST request failed: url="+url+" error=" + method.getStatusLine());
           }
 
           // read the response body.
