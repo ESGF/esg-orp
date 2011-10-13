@@ -1,3 +1,7 @@
+1.2.4
+Merged BADC work on re-factoring OpenDAP support.
+Moved all business logic out of SAMLAuthorizationFilterCollaborator into SAMLAuthorizationServiceClient.
+
 1.2.3
 Inserted generic Authorizer interface and SAML implementation, for use of framework outside of servlet filters.
 
