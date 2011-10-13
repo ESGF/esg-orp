@@ -31,7 +31,7 @@ import esg.security.common.SAMLBuilder;
 import esg.security.common.SAMLUnknownPrincipalException;
 
 
-public class SAMLAuthorizationServiceFilterCollaboratorTest {
+public class SAMLAuthorizationServiceClientTest {
 	
 	private final static String PERIMIT_STATEMENT = "esg/orp/app/authorizationStatementPermit.xml";
 	private final static String DENY_STATEMENT = "esg/orp/app/authorizationStatementDeny.xml";
@@ -40,13 +40,13 @@ public class SAMLAuthorizationServiceFilterCollaboratorTest {
 	private final static String RESOURCE = "http://tds.prototype.ucar.edu/thredds/fileServer/datazone/narccap/data/CRCM/cgcm3-current/table1/sic_CRCM_1968010106.nc";
 	private final static String OPERATION = "read";
 	
-	private SAMLAuthorizationServiceFilterCollaborator service; 
+	private SAMLAuthorizationServiceClient authorizer; 
 	
 	@Before
 	public void beforeSetup() throws ConfigurationException, SAMLUnknownPrincipalException {
 						
 		if (SAMLBuilder.isInitailized()) {
-			 service = new SAMLAuthorizationServiceFilterCollaborator();
+			 authorizer = new SAMLAuthorizationServiceClient();
 		}
 				
 	}
@@ -57,7 +57,7 @@ public class SAMLAuthorizationServiceFilterCollaboratorTest {
 		if (SAMLBuilder.isInitailized()) {
 			final File file = new ClassPathResource(PERIMIT_STATEMENT).getFile();
 			final String authzStatement = FileUtils.readFileToString(file);
-			final boolean authorized = service.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE, OPERATION);
+			final boolean authorized = authorizer.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE, OPERATION);
 			Assert.assertTrue("Wrong authorization resulted from parsing", authorized);
 		}
 		
@@ -69,7 +69,7 @@ public class SAMLAuthorizationServiceFilterCollaboratorTest {
 		if (SAMLBuilder.isInitailized()) {
 			final File file = new ClassPathResource(DENY_STATEMENT).getFile();
 			final String authzStatement = FileUtils.readFileToString(file);
-			final boolean authorized = service.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE, OPERATION);
+			final boolean authorized = authorizer.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE, OPERATION);
 			Assert.assertFalse("Wrong authorization resulted from parsing", authorized);
 		}
 		
@@ -81,11 +81,11 @@ public class SAMLAuthorizationServiceFilterCollaboratorTest {
 		if (SAMLBuilder.isInitailized()) {
 			final File file = new ClassPathResource(PERIMIT_STATEMENT).getFile();
 			final String authzStatement = FileUtils.readFileToString(file);
-			boolean authorized = service.parseAuthorizationStatement(authzStatement, OPENID+"x", RESOURCE, OPERATION);
+			boolean authorized = authorizer.parseAuthorizationStatement(authzStatement, OPENID+"x", RESOURCE, OPERATION);
 			Assert.assertFalse("Wrong authorization resulted from parsing with wrong openid", authorized);
-			authorized = service.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE+"x", OPERATION);
+			authorized = authorizer.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE+"x", OPERATION);
 			Assert.assertFalse("Wrong authorization resulted from parsing with wrong resource", authorized);
-			authorized = service.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE, OPERATION+"x");
+			authorized = authorizer.parseAuthorizationStatement(authzStatement, OPENID, RESOURCE, OPERATION+"x");
 			Assert.assertFalse("Wrong authorization resulted from parsing with wrong operation", authorized);
 		}
 		
