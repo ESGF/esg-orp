@@ -1,3 +1,6 @@
+1.2.5
+Inserting support for registering with groups that don't have automatic approval.
+
 1.2.4
 Merged BADC work on re-factoring OpenDAP support.
 Moved all business logic out of SAMLAuthorizationFilterCollaborator into SAMLAuthorizationServiceClient.
