@@ -64,7 +64,7 @@ public class RegistrationRelayController {
         if (LOG.isDebugEnabled()) LOG.debug("Requested resource="+resource);
         
         // build policy service URL (hosted on the same servlet container)
-        final String url = "https://"+request.getServerName()+":"+request.getServerPort()+POLICY_SERVICE_URI;
+        final String url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+POLICY_SERVICE_URI;
         final Map<String,String> pars= new HashMap<String,String>();
         pars.put(SAMLParameters.HTTP_PARAMETER_RESOURCE, resource);
         pars.put(SAMLParameters.HTTP_PARAMETER_ACTION, ACTION);
@@ -110,7 +110,7 @@ public class RegistrationRelayController {
         // retrieve POST request parameters
         final String user = request.getParameter(Parameters.HTTP_PARAMETER_USER);
         if (!StringUtils.hasText(user)) 
-            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_USER);
+            throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_USER+" Has the user logged in?");
         final String group = request.getParameter(Parameters.HTTP_PARAMETER_GROUP);
         if (!StringUtils.hasText(group)) 
             throw new ServletException("Missing mandatory request parameter: "+Parameters.HTTP_PARAMETER_GROUP);
@@ -151,7 +151,8 @@ public class RegistrationRelayController {
             final String redirect = request.getContextPath() + REGISTRATION_RESPONSE_URI
                                   + "?" + Parameters.HTTP_PARAMETER_GROUP + "=" + URLEncoder.encode(group,"UTF-8")
                                   + "&" + Parameters.HTTP_PARAMETER_RESULT + "=" + URLEncoder.encode(result,"UTF-8")
-                                  + "&" + Parameters.HTTP_PARAMETER_RESOURCE + "=" + URLEncoder.encode(resource,"UTF-8");
+                                  + "&" + Parameters.HTTP_PARAMETER_RESULT + "=" + URLEncoder.encode(result,"UTF-8")
+                                  + "&" + Parameters.HTTP_PARAMETER_ROLE + "=" + URLEncoder.encode(role,"UTF-8");
             if (LOG.isInfoEnabled()) LOG.info("Redirecting to URL:"+redirect);
             
             response.sendRedirect(redirect);
