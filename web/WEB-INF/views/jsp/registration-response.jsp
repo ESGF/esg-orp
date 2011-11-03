@@ -42,6 +42,19 @@
 											<br/>Thank you for your patience.
 										</c:when>
 										
+										<c:when test="${param['result']=='EXISTING'}">
+											You are already registered in group <b>${param['group']}</b> with role <b>${param['role']}</b>.
+											<br/>&nbsp;
+											<br/>Click on the button below to continue your original request:
+											<br/>&nbsp;
+											<br/>
+											<form method="get" action="${param['resource']}">
+												<input type='submit' value="Download Data" id="goButton" />
+											</form>							
+											<script type="text/javascript">var button = new YAHOO.widget.Button("goButton");</script>
+										</c:when>
+										
+										
 										<c:when test="${param['result']=='DENIED'}">
 											Your request to register in group <b>${param['group']}</b> has been denied.
 											<br/>Please contact support for any questions.
