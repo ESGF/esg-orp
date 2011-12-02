@@ -1,3 +1,7 @@
+1.2.6
+Switching Openid4Java consumer to use general registry facility from esgf-security package.
+Configuring the ORP with a dynamic and a static whitelist of trusted IdPs.
+
 1.2.5
 Inserting support for registering with groups that don't have automatic approval.
 

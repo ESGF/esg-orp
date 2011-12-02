@@ -77,10 +77,10 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 		// optional whitelisting
 		if (registryService!=null) {
 			
+		    if (LOG.isInfoEnabled()) LOG.info("Checking whitelist of trusted IdPs");
 			final String _idpUrl = idpurl.substring(0,idpurl.indexOf("?"));
 			for (final URL url : registryService.getIdentityProviders()) {
-			    // FIXME
-			    System.out.println("examining idp url ="+url.toString());
+			    if (LOG.isInfoEnabled()) LOG.trace("Examining IdP url ="+url.toString());
 				if (url.toString().equals(_idpUrl)) return idpurl;
 			}
 			LOG.warn("URL: "+_idpUrl+" not found in white list of trusted Identity Providers");

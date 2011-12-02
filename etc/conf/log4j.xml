@@ -24,7 +24,7 @@
 		<priority value="INFO" />
 		<appender-ref ref="orplog" />
 	</root>
-	<!--  some specific loggers - ->
+	<!--  some specific loggers -->
 	<logger name="esg">
 		<level value="INFO" />
 	</logger>
