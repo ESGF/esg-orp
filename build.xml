@@ -670,7 +670,7 @@ Builds the project via ant (obviously).
       </packageset>
 
       <doctitle><![CDATA[<h1>${module}</h1>]]></doctitle>
-      <bottom><![CDATA[<i><a href="http://esgf,org/" target="_top">ESGF</a> / <a href="http://esgf.org/LICENSE" target="_top">BSD OpenSource License</a></i>]]></bottom>
+      <bottom><![CDATA[<i><a href="http://esgf.org/" target="_top">ESGF</a> / <a href="http://esgf.org/LICENSE" target="_top">BSD OpenSource License</a></i>]]></bottom>
       <tag name="todo" scope="all" description="To do:"/>
       <group title="ESG ORP Component Packages" packages="esg.orp*"/>
       <group title="ESG ORP Common Packages" packages="esg.orp.common*"/>
