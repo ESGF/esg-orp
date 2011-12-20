@@ -130,7 +130,7 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.openid4java" name="openid4java" rev="0.9.6"/>
     
     <dependency org="edu.ucar.unidata" name="tds" rev="4.1"/>
-    <dependency org="org.esgf" name="esgf-security" rev="1.4.9" transitive="false"/>
+    <dependency org="org.esgf" name="esgf-security" rev="1.5.2" transitive="false"/>
 
   </dependencies>
 

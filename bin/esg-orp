@@ -245,6 +245,18 @@ write_orp_install_log() {
     return 0
 }
 
+_fetch_static_whitelist() {
+    local config_dir=${esg_config_dir}
+    local static_list_file="esgf_idp_static.xml"
+    if [ -d "${config_dir:-/esg/config}" ]; then
+        checked_get ${config_dir}/${static_list_file} ${esg_dist_url}/lists/${static_list_file} $((force_install))
+        (( $? > 1 )) && echo debug_print "[DEBUG]: Could not fetch ${static_list_file} from distribution server" && return 1
+        chown -R ${tomcat_user}:${tomcat_group} ${config_dir}/${static_list_file}
+        chmod 644 ${config_dir}/${static_list_file}
+    fi
+    return 0
+}
+
 #--------------------------------------
 # Callout function from esg-node
 #--------------------------------------
@@ -268,6 +280,7 @@ orp_startup_hook() {
     sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias}'#' ${target_properties_file} && echo -n ")" || echo -n "("
     echo
     #----------------------
+    _fetch_static_whitelist
 }
 
 #--------------------------------------
