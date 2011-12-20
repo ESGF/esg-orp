@@ -151,7 +151,7 @@ public class RegistrationRelayController {
             final String redirect = request.getContextPath() + REGISTRATION_RESPONSE_URI
                                   + "?" + Parameters.HTTP_PARAMETER_GROUP + "=" + URLEncoder.encode(group,"UTF-8")
                                   + "&" + Parameters.HTTP_PARAMETER_RESULT + "=" + URLEncoder.encode(result,"UTF-8")
-                                  + "&" + Parameters.HTTP_PARAMETER_RESULT + "=" + URLEncoder.encode(result,"UTF-8")
+                                  + "&" + Parameters.HTTP_PARAMETER_RESOURCE + "=" + URLEncoder.encode(resource,"UTF-8")
                                   + "&" + Parameters.HTTP_PARAMETER_ROLE + "=" + URLEncoder.encode(role,"UTF-8");
             if (LOG.isInfoEnabled()) LOG.info("Redirecting to URL:"+redirect);
             
