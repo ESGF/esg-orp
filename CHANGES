@@ -1,3 +1,6 @@
+1.2.7
+Fixed bug in registration module that prevented proper download of resource
+
 1.2.6
 Switching Openid4Java consumer to use general registry facility from esgf-security package.
 Configuring the ORP with a dynamic and a static whitelist of trusted IdPs.
