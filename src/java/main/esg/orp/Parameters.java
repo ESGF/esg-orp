@@ -39,6 +39,8 @@ public interface Parameters {
 	
 	// Secured application parameters
 	final static String POLICY_SERVICE = "policyServiceClass";
+	final static String POLICY_SERVICES = "policyServiceClasses";
+	final static String POLICY_FILES = "policyFiles";
 	final static String AUTHORIZATION_SERVICE = "authorizationServiceClass";
 	final static String TRUSTORE_FILE = "trustoreFile";
 	final static String TRUSTORE_PASSWORD = "trustorePassword";

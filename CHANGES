@@ -1,3 +1,7 @@
+1.2.8
+Introduced the CompositePolicyService to support multiple collaborators for the AuthenticationFilter, 
+in order for exampe to combine matching regular expressions with parsing the ESGF policy files.
+
 1.2.7
 Fixed bug in registration module that prevented proper download of resource
 

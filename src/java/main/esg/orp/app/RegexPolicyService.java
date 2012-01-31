@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.text.StrMatcher;
