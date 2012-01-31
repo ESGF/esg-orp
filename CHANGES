@@ -1,3 +1,6 @@
+1.2.9
+Updated dependency on esgf-security.
+
 1.2.8
 Introduced the CompositePolicyService to support multiple collaborators for the AuthenticationFilter, 
 in order for exampe to combine matching regular expressions with parsing the ESGF policy files.
