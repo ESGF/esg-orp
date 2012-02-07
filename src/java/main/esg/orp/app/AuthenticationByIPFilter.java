@@ -58,6 +58,7 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 						
 		// check IP address versus IP white list
 		final String addr = req.getRemoteAddr();
+		if (LOG.isDebugEnabled()) LOG.debug("Checking authorization for remote host IP:"+addr);
 		if (   (authorizedIP!=null && authorizedIP.equals(addr))
 		    || (registryService!=null && registryService.getLasServers().contains(addr)) ) {
                 if (LOG.isDebugEnabled()) LOG.debug("Remote host IP: "+addr+" found in white list, request is authorized");
