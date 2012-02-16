@@ -37,13 +37,13 @@ public class SAMLAuthorizationServiceFilterCollaborator implements Authorization
 	/**
 	 * Client used to query the remote Authorization Services.
 	 */
-	private final SAMLAuthorizationServiceClient authorizer;
+	private final SAMLAuthorizer authorizer;
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
 		
 	public SAMLAuthorizationServiceFilterCollaborator() {
 		
-	    authorizer = new SAMLAuthorizationServiceClient();
+	    authorizer = new SAMLAuthorizer();
 		
 	}
 
