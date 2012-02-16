@@ -245,7 +245,7 @@ write_orp_install_log() {
     return 0
 }
 
-_fetch_static_whitelist() {
+_fetch_static_idp_whitelist() {
     local config_dir=${esg_config_dir}
     local static_list_file="esgf_idp_static.xml"
     if [ -d "${config_dir:-/esg/config}" ]; then
@@ -281,7 +281,7 @@ orp_startup_hook() {
     sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias}'#' ${target_properties_file} && echo -n ")" || echo -n "("
     echo
     #----------------------
-    _fetch_static_whitelist
+    _fetch_static_idp_whitelist
 }
 
 #--------------------------------------
