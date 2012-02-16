@@ -249,6 +249,7 @@ _fetch_static_whitelist() {
     local config_dir=${esg_config_dir}
     local static_list_file="esgf_idp_static.xml"
     if [ -d "${config_dir:-/esg/config}" ]; then
+        if [ -e "${config_dir}/${static_list_file}" ] && debug_print "${config_dir}/${static_list_file} is present will NOT fetch from distribution site" && return 0
         checked_get ${config_dir}/${static_list_file} ${esg_dist_url}/lists/${static_list_file} $((force_install))
         (( $? > 1 )) && echo debug_print "[DEBUG]: Could not fetch ${static_list_file} from distribution server" && return 1
         chown -R ${tomcat_user}:${tomcat_group} ${config_dir}/${static_list_file}
