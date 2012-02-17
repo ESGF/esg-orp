@@ -145,7 +145,7 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 		} else {
 		
 	   		// set HTTP STATUS CODE = 401 while returning login page
-			//resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			
 			// keep processing
 	  		chain.doFilter(request, response);
