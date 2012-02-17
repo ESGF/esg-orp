@@ -10,7 +10,7 @@
 	   					   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
-	<!-- ESG SAML-based Authorization Service stack (with example white list) -->
+	<!-- ESGF SAML-based Authorization Service stack (with example white list) -->
   	<bean name="authorizationServiceController" class="esg.security.authz.web.SAMLAuthorizationServiceSoapController">
   		<!-- <property name="whiteListCertificateProvider" ref="whiteList"/> -->
   	</bean>
@@ -24,24 +24,11 @@
   	</bean>
   	
   	<bean id="policyService" class="esg.security.policy.service.impl.PolicyServiceLocalXmlImpl">
-  		<!-- <constructor-arg index="0"><value>esg/security/config/ESGFpolicies.xml</value></constructor-arg> -->
   		<constructor-arg index="0"><value>/esg/config/esgf_policies_local.xml, /esg/config/esgf_policies_common.xml</value></constructor-arg>
   	</bean>
   	<bean id="registryService" class="esg.security.registry.service.impl.RegistryServiceLocalXmlImpl">
-  		<!-- <constructor-arg index="0"><value>esg/security/config/ESGFregistry.xml</value></constructor-arg> -->
   		<constructor-arg index="0"><value>/esg/config/esgf_ats.xml, /esg/config/esgf_ats_static.xml</value></constructor-arg>
   	</bean>
-  	<!--  
-  	<bean id="policyServiceController" class="esg.security.policy.web.PolicyServiceController">
-  		<constructor-arg index="0" ref="policyService"/>
-  		<constructor-arg index="1" ref="registryService"/>
-  	</bean> -->
-  	
-  	<!-- Registration Service 
-  	<bean id="registrationService" class="esg.security.registration.service.impl.RegistrationServiceImpl" />
-  	<bean id="registrationServiceController" class="esg.security.registration.web.RegistrationServiceController">
-  		<constructor-arg index="0" ref="registrationService"/>
-  	</bean> -->
   	
   	<!-- Example white list -->
   	<bean name="whiteList" class="esg.security.common.WhiteListCertificateProvider">
@@ -52,6 +39,7 @@
   		</constructor-arg>
   	</bean>
 	
+	<!-- Controller that lets the user register with the remote registraton service -->
 	<bean id="registrationRelayController" class="esg.orp.orp.RegistrationRelayController">
 	  	<constructor-arg index="0" ref="policyService"/>
   		<constructor-arg index="1" ref="registryService"/>

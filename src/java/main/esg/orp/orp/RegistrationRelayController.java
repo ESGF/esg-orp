@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -36,7 +35,7 @@ import esg.security.registry.service.api.UnknownPolicyAttributeTypeException;
 
 /**
  * Controller that performs registration relay operations.
- * This controller acts as the ORP client to the ESGF security services.
+ * This controller acts as the ORP client to a remote ESGF registration service.
  *
  * @author Luca Cinquini
  */
@@ -47,13 +46,15 @@ public class RegistrationRelayController {
     private final Log LOG = LogFactory.getLog(this.getClass());
     
     private final static String POLICY_ATTRIBUTES_KEY = "policyAttributes";
-    //private final static String POLICY_SERVICE_URI = "/esgf-orp/secure/policyService.htm";
     private final static String ACTION = "Read";
     
     private final static String REGISTRATION_REQUEST_VIEW = "registration-request";
     private final static String REGISTRATION_RESPONSE_URI = "/registration-response.htm";
     
+    // service used to read the local policy files for data access
     private final PolicyService policyService;
+    
+    // service used to locate the registration end-points for the required access control attributes
     private final RegistryService registryService;
     
     public RegistrationRelayController(final PolicyService policyService, final RegistryService registryService) {
@@ -77,18 +78,10 @@ public class RegistrationRelayController {
         if (!StringUtils.hasText(resource)) throw new ServletException("Missing mandatory HTTP request parameter: "+Parameters.HTTP_PARAMETER_RESOURCE);
         if (LOG.isDebugEnabled()) LOG.debug("Requested resource="+resource);
         
-        // build policy service URL (hosted on the same servlet container)
-        //final String url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+POLICY_SERVICE_URI;
-        //final Map<String,String> pars= new HashMap<String,String>();
-        //pars.put(SAMLParameters.HTTP_PARAMETER_RESOURCE, resource);
-        //pars.put(SAMLParameters.HTTP_PARAMETER_ACTION, ACTION);
-        
-        //if (LOG.isDebugEnabled()) LOG.debug("Invoking policy service at: "+url);
-        
-        // invoke policy service
+        // invoke policy service to determine the required attributes
         final List<PolicyAttribute> policyAttributes = policyService.getRequiredAttributes(resource, ACTION);
         
-        // invoke registry service to determine registration endpoints
+        // invoke registry service to locate the registration end-points for the required attributes
         final Map<PolicyAttribute, List<URL>> policyAttributeMap = new LinkedHashMap<PolicyAttribute,List<URL>>();
         for (final PolicyAttribute pa : policyAttributes) {
             try {
@@ -104,24 +97,6 @@ public class RegistrationRelayController {
         
         // return required attributes to view
         model.addAttribute(POLICY_ATTRIBUTES_KEY, policyAttributeMap);
-
- /*       
-        try {
-            
-            // execute HTTP GET request to PolicyService
-            String xml = HttpUtils.get(url, pars);       
-            
-            // deserialize XML
-            Map<PolicyAttribute, List<URL>> attributes = PolicySerializer.deserialize(xml);
-            
-            // return required attributes to view
-            model.addAttribute(POLICY_ATTRIBUTES_KEY, attributes);
-            
-        } catch(Exception e) {
-            LOG.warn(e.getMessage());
-            throw new ServletException(e);
-        }
-        */
 
         // Set access denied status so that a client can detect that the requested resource has not been returned.
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
