@@ -27,7 +27,8 @@
   	<import resource="classpath:esg/orp/orp/config/web-context.xml" />
   	
   	<!-- Security configuration -->
-  	<import resource="classpath:esg/orp/orp/config/security-context.xml" />
+  	<import resource="classpath:esg/orp/orp/config/security-context-auth.xml" />
+  	<import resource="classpath:esg/orp/orp/config/security-context-authz.xml" />
   	
   	<!-- Application-specific configuration -->
   	<import resource="classpath:esg/orp/orp/config/application-context-specific.xml"/>

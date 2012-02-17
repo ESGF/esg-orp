@@ -37,6 +37,5 @@
 	<logger name="org.opensaml">
 		<level value="INFO" />
 	</logger>
--->
 
 </log4j:configuration>

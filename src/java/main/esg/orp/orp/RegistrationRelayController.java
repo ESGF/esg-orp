@@ -2,7 +2,9 @@ package esg.orp.orp;
 
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,11 +27,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import esg.orp.Parameters;
 import esg.orp.utils.HttpUtils;
-import esg.security.common.SAMLParameters;
 import esg.security.policy.service.api.PolicyAttribute;
-import esg.security.policy.web.PolicySerializer;
+import esg.security.policy.service.api.PolicyService;
 import esg.security.registration.web.RegistrationRequestUtils;
 import esg.security.registration.web.RegistrationResponseUtils;
+import esg.security.registry.service.api.RegistryService;
+import esg.security.registry.service.api.UnknownPolicyAttributeTypeException;
 
 /**
  * Controller that performs registration relay operations.
@@ -43,11 +47,21 @@ public class RegistrationRelayController {
     private final Log LOG = LogFactory.getLog(this.getClass());
     
     private final static String POLICY_ATTRIBUTES_KEY = "policyAttributes";
-    private final static String POLICY_SERVICE_URI = "/esgf-security/secure/policyService.htm";
+    //private final static String POLICY_SERVICE_URI = "/esgf-orp/secure/policyService.htm";
     private final static String ACTION = "Read";
     
     private final static String REGISTRATION_REQUEST_VIEW = "registration-request";
     private final static String REGISTRATION_RESPONSE_URI = "/registration-response.htm";
+    
+    private final PolicyService policyService;
+    private final RegistryService registryService;
+    
+    public RegistrationRelayController(final PolicyService policyService, final RegistryService registryService) {
+        
+        this.policyService = policyService;
+        this.registryService = registryService;
+        
+    }
     
     /**
      * The GET method invokes the remote PolicyService, parses the XML response, and displays the group selection form.
@@ -64,13 +78,34 @@ public class RegistrationRelayController {
         if (LOG.isDebugEnabled()) LOG.debug("Requested resource="+resource);
         
         // build policy service URL (hosted on the same servlet container)
-        final String url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+POLICY_SERVICE_URI;
-        final Map<String,String> pars= new HashMap<String,String>();
-        pars.put(SAMLParameters.HTTP_PARAMETER_RESOURCE, resource);
-        pars.put(SAMLParameters.HTTP_PARAMETER_ACTION, ACTION);
+        //final String url = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+POLICY_SERVICE_URI;
+        //final Map<String,String> pars= new HashMap<String,String>();
+        //pars.put(SAMLParameters.HTTP_PARAMETER_RESOURCE, resource);
+        //pars.put(SAMLParameters.HTTP_PARAMETER_ACTION, ACTION);
         
-        if (LOG.isDebugEnabled()) LOG.debug("Invoking policy service at: "+url);
-                                
+        //if (LOG.isDebugEnabled()) LOG.debug("Invoking policy service at: "+url);
+        
+        // invoke policy service
+        final List<PolicyAttribute> policyAttributes = policyService.getRequiredAttributes(resource, ACTION);
+        
+        // invoke registry service to determine registration endpoints
+        final Map<PolicyAttribute, List<URL>> policyAttributeMap = new LinkedHashMap<PolicyAttribute,List<URL>>();
+        for (final PolicyAttribute pa : policyAttributes) {
+            try {
+                final List<URL> paEndpoints = registryService.getRegistrationServices(pa.getType());
+                policyAttributeMap.put(pa, paEndpoints);
+            } catch(UnknownPolicyAttributeTypeException e) {
+                // no registration URL available
+                policyAttributeMap.put(pa, new ArrayList<URL>());
+                LOG.warn(e);
+            }
+            
+        }
+        
+        // return required attributes to view
+        model.addAttribute(POLICY_ATTRIBUTES_KEY, policyAttributeMap);
+
+ /*       
         try {
             
             // execute HTTP GET request to PolicyService
@@ -86,6 +121,7 @@ public class RegistrationRelayController {
             LOG.warn(e.getMessage());
             throw new ServletException(e);
         }
+        */
 
         // Set access denied status so that a client can detect that the requested resource has not been returned.
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
