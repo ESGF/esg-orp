@@ -278,7 +278,7 @@ orp_startup_hook() {
 
     sed -i 's#^[ ]*\(keystoreFile=\).*$#\1'${keystore_file}'#'   ${target_properties_file} && echo -n ":" || echo -n "8"
     sed -i 's#^[ ]*\(keystorePassword=\).*$#\1'${keystore_pass}'#'   ${target_properties_file} && echo -n "-" || echo -n "."
-    sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias}'#' ${target_properties_file} && echo -n ")" || echo -n "("
+    sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias:-"tomcat"}'#' ${target_properties_file} && echo -n ")" || echo -n "("
     echo
     #----------------------
     _fetch_static_idp_whitelist
