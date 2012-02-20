@@ -22,6 +22,16 @@
   		<constructor-arg index="1" ref="policyService"/>
   		<constructor-arg index="2" ref="registryService"/>
   	</bean>
+  	<!-- Example implementation that looks up user attributes in local XML file 
+  	<bean id="samlAttributeFactory" class="esg.security.attr.service.impl.SAMLAttributeFactoryLocalXmlImpl">
+  		<constructor-arg index="0"><value>ESGF Attribute Service</value></constructor-arg>
+  		<constructor-arg index="1"><value>esg/security/config/ESGFusers.xml</value></constructor-arg>
+  	</bean> -->
+  	<!-- Example implementation of SAMLAttributeFactory, configured to write SAML attributes of a specific "name"
+  	<bean id="samlAttributeFactory" class="esg.security.attr.service.impl.SAMLAttributeFactoryTrivialImpl">
+  		<property name="samlStringAttributeName"><value>urn:esgf:test:attribute_name</value></property>
+  		<property name="samlGroupRoleAttributeName"><value>urn:esgf:test:grouprole</value></property>
+  	</bean> -->
   	
   	<bean id="policyService" class="esg.security.policy.service.impl.PolicyServiceLocalXmlImpl">
   		<constructor-arg index="0"><value>/esg/config/esgf_policies_local.xml, /esg/config/esgf_policies_common.xml</value></constructor-arg>
