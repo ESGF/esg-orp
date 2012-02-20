@@ -84,7 +84,6 @@
 	    <property name="idpWhiteListFile" value="/esg/config/esgf_idp.xml, /esg/config/esgf_idp_static.xml" />
 	</bean>
 
-	
 	<bean id="openidConsumerManager" class="org.openid4java.consumer.ConsumerManager" />
 	
  	<!-- Provider implementation of AuthenticationManager -->
@@ -112,6 +111,4 @@
 		<property name="keystoreAlias" value="${keystoreAlias}"/>
 	</bean>
 	
-	<bean id="registrationRelayController" class="esg.orp.orp.RegistrationRelayController" />
-
 </beans>

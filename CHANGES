@@ -1,3 +1,8 @@
+2.0.0
+- Refactored to include end-point for authorization service.
+
+======================== OLDER VERSIONS (in reverse order) ================================
+
 1.2.12
 Renamed a few classes
 
