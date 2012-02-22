@@ -38,7 +38,7 @@ public class SAMLAuthorizer implements Authorizer {
     public SAMLAuthorizer() {
         
         encoder = new SAMLAuthorizationServiceClientSoapImpl("ESGF Authorization Filter");
-        transmitter = new SOAPServiceClient();
+        transmitter = SOAPServiceClient.getInstance();
         
     }
 
