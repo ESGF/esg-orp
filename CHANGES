@@ -1,7 +1,7 @@
 2.0.0
 - Refactored to include end-point for authorization service.
 
-2.0.1
+2.0.2
 - Removing 401 status code for all URLs except on login redirect.
 - Upgraded security dependency.
 
