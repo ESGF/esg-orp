@@ -32,6 +32,9 @@ public interface Parameters {
 	// OpenID RP target URL
 	final static String OPENID_URL = "/j_spring_openid_security_check.htm";
 	
+	// OpenID RP login URL
+	final static String LOGIN_URL = "/home.htm";
+	
 	// OpenID Relying Party parameters
 	final static String KEYSTORE_PATH = "kestorePath";
 	final static String KEYSTORE_PASSWORD = "kestorePassword";

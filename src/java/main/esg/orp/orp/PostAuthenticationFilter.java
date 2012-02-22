@@ -47,6 +47,7 @@ import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.util.WebUtils;
 
@@ -144,8 +145,12 @@ public class PostAuthenticationFilter implements Filter, InitializingBean {
 						
 		} else {
 		
-	   		// set HTTP STATUS CODE = 401 while returning login page
-			resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	   		// set HTTP STATUS CODE = 401 while returning login page on redirect
+		    // note: don't do this for any other URL
+		    if (  url.endsWith(Parameters.LOGIN_URL)
+		        && StringUtils.hasText( (String)session.getAttribute(Parameters.OPENID_REDIRECT)) ) {
+			    resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		    }
 			
 			// keep processing
 	  		chain.doFilter(request, response);
