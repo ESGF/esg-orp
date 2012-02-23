@@ -77,7 +77,7 @@ if $(echo "${esg_dist_url}" | grep "http://198.128.245.140/dist" >& /dev/null); 
 
 openid_relying_party_dist_url="${esg_dist_url}/esg-orp/esg-orp.war"
 openid_relying_party_property_file_dist_url="${esg_dist_url}/esg-orp/esg-orp.properties"
-openid_relying_party_app_home="${CATALINA_HOME}/webapps/OpenidRelyingParty"
+openid_relying_party_app_home="${CATALINA_HOME}/webapps/esg-orp"
 install_manifest=${install_manifest:-"${esg_root_dir}/esgf-install-manifest"}
 
 date_format=${date_format:-"+%Y_%m_%d_%H%M%S"}
@@ -88,7 +88,7 @@ esg_orp_version=${esg_orp_version:-"1.1.0"}
 #          upgrade = 1 
 setup_orp() {
     echo -n "Checking for Openid Relying Party ${esg_orp_version}"
-    check_webapp_version "OpenidRelyingParty" ${esg_orp_version}
+    check_webapp_version "esg-orp" ${esg_orp_version}
     local ret=$?
     ((ret == 0)) && (( ! force_install )) && echo " [OK]" && return 0
 
@@ -236,7 +236,7 @@ write_orp_install_log() {
     local esg_orp_version=${esg_orp_version}
     [ -z "${esg_orp_version}" ] && \
         esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)$/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | tr -d "\015")
-    echo "$(date ${date_format}) webapp:OpenidRelyingParty=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_manifest}
+    echo "$(date ${date_format}) webapp:esg-orp=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_manifest}
     dedup ${install_manifest}
     get_property esgf_https_port
     [ -n "${esgf_https_port}" ] && local port=":${esgf_https_port}"
@@ -298,7 +298,7 @@ clean_orp_webapp_subsystem() {
             if [ -n ${openid_relying_party_app_home} ]; then
                 rm -rf ${openid_relying_party_app_home}
                 [ $? != 0 ] && echo "ERROR: Unable to remove ${openid_relying_party_app_home}" && return 1
-                perl -n -i -e'print unless m!webapp:OpenidRelyingParty!' ${install_manifest}
+                perl -n -i -e'print unless m!webapp:esg-orp!' ${install_manifest}
             fi
         fi
     fi 
