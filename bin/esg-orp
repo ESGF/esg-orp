@@ -75,18 +75,44 @@ esg_dist_url=${esg_dist_url:-"http://198.128.245.140/dist"}
 #it -gavin
 if $(echo "${esg_dist_url}" | grep "http://198.128.245.140/dist" >& /dev/null); then echo "*"; else (echo "illegal distribution url: ${esg_dist_url}" && checked_done 1); fi
 
-openid_relying_party_dist_url="${esg_dist_url}/esg-orp/esg-orp.war"
-openid_relying_party_property_file_dist_url="${esg_dist_url}/esg-orp/esg-orp.properties"
-openid_relying_party_app_home="${CATALINA_HOME}/webapps/esg-orp"
+esg_orp_version=${esg_orp_version:-"1.1.0"}
+
+#--------------
+#User Defined / Setable (public)
+#--------------
+esg_root_dir=${esg_root_dir:-${ESGF_HOME:-"/esg"}}
+install_prefix=${install_prefix:-"/usr/local"}
+workdir=${workdir:-~/workbench/esg}
 install_manifest=${install_manifest:-"${esg_root_dir}/esgf-install-manifest"}
+#--------------
 
 date_format=${date_format:-"+%Y_%m_%d_%H%M%S"}
+force_install=${force_install:-0}
 
-esg_orp_version=${esg_orp_version:-"1.1.0"}
+
+init() {
+    
+    orp_dist_url="${esg_dist_url}/esg-orp/esg-orp.war"
+    orp_property_file_dist_url="${esg_dist_url}/esg-orp/esg-orp.properties"
+    orp_context_root="esg-orp"
+    orp_service_app_home="${CATALINA_HOME}/webapps/${orp_context_root}"
+    orp_service_endpoint=$(echo "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${orp_service_app_home##*/}/html.htm")
+
+    #------------------------------------------
+    #Security services associated with ORP
+    #------------------------------------------
+    orp_security_authorization_service_host=${orp_security_authorization_service_host:-${esgf_host:-$(hostname --fqdn)}}
+    orp_security_authorization_service_port=${orp_security_authorization_service_port:-"443"}
+    orp_security_authorization_service_endpoint=$(echo "https://${orp_security_authorization_service_host}$( if ((orp_security_authorization_service_port != 443)); then echo ":${orp_security_authorization_service_port}"; fi)/esgf-orp/saml/soap/secure/authorizationService.htm")
+    #------------------------------------------
+
+}
 
 #arg (1) - install = 0 [default]
 #          upgrade = 1 
 setup_orp() {
+    init
+
     echo -n "Checking for Openid Relying Party ${esg_orp_version}"
     check_webapp_version "esg-orp" ${esg_orp_version}
     local ret=$?
@@ -103,7 +129,7 @@ setup_orp() {
     local default="Y"
     ((force_install)) && default="N"
     local dosetup
-    if [ -d ${openid_relying_party_app_home} ]; then 
+    if [ -d ${orp_service_app_home} ]; then 
 	echo "Detected an existing openid relying party installation..."
         read -p "Do you want to continue with openid relying party installation and setup? $([ "$default" = "N" ] && echo "[y/N]" || echo "[Y/n]") " dosetup
         [ -z "${dosetup}" ] && dosetup=${default}
@@ -117,7 +143,7 @@ setup_orp() {
         [ -z "${dobackup}" ] && dobackup=${default}
         if [ "${dobackup}" = "Y" ] || [ "${dobackup}" = "y" ]; then
             echo "Creating a backup archive of this web application $security_app_home"
-	    backup ${openid_relying_party_app_home}
+	    backup ${orp_service_app_home}
         fi
 
 	echo
@@ -128,14 +154,14 @@ setup_orp() {
     pushd $workdir >& /dev/null
 
     #collect the necessary resources...
-    local openid_relying_party_dist_file=${openid_relying_party_dist_url##*/}
-    checked_get ${openid_relying_party_dist_file} ${openid_relying_party_dist_url}
+    local orp_dist_file=${orp_dist_url##*/}
+    checked_get ${orp_dist_file} ${orp_dist_url}
     local no_new_update=$?
     #set to the absolute file name...
-    openid_relying_party_dist_file=$(readlink -f ${openid_relying_party_dist_file})
+    orp_dist_file=$(readlink -f ${orp_dist_file})
 
     if((upgrade)); then
-        get_orp_support_libs ${openid_relying_party_app_home}/WEB-INF/lib
+        get_orp_support_libs ${orp_service_app_home}/WEB-INF/lib
         if (($? > 0)); then
             echo "Upgrading in light of newly fetched libs!!"
         else
@@ -147,8 +173,8 @@ setup_orp() {
     stop_tomcat
 
     #----------------------------
-    local fetch_file=${openid_relying_party_property_file_dist_url##*/}
-    checked_get ${fetch_file} ${openid_relying_party_property_file_dist_url}
+    local fetch_file=${orp_property_file_dist_url##*/}
+    checked_get ${fetch_file} ${orp_property_file_dist_url}
     
     #NOTE: The saving of the last config file must be done *BEFORE* we untar the new distro!
     if ((upgrade)) && [ -e WEB-INF/classes/${fetch_file} ]; then
@@ -156,12 +182,12 @@ setup_orp() {
         chmod 600 WEB-INF/classes/${fetch_file}*
     fi
 
-    mkdir -p ${openid_relying_party_app_home}
+    mkdir -p ${orp_service_app_home}
     [ $? != 0 ] && return 1
-    cd ${openid_relying_party_app_home}
-    echo "Expanding war ${openid_relying_party_dist_file} in $(pwd)"
-    $JAVA_HOME/bin/jar xf ${openid_relying_party_dist_file}
-    [ $? != 0 ] && echo " ERROR: Could not extract the OpenID Relying Party: ${openid_relying_party_dist_file}" && popd && checked_done 1
+    cd ${orp_service_app_home}
+    echo "Expanding war ${orp_dist_file} in $(pwd)"
+    $JAVA_HOME/bin/jar xf ${orp_dist_file}
+    [ $? != 0 ] && echo " ERROR: Could not extract the OpenID Relying Party: ${orp_dist_file}" && popd && checked_done 1
 
     #----------------------------
     #Property file fetching and token replacement...
@@ -176,8 +202,8 @@ setup_orp() {
     else
         orp_startup_hook $(readlink -f ${fetch_file})
     fi
-    chown -R ${tomcat_user} ${openid_relying_party_app_home}
-    chgrp -R ${tomcat_group} ${openid_relying_party_app_home}
+    chown -R ${tomcat_user} ${orp_service_app_home}
+    chgrp -R ${tomcat_group} ${orp_service_app_home}
     unset fetch_file
     popd >& /dev/null
     #----------------------------
@@ -185,7 +211,7 @@ setup_orp() {
     popd >& /dev/null
     echo
 
-    get_orp_support_libs ${openid_relying_party_app_home}/WEB-INF/lib
+    get_orp_support_libs ${orp_service_app_home}/WEB-INF/lib
 
     write_orp_install_log
 
@@ -235,13 +261,16 @@ get_orp_support_libs() {
 write_orp_install_log() {
     local esg_orp_version=${esg_orp_version}
     [ -z "${esg_orp_version}" ] && \
-        esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)$/p' ${openid_relying_party_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | tr -d "\015")
-    echo "$(date ${date_format}) webapp:esg-orp=${esg_orp_version} ${openid_relying_party_app_home}" >> ${install_manifest}
+        esg_orp_version=$(sed -n '/^Version:[ ]*\(.*\)$/p' ${orp_service_app_home}/META-INF/MANIFEST.MF | awk '{print $2}' | tr -d "\015")
+    echo "$(date ${date_format}) webapp:esg-orp=${esg_orp_version} ${orp_service_app_home}" >> ${install_manifest}
     dedup ${install_manifest}
     get_property esgf_https_port
     [ -n "${esgf_https_port}" ] && local port=":${esgf_https_port}"
-    write_as_property relyingparty_endpoint "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${openid_relying_party_app_home##*/}/html.htm"
-    write_as_property relyingparty_app_home ${openid_relying_party_app_home}
+    write_as_property orp_service_endpoint ${orp_service_endpoint}
+    write_as_property orp_service_app_home ${orp_service_app_home}
+    write_as_property orp_security_authorization_service_endpoint
+    write_as_property orp_security_authorization_service_app_home
+
     return 0
 }
 
@@ -264,11 +293,12 @@ _fetch_static_idp_whitelist() {
 #This function is called by esg-node before starting tomcat!
 #This is how we make sure we are always using the proper credentials.
 orp_startup_hook() {
+    init
     #----------------------
     #edit the property file... #NOTE: I really don't like the global scoping of the admin password... but... hmm...
     echo -n "ORP Startup Hook: Syncing Credential Tokens... "
 
-    local target_properties_file=${1:-"${openid_relying_party_app_home}/WEB-INF/classes/esg-orp.properties"}
+    local target_properties_file=${1:-"${orp_service_app_home}/WEB-INF/classes/esg-orp.properties"}
 
     [ -e "${target_properties_file}" ] && cp ${target_properties_file} ${target_properties_file}.bak
 
@@ -291,16 +321,24 @@ orp_startup_hook() {
 clean_orp_webapp_subsystem() {
     init
     local doit="N"
-    if [ -e ${openid_relying_party_app_home} ]; then
-        read -p "remove ESGF ORP web service? (${openid_relying_party_app_home}) [y/N]: " doit
+    if [ -e ${orp_service_app_home} ]; then
+        read -p "remove ESGF ORP web service? (${orp_service_app_home}) [y/N]: " doit
         if [ "doit" = "Y" ] || [ "$doit" = "y" ]; then
-            echo "removing ${openid_relying_party_app_home}"
-            if [ -n ${openid_relying_party_app_home} ]; then
-                rm -rf ${openid_relying_party_app_home}
-                [ $? != 0 ] && echo "ERROR: Unable to remove ${openid_relying_party_app_home}" && return 1
+            echo "removing ${orp_service_app_home}"
+            if [ -n ${orp_service_app_home} ]; then
+                rm -rf ${orp_service_app_home}
+                [ $? != 0 ] && echo "ERROR: Unable to remove ${orp_service_app_home}" && return 1
                 perl -n -i -e'print unless m!webapp:esg-orp!' ${install_manifest}
             fi
         fi
-    fi 
+    fi
+    if [ ! -e ${orp_service_app_home} ]; then
+        debug_print "removing orp associated properties..."
+        remove_property orp_service_app_home
+        remove_property orp_service_endpoint
+        remove_property orp_security_authorization_service_app_home
+        remove_property orp_security_authorization_service_endpoint
+    fi
+
     return 0
 }
