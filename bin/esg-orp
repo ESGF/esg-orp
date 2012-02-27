@@ -183,12 +183,17 @@ setup_orp() {
         chmod 600 WEB-INF/classes/${fetch_file}*
     fi
 
+    #----------------------------
+    #make room for new INSTALL
+    ((upgrade == 0)) && set_aside_web_app ${orp_service_app_home}
+    #----------------------------
     mkdir -p ${orp_service_app_home}
     [ $? != 0 ] && return 1
     cd ${orp_service_app_home}
     echo "Expanding war ${orp_dist_file} in $(pwd)"
     $JAVA_HOME/bin/jar xf ${orp_dist_file}
-    [ $? != 0 ] && echo " ERROR: Could not extract the OpenID Relying Party: ${orp_dist_file}" && popd && checked_done 1
+    local ret=$?
+    ((upgrade == 0)) && set_aside_web_app_cleanup ${orp_service_app_home} ${ret}
 
     #----------------------------
     #Property file fetching and token replacement...
