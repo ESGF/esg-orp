@@ -192,8 +192,9 @@ setup_orp() {
     cd ${orp_service_app_home}
     echo "Expanding war ${orp_dist_file} in $(pwd)"
     $JAVA_HOME/bin/jar xf ${orp_dist_file}
-    local ret=$?
-    ((upgrade == 0)) && set_aside_web_app_cleanup ${orp_service_app_home} ${ret}
+    local _ret=$?
+    ((upgrade == 0)) && set_aside_web_app_cleanup ${orp_service_app_home} ${_ret}
+    unset _ret
 
     #----------------------------
     #Property file fetching and token replacement...
