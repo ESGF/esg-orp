@@ -8,6 +8,9 @@
 2.1.0
 - Upgrading security dependency to 2.0.3
 
+2.1.1
+- Copied over example XML configuration files from esgf-security module.
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12

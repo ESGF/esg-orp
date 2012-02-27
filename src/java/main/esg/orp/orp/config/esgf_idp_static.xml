@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<idp_whitelist xmlns="http://www.esgf.org/whitelist">
+
+	<value>https://pcmdi3.llnl.gov/esgcet/openid/provider.htm</value>
+
+	<value>https://cmip-gw.badc.rl.ac.uk/openid/openidserver</value>
+	<value>https://ndgbeta.badc.rl.ac.uk/openid/openidserver</value>
+	<value>https://ndg3beta.badc.rl.ac.uk/OpenID/Provider/server</value>
+	<value>https://ceda.ac.uk/OpenID/Provider/server</value>
+
+	<value>https://ipcc-ar5.dkrz.de/openid/provider.htm</value>
+	<value>https://albedo2.dkrz.de/esgcet/openid/provider.htm</value>
+
+	<value>https://esg-gateway.jpl.nasa.gov/openid/provider.htm</value>
+
+	<value>https://www.earthsystemgrid.org/openid/provider.htm</value>
+	<value>https://esg.ucar.edu/openid/provider.htm</value>
+
+	<value>https://esg.nci.org.au/esgcet/openid/provider.htm</value>
+
+	<value>https://esg.nersc.gov/esgcet/openid/provider.htm</value>
+
+	<value>https://esg2-gw.ccs.ornl.gov/esgcet/openid/provider.htm</value>
+	<value>https://esg-gw.ornl.teragrid.org/openid/provider.htm</value>
+
+        <value>https://hydra.fsl.noaa.gov/esgf-idp/idp/openidServer.htm</value>
+        <value>https://dev-hydra.esrl.svc/esgf-idp/idp/openidServer.htm</value>
+ 
+        <value>https://test-datanode.jpl.nasa.gov/esgf-idp/idp/openidServer.htm</value>
+
+</idp_whitelist>

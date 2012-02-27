@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- This file is intended to be edited and maintained by the local Node admnistrators.
+     It should contain only policies specific to data served by the local Node.
+     It will not be overridden by a software update. -->
+<policies xmlns="http://www.esgf.org/security">
+
+    <!-- The following statement allows all members of group "CMIP5 Research" to read any local URL thaht contains "my_data".
+         Note that the group "CMIP5 Research" is administered by PCMDI
+    <policy resource=".*cmip5.*" attribute_type="CMIP5 Research" attribute_value="user" action="Read"/> -->
+
+    <!-- The following statement allows all members of group "MY GROUP" to read any local URL that contains "my_data"
+    <policy resource=".*my_data.*" attribute_type="MY GROUP" attribute_value="user" action="Read"/> -->
+
+    <!-- The following statement allows members of group "MY GROUP" with role="publisher" to publish local datasets with id containing "my_data" 
+    <policy resource=".*my_data.*" attribute_type="MY GROUP" attribute_value="publisher" action="Write"/> -->
+
+</policies>
