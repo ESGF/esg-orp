@@ -14,6 +14,9 @@
 2.1.2
 - Added CMIP5 Commercial group to esgf_ats_static.xml
 
+2.1.3
+- Removed CMIP5 endpoints in esgf_ats_static.xml otherwise they show up as multiple registration buttons.
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12
