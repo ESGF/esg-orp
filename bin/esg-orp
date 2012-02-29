@@ -363,9 +363,9 @@ _setup_policy_files() {
 
         #If old named file exists rename
         # esgf_polcies.xml -> esgf_policies_local.xml
-        [ -f "${esg_config_dir}/${policy_file_name}.xml" ] && mv -v "${esg_config_dir}/${policy_file_name}{,_local}.xml"
+        [ -f "${esg_config_dir}/${policy_file_name}.xml" ] && mv -v ${esg_config_dir}/${policy_file_name}{,_local}.xml
         # esgf_polcies_static.xml -> esgf_policies_common.xml
-        [ -f "${esg_config_dir}/${policy_file_name}_static.xml" ] && mv -v "${esg_config_dir}/${policy_file_name}{_static,_common}.xml"
+        [ -f "${esg_config_dir}/${policy_file_name}_static.xml" ] && mv -v ${esg_config_dir}/${policy_file_name}{_static,_common}.xml
 
         if [ ! -f "${esg_config_dir}/${policy_file_name}_local.xml" ] && [ -f "${policy_file_dist_dir}/${policy_file_name}_local.xml" ]; then
             cp -v ${policy_file_dist_dir}/${policy_file_name}_local.xml ${esg_config_dir}
