@@ -202,6 +202,7 @@ setup_orp() {
     [ -d "${tomcat_install_dir}/webapps/OpenidRelyingParty" ] && \
         backup "${tomcat_install_dir}/webapps/OpenidRelyingParty" && \
         rm -rf "${tomcat_install_dir}/webapps/OpenidRelyingParty" && \
+        remove_install_log_entry OpenidRelyingParty && \
         echo "Removed old ORP [OK]"
 
     [ -f "${tomcat_install_dir}/webapps/thredds/WEB-INF/web.xml" ] && \
