@@ -197,6 +197,18 @@ setup_orp() {
     unset _ret
 
     #----------------------------
+    #Migration update cleanup
+    #----------------------------
+    [ -d "${tomcat_install_dir}/webapps/OpenidRelyingParty" ] && \
+        backup "${tomcat_install_dir}/webapps/OpenidRelyingParty" && \
+        rm -rf "${tomcat_install_dir}/webapps/OpenidRelyingParty" && \
+        echo "Removed old ORP [OK]"
+
+    [ -f "${tomcat_install_dir}/webapps/thredds/WEB-INF/web.xml" ] && \
+        sed -i 's/OpenidRelyingParty/esg-orp/g' "${tomcat_install_dir}/webapps/thredds/WEB-INF/web.xml" && \
+        echo "updated thredds' web.xml accordingly [OK]"
+
+    #----------------------------
     #Property file fetching and token replacement...
     #----------------------------
     pushd WEB-INF/classes >& /dev/null
