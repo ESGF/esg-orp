@@ -17,6 +17,11 @@
 2.1.3
 - Removed CMIP5 endpoints in esgf_ats_static.xml otherwise they show up as multiple registration buttons.
 
+2.1.4
+- Upgraded dependency of esgf-security to avoid duplicate group registration URLs
+- Inserted common entries in esgf_ats_static.xml
+- Inserted example entries in esgf_policies_local.xml (commented out) 
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12
