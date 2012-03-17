@@ -22,6 +22,9 @@
 - Inserted common entries in esgf_ats_static.xml
 - Inserted example entries in esgf_policies_local.xml (commented out) 
 
+2.1.5
+- Upgraded security dependency
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12
