@@ -372,7 +372,7 @@ _setup_policy_files() {
     if [ $((sel & DATA_BIT ))   != 0 ]; then
         debug_print "setup_policy_files()... "
         local policy_file_name="esgf_policies"
-        local policy_file_dist_dir="${security_app_home:-/usr/local/tomcat/webapps/esgf-security}/WEB-INF/classes/esg/security/config"
+        local policy_file_dist_dir="${orp_security_authorization_service_app_home:-/usr/local/tomcat/webapps/esg-orp}/WEB-INF/classes/esg/orp/orp/config"
 
         #If old named file exists rename
         # esgf_polcies.xml -> esgf_policies_local.xml
