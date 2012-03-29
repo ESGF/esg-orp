@@ -10,8 +10,8 @@
         
         <!-- Test resources are made freely available 
         <policy resource=".*test.*" attribute_type="ANY" attribute_value="" action="Read"/>
-        <policy resource=".*test.*" attribute_type="Test_Group" attribute_value="publisher" action="Write"/>
-        <policy resource=".*test.*" attribute_type="wheel" attribute_value="super" action="Write"/> -->
+        <policy resource=".*test.*" attribute_type="Test_Group" attribute_value="publisher" action="Write"/> -->
+        <policy resource=".*test.*" attribute_type="wheel" attribute_value="super" action="Write"/>
         <!-- <policy resource=".*test.*" attribute_type="Test Group" attribute_value="User" action="Read"/> -->
 
         <!-- Everything is Free 
