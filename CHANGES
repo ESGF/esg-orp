@@ -25,6 +25,9 @@
 2.1.5
 - Upgraded security dependency
 
+2.1.6
+- Inserted commented-out statement about role="default" for CMIP5 access.
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12
