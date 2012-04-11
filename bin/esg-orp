@@ -309,9 +309,9 @@ orp_startup_hook() {
 
     [ -e "${target_properties_file}" ] && cp ${target_properties_file} ${target_properties_file}.bak
 
-    local keystore_file=$(sed -n 's#.*keystoreFile="\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "O" || echo -n "x"
-    local keystore_pass=$(sed -n 's#.*keystorePass="\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "o" || echo -n "x"
-    local keystore_alias=$(sed -n 's#.*keyAlias="\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "." || echo -n "x"
+    local keystore_file=$(sed -n 's#.*keystoreFile[ ]*=[ ]*"\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "O" || echo -n "x"
+    local keystore_pass=$(sed -n 's#.*keystorePass[ ]*=[ ]*"\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "o" || echo -n "x"
+    local keystore_alias=$(sed -n 's#.*keyAlias[ ]*=[ ]*"\([^ "]*\)".*$#\1#p' ${tomcat_install_dir}/conf/server.xml) && echo -n "." || echo -n "x"
 
     sed -i 's#^[ ]*\(keystoreFile=\).*$#\1'${keystore_file}'#'   ${target_properties_file} && echo -n ":" || echo -n "8"
     sed -i 's#^[ ]*\(keystorePassword=\).*$#\1'${keystore_pass}'#'   ${target_properties_file} && echo -n "-" || echo -n "."
