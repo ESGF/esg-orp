@@ -28,6 +28,9 @@
 2.1.6
 - Inserted commented-out statement about role="default" for CMIP5 access.
 
+2.1.7
+-- Prevented registration for obsolete role="default" (in view only)
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12

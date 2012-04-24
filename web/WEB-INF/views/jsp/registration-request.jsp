@@ -199,12 +199,14 @@
 													</td>
 												</tr>
 											</c:when>
-											<c:otherwise>
+											<c:when test="${entry.key.value}!='default'">
 												<c:forEach var="url" items="${entry.value}">
 													<c:set var="count" value="${count+1}"/>
 													<tr>
-														<td>
+														<td align="right">
 															Group: <b><c:out value="${entry.key.type}"/></b>
+															&nbsp;
+															Role: <b><c:out value="${entry.key.value}"/></b>
 														</td>
 														<td>
 															<form method="post" id="form_${count}">
@@ -223,6 +225,9 @@
 														YAHOO.util.Event.addListener("button_${count}", "click", register, YAHOO.util.Dom.get("form_${count}") );
 													</script>
 												</c:forEach>
+											</c:when>
+											<c:otherwise>
+												<!-- don't register for role='default' -->
 											</c:otherwise>
 										</c:choose>
 									</c:forEach>
