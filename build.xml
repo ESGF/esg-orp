@@ -434,6 +434,7 @@ Builds the project via ant (obviously).
     <delete file="${dist_dir}/${module}-${version_num}.tar.gz"/> 
     <tar destfile="${dist_dir}/${module}-${version_num}.tar">
       <tarfileset dir="${dist_dir}" includes="**/*.jar,**/*.war" prefix="${module}-${version_num}"/>
+      <tarfileset dir="${bin_dir}" includes="esg-orp" prefix="${module}-${version_num}"/>
       <tarfileset dir="${basedir}" prefix="${module}-${version_num}">
 	<include name="LICENSE"/>
 	<include name="INSTALL"/>
