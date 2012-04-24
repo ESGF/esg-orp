@@ -199,7 +199,7 @@
 													</td>
 												</tr>
 											</c:when>
-											<c:when test="${entry.key.value}!='default'">
+											<c:when test="${entry.key.value != 'default'}">
 												<c:forEach var="url" items="${entry.value}">
 													<c:set var="count" value="${count+1}"/>
 													<tr>
