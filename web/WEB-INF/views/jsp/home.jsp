@@ -95,6 +95,15 @@
 				<!-- user is NOT authenticated -->
 				<p/>&nbsp;<p/>
 				<form method="post" action="<c:url value='${target_url}'/>">
+					<script language="javascript">
+						function sanitize() {
+							openidElement = document.getElementById("openid_identifier");
+							openid = openidElement.value;
+							openid = openid.replace("http:","https:")
+							               .replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+							openidElement.value = openid;
+						}
+					</script>				
 					<table align="center">
 						<tr>
 							<td>
@@ -110,9 +119,9 @@
 													<tr>
 														<td align="right" class="required">OpenID</td>
 														<td align="left">
-															<input type="text" name="openid_identifier" size="60" value="${openidCookie.value}"/>
+															<input type="text" name="openid_identifier" size="60" value="${openidCookie.value}" id="openid_identifier"/>
 														</td>
-														<td><input type="submit" value="GO" /></td>													
+														<td><input type="submit" value="GO" onclick="javascript:sanitize()"/></td>													
 													</tr>
 													<tr>
 														<td align="center" colspan="4">

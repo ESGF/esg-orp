@@ -31,6 +31,9 @@
 2.1.7
 -- Prevented registration for obsolete role="default" (in view only)
 
+2.1.9
+-- Sanitization of openid string at form submission.
+
 ======================== OLDER VERSIONS (in reverse order) ================================
 
 1.2.12
