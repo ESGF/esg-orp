@@ -143,7 +143,7 @@ setup_orp() {
         read -p "Do you want to make a back up of the existing distribution?? [Y/n] " dobackup
         [ -z "${dobackup}" ] && dobackup=${default}
         if [ "${dobackup}" = "Y" ] || [ "${dobackup}" = "y" ]; then
-            echo "Creating a backup archive of this web application $security_app_home"
+            echo "Creating a backup archive of this web application $orp_service_app_home"
 	    backup ${orp_service_app_home}
         fi
 
@@ -261,7 +261,7 @@ get_orp_support_libs() {
         echo "getting (downloading) dependent library jars from ESGF Distribution Server (Security) to ${dest_dir} ..."
         local make_backup_file=0 #Do NOT make backup file
         checked_get ${dest_dir}/${esgf_security_jar} ${esg_dist_url}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
-        (( $? == 0 )) && ((ret++)) #yes, I did indeed fetch something new
+        (( $? == 0 )) && ((ret++)) && write_security_lib_install_log #yes, I did indeed fetch something new
 
         checked_get ${dest_dir}/${esgf_security_test_jar} ${esg_dist_url}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
         (( $? == 0 )) && ((ret++)) #yes, I did indeed fetch something new
@@ -293,6 +293,18 @@ write_orp_install_log() {
 
     return 0
 }
+
+#NOTE: an identical implementation exists in the IDP installer...
+#(this should ideally only exist in one place i.e. a source "functions" file)
+write_security_lib_install_log() {
+    [ -z "${esgf_security_version}" ] && echo "WARNING: [idp] Could not write install log entry for security library" && return 1
+    local last_recorded_version=$(sed -n 's/.*esgf-security=\(.[^ ]*\).*/\1/p' ${install_manifest})
+    [ -n "${last_recorded_version}" ] && [ "${last_recorded_version}" = "${esgf_security_version}" ] && echo "(security install log entry already present) [OK]" && return 0
+    echo "$(date ${date_format}) esgf->library:esgf-security=${esgf_security_version} " >> ${install_manifest}
+    dedup ${install_manifest}
+    return 0
+}
+
 
 #--------------------------------------
 # Callout function from esg-node
