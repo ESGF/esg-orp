@@ -330,8 +330,6 @@ orp_startup_hook() {
     sed -i 's#^[ ]*\(keystoreAlias=\).*$#\1'${keystore_alias:-"tomcat"}'#' ${target_properties_file} && echo -n ")" || echo -n "("
     echo
     #----------------------
-    _setup_policy_files && echo ":-D"
-    _setup_static_whitelists "ats idp" && echo ":-D"
 }
 
 #--------------------------------------
@@ -364,75 +362,5 @@ clean_orp_webapp_subsystem() {
 }
 
 #******************************************************************
-# SECURITY SETUP
+# SECURITY SETUP: see esgf-security -> _setup_policy_files, _setup_static_whitelists
 #******************************************************************
-
-#_fetch_static_idp_whitelist() {
-#    local config_dir=${esg_config_dir}
-#    local static_list_file="esgf_idp_static.xml"
-#    if [ -d "${config_dir:-/esg/config}" ]; then
-#        [ -e "${config_dir}/${static_list_file}" ] && debug_print "${config_dir}/${static_list_file} is present will NOT fetch from distribution site" && return 0
-#        checked_get ${config_dir}/${static_list_file} ${esg_dist_url}/lists/${static_list_file} $((force_install))
-#        (( $? > 1 )) && echo debug_print "[DEBUG]: Could not fetch ${static_list_file} from distribution server" && return 1
-#        chown -R ${tomcat_user}:${tomcat_group} ${config_dir}/${static_list_file}
-#        chmod 644 ${config_dir}/${static_list_file}
-#    fi
-#    return 0
-#}
-
-_setup_policy_files() {
-    if [ $((sel & DATA_BIT ))   != 0 ]; then
-        debug_print "setup_policy_files()... "
-        local policy_file_name="esgf_policies"
-        local policy_file_dist_dir="${orp_security_authorization_service_app_home:-/usr/local/tomcat/webapps/esg-orp}/WEB-INF/classes/esg/orp/orp/config"
-
-        #If old named file exists rename
-        # esgf_polcies.xml -> esgf_policies_local.xml
-        [ -f "${esg_config_dir}/${policy_file_name}.xml" ] && mv -v ${esg_config_dir}/${policy_file_name}{,_local}.xml
-        # esgf_polcies_static.xml -> esgf_policies_common.xml
-        [ -f "${esg_config_dir}/${policy_file_name}_static.xml" ] && mv -v ${esg_config_dir}/${policy_file_name}{_static,_common}.xml
-
-        if [ ! -f "${esg_config_dir}/${policy_file_name}_local.xml" ] && [ -f "${policy_file_dist_dir}/${policy_file_name}_local.xml" ]; then
-            cp -v ${policy_file_dist_dir}/${policy_file_name}_local.xml ${esg_config_dir}
-            chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${policy_file_name}_local.xml && \
-                chmod 640 ${esg_config_dir}/${policy_file_name}_local.xml
-        fi
-
-        if [ ! -f "${esg_config_dir}/${policy_file_name}_common.xml" ] && [ -f "${policy_file_dist_dir}/${policy_file_name}_common.xml" ]; then
-            cp -v ${policy_file_dist_dir}/${policy_file_name}_common.xml ${esg_config_dir}
-            chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${policy_file_name}_common.xml && \
-                chmod 640 ${esg_config_dir}/${policy_file_name}_common.xml
-        else
-            if [  -f "${policy_file_dist_dir}/${policy_file_name}_common.xml" ]; then
-                if (! diff "${esg_config_dir}/${policy_file_name}_common.xml" "${policy_file_dist_dir}/${policy_file_name}_common.xml" >& /dev/null); then
-                    echo "Detected change in common policy file... replacing with distribution's common policy file"
-                    mv -v ${esg_config_dir}/${policy_file_name}_common.xml{,.bak}
-                    cp -v ${policy_file_dist_dir}/${policy_file_name}_common.xml "${esg_config_dir}"
-                    chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${policy_file_name}_common.xml && \
-                        chmod 640 ${esg_config_dir}/${policy_file_name}_common.xml
-                fi
-            fi
-        fi
-    else
-        debug_print "This function, setup_policy_files(), is not applicable to current node type (${sel})"
-    fi
-}
-
-_setup_static_whitelists() {
-    if [ $((sel & DATA_BIT ))   != 0 ]; then
-        local service_types=($@)
-        local service_type
-        local app_config_dir="${orp_service_app_home:-${tomcat_install_dir:-/usr/local/tomcat}/webapps/esg-orp}/WEB-INF/classes/esg/orp/orp/config"
-
-        for service_type in ${service_types[@]}; do
-            if [ ! -f "${esg_config_dir}/esgf_${service_type}_static.xml" ] && [ -f "${app_config_dir}/esgf_${service_type}_static.xml" ]; then
-                echo
-                cp -v ${app_config_dir}/esgf_${service_type}_static.xml ${esg_config_dir}
-                chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/esgf_${service_type}_static.xml && \
-                    chmod 640 ${esg_config_dir}/esgf_${service_type}_static.xml
-            fi
-        done
-    else
-        debug_print "This function, _setup_static_whitelists(), is not applicable to current node type (${sel})"
-    fi
-}
