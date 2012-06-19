@@ -104,7 +104,7 @@ init() {
     orp_security_authorization_service_host=${orp_security_authorization_service_host:-${esgf_host:-$(hostname --fqdn)}}
     orp_security_authorization_service_port=${orp_security_authorization_service_port:-"443"}
     orp_security_authorization_service_app_home=${orp_service_app_home}
-    orp_security_authorization_service_endpoint=$(echo "https://${orp_security_authorization_service_host}$( if ((orp_security_authorization_service_port != 443)); then echo ":${orp_security_authorization_service_port}"; fi)/esgf-orp/saml/soap/secure/authorizationService.htm")
+    orp_security_authorization_service_endpoint=$(echo "https://${orp_security_authorization_service_host}$( if ((orp_security_authorization_service_port != 443)); then echo ":${orp_security_authorization_service_port}"; fi)/esg-orp/saml/soap/secure/authorizationService.htm")
     #------------------------------------------
 
 }
