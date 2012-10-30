@@ -79,6 +79,9 @@
 			licenseDialog.setBody("License Text");
 			licenseDialog.cfg.setProperty("icon", YAHOO.widget.SimpleDialog.ICON_WARN);
 			
+			// limit height of dialog body
+			YAHOO.util.Dom.setStyle(licenseDialog.body, "height", "300px");
+			
 			// YES handler: hide the dialog, submit the form
 			var handleYes = function(event, widget, obj) {
 			    this.hide();
@@ -157,6 +160,13 @@
 		YAHOO.util.Event.onDOMReady(init);
 		
 		</script>
+		
+		<!-- CSS elements to assign licenseDialog a vertical scrollbar -->
+		<style type="text/css">
+        	#dlg .bd { overflow: auto; }     
+            #dlg .ft { padding-top: 10px; }     
+        </style>        
+		
 	</tiles:putAttribute>
 	
 		
