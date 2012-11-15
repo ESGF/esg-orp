@@ -1,5 +1,5 @@
 2.3.0
--- Fixed license dialog to have a vertical scrollbar.
+-- https://github.com/ESGF/esg-orp/issues?milestone=1&state=closed
 
 2.2.0
 -- Switched YUI libraries to be served from Google CDN (ajax.googleapis.com) as Yahoo site does not allow for https 
