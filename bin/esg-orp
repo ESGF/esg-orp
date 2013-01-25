@@ -166,7 +166,7 @@ setup_orp() {
         if (($? > 0)); then
             echo "Upgrading in light of newly fetched libs!!"
         else
-	    ((no_new_update == 1)) && echo "nothing more to do, you are up2date" && return 1
+	    ((no_new_update == 1)) && echo "nothing more to do, you are up2date" && return 0
 	    echo "Upgrading the OpenID Relying Party WebApp..."
         fi
     fi
