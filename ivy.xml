@@ -61,6 +61,11 @@ Note: Check Maven for propery dependency parameter values @
 
   <info organisation="org.esgf" module="esg-orp"/>
 
+  <publications>
+    <artifact name="${module}" type="jar" conf="*"/>
+    <artifact name="${module}-test" type="jar" conf="*"/>
+  </publications>
+
   <dependencies>
 
     <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.4"/>
