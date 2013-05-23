@@ -59,8 +59,8 @@
 	<classpathentry kind="lib" path="lib/fetched/spring-tx-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-web-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-3.0.5.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.3.7.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/mail-1.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/ivy-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.3.8.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

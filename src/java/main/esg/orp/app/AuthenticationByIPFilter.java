@@ -77,8 +77,10 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
          *    <param-value>137.78.210.102</param-value>
          *  </init-param>
 		 */
-		if (StringUtils.hasText(filterConfig.getInitParameter(Parameters.AUTHORIZED_IP))) {	
-		    this.authorizedIP = filterConfig.getInitParameter(Parameters.AUTHORIZED_IP);
+		String authorizedIp = filterConfig.getInitParameter(Parameters.AUTHORIZED_IP);
+		if (StringUtils.hasText(authorizedIp)) {	
+		    LOG.info("Authorizing IP: "+authorizedIp);
+		    this.authorizedIP = authorizedIp;
 		}
 		
 	    /**
@@ -87,10 +89,14 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
          *    <param-value>/esg/content/las/conf/server/las_servers.xml</param-value>
          *  </init-param>
          */
-		if (StringUtils.hasText(filterConfig.getInitParameter(Parameters.IP_WHITELIST))) {   
+		String ipWhitelist = filterConfig.getInitParameter(Parameters.IP_WHITELIST);
+		if (StringUtils.hasText(ipWhitelist)) {   
 		    try {
-		        registryService = new RegistryServiceLocalXmlImpl(filterConfig.getInitParameter(Parameters.IP_WHITELIST));
+		        LOG.info("Using IP white-list files: "+ipWhitelist);
+		        registryService = new RegistryServiceLocalXmlImpl(ipWhitelist);
 		    } catch(Exception e) {
+		        LOG.warn(e.getMessage());
+		        e.printStackTrace();
 		        throw new ServletException(e.getMessage());
 		    }
 		}
