@@ -123,8 +123,8 @@ Note: Check Maven for propery dependency parameter values @
 
     <dependency org="joda-time" name="joda-time" rev="2.0"/>
     <dependency org="org.slf4j" name="slf4j-api" rev="1.6.4"/>
-    <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.1"/>
-    <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.1"/>
+    <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.6.4"/>
+    <dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.6.4"/>
     <dependency org="velocity" name="velocity" rev="1.5"/>
     <dependency org="xml-security" name="xmlsec" rev="1.4.2"/>    
     <dependency org="xalan" name="serializer" rev="2.9.1" />
