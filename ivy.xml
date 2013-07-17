@@ -98,8 +98,6 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.springframework" name="spring-aop" rev="3.2.2.RELEASE" transitive="false" />
     <dependency org="org.springframework" name="spring-expression" rev="3.2.2.RELEASE" transitive="false" />
 
-    <dependency org="org.springframework" name="spring-asm" rev="3.1.4.RELEASE" transitive="false" />
-
     <dependency org="org.springframework.security" name="spring-security-config" rev="3.1.4.RELEASE" transitive="false"/>
     <dependency org="org.springframework.security" name="spring-security-core" rev="3.1.4.RELEASE" transitive="false"/>
     <dependency org="org.springframework.security" name="spring-security-openid" rev="3.1.4.RELEASE" transitive="false"/>
