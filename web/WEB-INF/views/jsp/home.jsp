@@ -5,7 +5,7 @@
 <c:set var="identity_cookie" value="<%= esg.orp.Parameters.OPENID_IDENTITY_COOKIE %>"/>
 <c:set var="openid" value="<%= esg.orp.Parameters.OPENID_IDENTITY %>"/>
 <c:set var="target_url" value="<%= esg.orp.Parameters.OPENID_URL %>"/>
-<c:set var="last_exception_key" value="<%= org.springframework.security.web.authentication.AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY %>"/>
+<c:set var="last_exception_key" value="<%= org.springframework.security.web.WebAttributes.AUTHENTICATION_EXCEPTION %>"/>
 
 
 <authz:authentication property="principal" var="principal"/>
