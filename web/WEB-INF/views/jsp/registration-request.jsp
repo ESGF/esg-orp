@@ -151,6 +151,12 @@
 			} else if (group=='CMIP5 Commercial') {
 				// retrieve specified license
 				showLicense("licenses/ipccCommercialLicense.xml");
+			} else if (group=='CORDEX_Research') {
+				// retrieve specified license
+				showLicense("licenses/CordexResearchLicense.xml");
+			} else if (group=='CORDEX_Commercial') {
+				// retrieve specified license
+				showLicense("licenses/CordexCommercialLicense.xml");
 			} else {
 				// submit the form
 				formObj.submit();
