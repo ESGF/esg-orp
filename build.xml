@@ -141,7 +141,7 @@ Builds the project via ant (obviously).
     -->
   
   <target name="pre-init" unless="build.master">
-    <property name="build.compiler" value="javac1.6" /> 
+    <property name="build.compiler" value="javac1.7" /> 
     <property name="build.compiler.emacs" value="true" /> 
     <echo message="set build.compiler to ${build.compiler}"/>
   </target>
