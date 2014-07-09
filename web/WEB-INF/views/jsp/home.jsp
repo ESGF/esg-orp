@@ -1,3 +1,4 @@
+
 <%@ include file="/WEB-INF/views/jsp/common/include.jsp" %>
 
 <!-- set page scope variables -->
@@ -33,7 +34,8 @@
 	<tiles:putAttribute name="body">
 		
 		<h1>Data Access Login</h1>
-					
+		
+						
 		<c:choose>
 		
 			<c:when test="${principal != null}">
@@ -90,19 +92,42 @@
 					<br/><b><c:out value="${sessionScope['redirect']}"/></b>
 				</c:if>
 			
-				<p>&nbsp;</p>Please enter your OpenID and you will be redirected to the login page at that site
+				<p>&nbsp;</p>Please select your openid provider or type it and then select it and you will be redirected to the login page at that site
 				
 				<!-- user is NOT authenticated -->
 				<p/>&nbsp;<p/>
 				<form method="post" action="<c:url value='${target_url}'/>">
 					<script language="javascript">
-						function sanitize() {
-							openidElement = document.getElementById("openid_identifier");
-							openid = openidElement.value;
-							openid = openid.replace("http:","https:")
+                    function sanitize()
+                    {
+                      var oNewOption = null;
+
+                      openidElement_t = document.getElementById("idp_identifier_text");
+					  if(openidElement_t.value.length >1)
+                      {
+                        openidElement = document.getElementById("openid_identifier");
+  						if (oNewOption == null) 
+  						{
+    					  oNewOption = document.createElement("OPTION");
+    					  openidElement.options.add(oNewOption);
+  						}
+                        oNewOption.text = openidElement_t.value;
+  						oNewOption.value = openidElement_t.value;
+
+                        openidElement = document.getElementById("openid_identifier");
+                        openidElement.value = openidElement_t.value; 
+                        openidElement_t.value = "";
+                      }
+                      else
+                      { 
+                        openidElement = document.getElementById("openid_identifier");
+                      }
+               
+					  openid = openidElement.value;
+					  openid = openid.replace("http:","https:")
 							               .replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-							openidElement.value = openid;
-						}
+					  openidElement.value = openid;
+					}
 					</script>				
 					<table align="center">
 						<tr>
@@ -119,7 +144,30 @@
 													<tr>
 														<td align="right" class="required">OpenID</td>
 														<td align="left">
-															<input type="text" name="openid_identifier" size="60" value="${openidCookie.value}" id="openid_identifier"/>
+														   <!-- kltsa 27/05/2014, issue 23061: Enable text field and button used for
+														                                       sending text openid.
+                                                            -->
+                                                             
+															<script language="javascript">
+												            function en_openid_textfield() 
+															{
+															  document.getElementById("idp_identifier_text").value ="";	
+															  document.getElementById("idp_identifier_text").style.visibility = "visible";                                                             
+															}
+															
+															</script>
+														   
+														   	<br><br>												   
+														    <SELECT name="openid_identifier" id="openid_identifier"  STYLE="width: 500px"> 
+                                                             <OPTION value="https://localhost:8443/esgf-idp/openid/testUser1234">https://localhost:8443/esgf-idp/openid/testUser1234</OPTION>
+                                                             <OPTION value="https://ceda.ac.uk/openid/">https://ceda.ac.uk/openid/</OPTION> 
+                                                             <OPTION value="">nothing</OPTION> 
+                                                            </SELECT>												
+														    <br>
+
+															<button type="button"  style="height:20px; width:40px" onClick="en_openid_textfield()">></button>
+		        											<input type="text" name="idp_identifier_text" size="55" value="" id="idp_identifier_text" style="visibility:hidden" onkeyup="AddListItem(this)"/>						
+														    	                                                            													
 														</td>
 														<td><input type="submit" value="GO" onclick="javascript:sanitize()"/></td>													
 													</tr>
@@ -137,6 +185,8 @@
 						</tr>
 					</table>
 				</form>		
+				<br>
+				
 				
 				<c:if test="${sessionScope['redirect']!=null}">
 					<p/>&nbsp;<p/>After logging in, you will be redirected to: 
