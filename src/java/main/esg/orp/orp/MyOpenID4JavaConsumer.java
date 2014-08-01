@@ -53,7 +53,7 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 	/**
      * Service holding the white list of trusted Identity Providers.
      */
-    private RegistryService registryService;
+    public static  RegistryService registryService;
 	
 	/**
 	 * List of trusted IdP providers.
