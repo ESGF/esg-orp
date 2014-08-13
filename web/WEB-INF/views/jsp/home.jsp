@@ -274,15 +274,6 @@ function sanitize()
 <tr>
 <td align="right" class="required">OpenID</td>
 <td align="left"  WIDTH="650">
-<!-- 
-<br><br>												   
-<SELECT name="openid_identifier" id="openid_identifier"  STYLE="width: 500px"> 
-<OPTION value="https://localhost:8443/esgf-idp/openid/testUser1234">https://localhost:8443/esgf-idp/openid/testUser1234</OPTION>
-<OPTION value="https://ceda.ac.uk/openid/">https://ceda.ac.uk/openid/</OPTION> 
-<OPTION value="">nothing</OPTION> 
-</SELECT>												
-<br>
--->
 
 <!-- kltsa 13/08/2014 change for issue #23088: 
      Reads the configuration directive "known_OPs_xml" from the esgf.properties file. The configuration 
@@ -291,13 +282,13 @@ function sanitize()
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<fmt:setBundle var="mybundle" basename="esgf"/>
-<fmt:message var="path" key="known_OPs_xml" bundle="${mybundle}"/>
+<fmt:setBundle var="bundle" basename="esgf"/>
+<fmt:message var="path" key="known_OPs_xml" bundle="${bundle}"/>
 <c:import url="file:${path}" var="doc_xml"/>
 
-<x:parse xml="${doc_xml}" var="output"/>
+<x:parse xml="${doc_xml}" var="parsed_doc"/>
 <select name="openid_identifier" id="openid_identifier"  STYLE="width: 500px">
-<x:forEach select="$output/OPS/OP" var="item">
+<x:forEach select="$parsed_doc/OPS/OP" var="item">
  <option value=<x:out select="$item/URL"/>><x:out select="$item/NAME"/></option>
 </x:forEach>
 </select>
