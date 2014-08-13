@@ -30,146 +30,6 @@
 <!-- body -->
 <tiles:putAttribute name="body">
 
-<!-- kltsa 16/07/2014 change for issue 23088 : Populate combo using contents of text file /esg/config/known_OP.txt -->
-<%@ page  import="java.io.BufferedReader" %>
-<%@ page  import="java.io.FileNotFoundException" %>	
-<%@ page  import="java.io.FileReader" %>
-<%@ page import="java.io.IOException" %>
-		
-<%! 
-    private String conf_file = new String("/esg/config/esgf.properties");	
-    private String conf_directive = new String("known_OP");
-	  
-   /* General purpose method for opening a file. */
-   public FileReader open_file(String filemame)
-   {
-	  FileReader fr = null;
-	  try 
-	  {
-	    fr = new FileReader(filemame);
-	  } 
-	  catch (FileNotFoundException e) 
-	  {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	  }
-		
-	  return fr;
-    }
-	 
-   /* Returns the location of file containing the list of OPs. */
-   public String find_file()
-   {
-      BufferedReader reader = null;
-	  FileReader fr = null;
-	  String line = null;
-	  String[] parts = null;
-		 
-	  fr = open_file(conf_file);
-			
-	  reader = new BufferedReader(fr);
-		
-	  try 
-	  {
-	    while ((line = reader.readLine()) != null) 
-	    {
-		  if(line.startsWith(conf_directive))
-		  {	
-		    parts = line.split("=");
-		   } /* if*/
-	    }
-	  } 
-	  catch (IOException e) 
-	  {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	  }
-		
-	  try 
-	  {
-	    reader.close();
-	  } 
-	  catch (IOException e) 
-	  {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	  }
-		
-	  try 
-	  {
-	    fr.close();
-	  } 
-	  catch (IOException e) 
-	  {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	  }
-		  
-	  return parts[1].trim();
-    }
-		   
-   public String create_combo()
-   {
-	 String idpWhiteListFile = null; 
-	 BufferedReader reader = null;
-	 FileReader fr = null;
-	 StringBuilder stringBuilder = null;
-	 String line = null;
-	
-	 idpWhiteListFile = find_file();
-
-	 fr = open_file(idpWhiteListFile);
-				
-	 reader = new BufferedReader(fr);
-	 stringBuilder = new StringBuilder();
-					
-	 stringBuilder.append("<select name=\"openid_identifier\" id=\"openid_identifier\"  STYLE=\"width: 400px; text-align:left;\">\n");
-	 try 
-	 {
-	   while ((line = reader.readLine()) != null) 
-	   {
-		 if(!line.startsWith("#"))
-		 {	
-		  stringBuilder.append("<option    STYLE=\" text-align:left;\" value=\"")
-		               .append(line)
-		               .append("\"")
-		               .append(">")	               
-		               .append(line)
-		               .append("</option>\n");
-		 } /* if*/
-	  }
-	} 
-	catch (IOException e) 
-	{
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-		
-	stringBuilder.append("</select>");
-	  	
-	try 
-	{
-	  reader.close();
-	} 
-	catch (IOException e) 
-	{
-      // TODO Auto-generated catch block
-	  e.printStackTrace();
-	}
-		
-	try 
-	{
-	  fr.close();
-	} 
-	catch (IOException e) 
-	{
-	  // TODO Auto-generated catch block
-	  e.printStackTrace();
-	}
-		  
-    return stringBuilder.toString();
-   } 		
-  %>
 		
 <h1>Data Access Login</h1>
 					
@@ -229,7 +89,9 @@
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 
-<!-- kltsa 01/08/2014 : Functionality from : http://jqueryui.com/autocomplete/#combobox -->
+<!-- kltsa 13/08/2014 change for issue #23088: : A select element with auto complete 
+                                                 (Functionality from : http://jqueryui.com/autocomplete/#combobox). 
+-->
 <style>
 .custom-combobox 
 {
@@ -421,7 +283,25 @@ function sanitize()
 </SELECT>												
 <br>
 -->
-<% out.print(create_combo()); %>
+
+<!-- kltsa 13/08/2014 change for issue #23088: 
+     Reads the configuration directive "known_OPs_xml" from the esgf.properties file. The configuration 
+     directive contains the path to the file containing the OPs to be displayed in the html <select> tag. 
+-->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+
+<fmt:setBundle var="mybundle" basename="esgf"/>
+<fmt:message var="path" key="known_OPs_xml" bundle="${mybundle}"/>
+<c:import url="file:${path}" var="doc_xml"/>
+
+<x:parse xml="${doc_xml}" var="output"/>
+<select name="openid_identifier" id="openid_identifier"  STYLE="width: 500px">
+<x:forEach select="$output/OPS/OP" var="item">
+ <option value=<x:out select="$item/URL"/>><x:out select="$item/NAME"/></option>
+</x:forEach>
+</select>
+
 </td>
 <td  align="center">
 <input type="submit" value="GO" style="height:30px; width:50px" onclick="javascript:sanitize()"/>
