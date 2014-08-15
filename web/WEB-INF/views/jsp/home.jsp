@@ -212,24 +212,39 @@
 	valueLowerCase = value.toLowerCase(),
 	valid = false;
 	this.element.children( "option" ).each(function() {
-	if ( $( this ).text().toLowerCase() === valueLowerCase ) {
-	this.selected = valid = true;
-	return false;
+	if ( $( this ).text().toLowerCase() === valueLowerCase ) 
+	{
+	  this.selected = valid = true;
+	  return false;
 	}
+	
 	});
 	// Found a match, nothing to do
-	if ( valid ) {
+	if ( valid ) 
+	{
 	return;
 	}
+	
 	// Remove invalid value
 	this.input
-	.val( "" )
-	.attr( "title", value + " didn't match any item" )
+	.val(value)
+	.attr( "title", "\"" + value + "\"  didn't match any item." )
 	.tooltip( "open" );
-	this.element.val( "" );
+	
+	/* kltsa 15/08/2014 change for issue #23088 : if option does not exists, add it.*/
+	select = document.getElementById('openid_identifier');
+	var opt = document.createElement('option');
+    opt.value = value;
+    opt.innerHTML = value;
+    select.appendChild(opt);
+    select.value =value;
+	this.selected = valid = true;
+	return false;
+	
+	//this.element.val("");
 	this._delay(function() {
 	this.input.tooltip( "close" ).attr( "title", "" );
-	}, 2500 );
+	}, 5500 );
 	this.input.autocomplete( "instance" ).term = "";
 	},
 	_destroy: function() {
