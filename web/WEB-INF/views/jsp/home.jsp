@@ -298,7 +298,7 @@ function sanitize()
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
 <fmt:setBundle var="bundle" basename="esgf"/>
-<fmt:message var="path" key="known_OPs_xml" bundle="${bundle}"/>
+<fmt:message var="path" key="orp.provider.list" bundle="${bundle}"/>
 <c:import url="file:${path}" var="doc_xml"/>
 
 <x:parse xml="${doc_xml}" var="parsed_doc"/>
