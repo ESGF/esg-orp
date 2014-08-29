@@ -19,6 +19,7 @@
 package esg.orp.app;
 
 import java.io.IOException;
+import java.net.*;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -46,6 +47,7 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 	
 	
 	String authorizedIP = null;
+	long[][] authorizedIpRanges = null;
 	RegistryService registryService = null;
 	
 	private final Log LOG = LogFactory.getLog(this.getClass());
@@ -56,16 +58,42 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 	public void attemptValidation(final HttpServletRequest req, final HttpServletResponse resp, final FilterChain chain) 
 				throws IOException, ServletException {
 						
-		// check IP address versus IP white list
+		// IP address versus AUTHORIZED_IP, AUTHORIZED_IP_RANGES, IP_WHITELIST
 		final String addr = req.getRemoteAddr();
+
+		// prepare check IP address versus AUTHORIZED_IP_RANGES
+		boolean isInRange = false;
+		long address = ipToLong(InetAddress.getByName(addr));
+
+		if (authorizedIpRanges != null) {
+			for (int i=0; i<authorizedIpRanges.length; i++) {
+			 //check IP address between ipLo and ipHi
+				if (address >= authorizedIpRanges[i][0] && address <= authorizedIpRanges[i][1]) {
+					isInRange = true;
+				}
+			}	
+		}
+
+		// do check 
 		if (LOG.isDebugEnabled()) LOG.debug("Checking authorization for remote host IP:"+addr);
 		if (   (authorizedIP!=null && authorizedIP.equals(addr))
-		    || (registryService!=null && registryService.getLasServers().contains(addr)) ) {
+		    || (registryService!=null && registryService.getLasServers().contains(addr))
+		    || (isInRange == true) ) {
                 if (LOG.isDebugEnabled()) LOG.debug("Remote host IP: "+addr+" found in white list, request is authorized");
                 this.assertIsValid(req);
 		}
 
 	}
+
+	public static long ipToLong(InetAddress ip) {
+        	byte[] octets = ip.getAddress();
+        	long result = 0;
+        	for (byte octet : octets) {
+            		result <<= 8;
+            		result |= octet & 0xff;
+        	}
+        	return result;
+    	}
 
 	public void init(FilterConfig filterConfig) throws ServletException { 
 		
@@ -73,15 +101,51 @@ public class AuthenticationByIPFilter extends AccessControlFilterTemplate {
 		
 		/**
 		 *  <init-param>
-         *    <param-name>authorizedIp</param-name>
-         *    <param-value>137.78.210.102</param-value>
+         *    <param-name>authorizedIpRanges</param-name>
+         *    <param-value>137.78.210.102-137.78.210.105,137.78.210.106-137.78.210.110</param-value>
          *  </init-param>
 		 */
-		String authorizedIp = filterConfig.getInitParameter(Parameters.AUTHORIZED_IP);
-		if (StringUtils.hasText(authorizedIp)) {	
-		    LOG.info("Authorizing IP: "+authorizedIp);
-		    this.authorizedIP = authorizedIp;
+		String authorizedIpRanges = filterConfig.getInitParameter(Parameters.AUTHORIZED_IP_RANGES);
+		if (StringUtils.hasText(authorizedIpRanges)) {
+			String[] ranges = authorizedIpRanges.split(",");
+		
+			// Convert ranges from string to long
+			long[][] longRanges = new long[ranges.length][2];
+			for (int i=0; i<ranges.length; i++) {
+
+				try {
+					// Convert ipLo
+					longRanges[i][0] = ipToLong(InetAddress.getByName(ranges[i].split("-")[0]));
+					// Convert ipHi
+					longRanges[i][1] = ipToLong(InetAddress.getByName(ranges[i].split("-")[1]));
+				}
+				catch (Exception e) {
+					LOG.warn(e.getMessage());
+                        		e.printStackTrace();
+                        		throw new ServletException(e.getMessage());
+				}
+			}
+
+			if (longRanges != null) {
+				this.authorizedIpRanges = longRanges;
+				for (int j=0; j<ranges.length; j++) {
+					LOG.info("Authorizing IP Range: "+ranges[j]);
+				}
+			}
 		}
+
+	        /**
+		 *  <init-param>
+ 	  *    <param-name>authorizedIp</param-name>
+          *    <param-value>137.78.210.102</param-value>
+          * </init-param>
+ 		  */
+                String authorizedIp = filterConfig.getInitParameter(Parameters.AUTHORIZED_IP);
+                if (StringUtils.hasText(authorizedIp)) {
+                    LOG.info("Authorizing IP: "+authorizedIp);
+                    this.authorizedIP = authorizedIp;
+                }
+
 		
 	    /**
          *  <init-param>
