@@ -231,12 +231,37 @@ setup_orp() {
     popd >& /dev/null
     echo
 
+    setup_providers_dropdown
+
     get_orp_support_libs ${orp_service_app_home}/WEB-INF/lib
 
     write_orp_install_log
 
     start_tomcat
     return 0
+}
+
+setup_providers_dropdown() {
+
+    # Do additional setup to configure CEDA-provided ORP with a dropdown list of IDPs
+
+    known_providers_url="${esg_dist_url}/esg-orp/esgf_known_providers.xml"
+    config_dir=${esg_root_dir}/config
+    known_providers_file=${config_dir}/esgf_known_providers.xml
+    local_idp_url=https://${esgf_host}/esgf-idp/openid/
+
+    # add /esg/config/ to common.loader in catalina.properties if not already present
+    perl -p -i -e "s@^(common\.loader=.*)\$@\1,$config_dir@ unless m{$config_dir}" ${tomcat_install_dir}/conf/catalina.properties
+
+    # install known providers file (fetch template file and substitute local IDP)
+    checked_get ${known_providers_file} ${known_providers_url} $((force_install))
+    perl -p -i -e "s,\@local_idp_name\@,$node_short_name,;s,\@local_idp_url\@,$local_idp_url," ${known_providers_file}
+
+    # and add orp.provider.list line in esgf.properties
+    config_file=$config_dir/esgf.properties
+    echo "orp.provider.list=${known_providers_file}" >> ${config_file}
+    dedup_properties ${config_file}
+    chown ${tomcat_user}:${tomcat_group} ${config_file}
 }
 
 # Takes the destination dirctory you wish to have supported libs checked and downloaded to
