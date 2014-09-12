@@ -71,17 +71,6 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 	@Override
 	public String beginConsumption(final HttpServletRequest request, final String response, final String returnToUrl, final String realm) throws OpenIDConsumerException {
 		
-		/*kltsa : what exists in this request ? */
-		/*
-		Enumeration headerNames = request.getHeaderNames();
-		while(headerNames.hasMoreElements()) 
-		{
-		  String headerName = (String)headerNames.nextElement();
-		  headerName = headerName;
-		  //out.println("" + headerName);
-		  //out.println("" + request.getHeader(headerName));
-		}
-		*/
 		// invoke superclass method to determine IdP URL
 		String idpurl =  super.beginConsumption(request, response, returnToUrl, realm);
 		if (LOG.isDebugEnabled()) LOG.debug("Resolved IdP URL="+idpurl);
