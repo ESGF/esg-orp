@@ -89,8 +89,8 @@
 <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <link rel="stylesheet" href="/resources/demos/style.css">
 
-<!-- kltsa 13/08/2014 change for issue #23088: : A select element with auto complete 
-                                                 (Functionality from : http://jqueryui.com/autocomplete/#combobox). 
+<!-- kltsa 13/08/2014 : : A select element with auto complete 
+                         (Functionality from : http://jqueryui.com/autocomplete/#combobox). 
 -->
 <style>
 .custom-combobox 
@@ -125,140 +125,159 @@
 				
 		
 <script language="javascript">
-(function( $ ) {
-	$.widget( "custom.combobox", {
-	_create: function() {
-	this.wrapper = $( "<span>" )
-	.addClass( "custom-combobox" )
-	.insertAfter( this.element );
-	this.element.hide();
-	this._createAutocomplete();
-	this._createShowAllButton();
-	},
-	_createAutocomplete: function() {
-	var selected = this.element.children( ":selected" ),
-	value = selected.val() ? selected.text() : "";
-	this.input = $( "<input>" )
-	.appendTo( this.wrapper )
-	.val( value )
-	.attr( "title", "" )
-	.addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
-	.autocomplete({
-	delay: 0,
-	minLength: 0,
-	source: $.proxy( this, "_source" )
-	})
-	.tooltip({
-	tooltipClass: "ui-state-highlight"
+
+	(function($) {
+		$
+				.widget(
+						"custom.combobox",
+						{
+							_create : function() {
+								this.wrapper = $("<span>").addClass(
+										"custom-combobox").insertAfter(
+										this.element);
+								this.element.hide();
+								this._createAutocomplete();
+								this._createShowAllButton();
+							},
+							_createAutocomplete : function() {
+								var selected = this.element
+										.children(":selected"), value = selected
+										.val() ? selected.text() : "";
+								this.input = $("<input>")
+										.appendTo(this.wrapper)
+										.val(value)
+										.attr("title", "")
+										.addClass(
+												"custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left")
+										.autocomplete({
+											delay : 0,
+											minLength : 0,
+											source : $.proxy(this, "_source")
+										}).tooltip({
+											tooltipClass : "ui-state-highlight"
+										});
+								this._on(this.input, {
+									autocompleteselect : function(event, ui) {
+										ui.item.option.selected = true;
+										this._trigger("select", event, {
+											item : ui.item.option
+										});
+									},
+									autocompletechange : "_removeIfInvalid"
+								});
+							},
+							_createShowAllButton : function() {
+								var input = this.input, wasOpen = false;
+								$("<a>")
+										.attr("tabIndex", -1)
+										.attr("title", "Show All Items")
+										.tooltip()
+										.appendTo(this.wrapper)
+										.button(
+												{
+													icons : {
+														primary : "ui-icon-triangle-1-s"
+													},
+													text : false
+												})
+										.removeClass("ui-corner-all")
+										.addClass(
+												"custom-combobox-toggle ui-corner-right")
+										.mousedown(
+												function() {
+													wasOpen = input
+															.autocomplete(
+																	"widget")
+															.is(":visible");
+												}).click(function() {
+											input.focus();
+											// Close if already visible
+											if (wasOpen) {
+												return;
+											}
+											// Pass empty string as value to search for, displaying all results
+											input.autocomplete("search", "");
+										});
+							},
+							_source : function(request, response) {
+								var matcher = new RegExp($.ui.autocomplete
+										.escapeRegex(request.term), "i");
+								response(this.element
+										.children("option")
+										.map(
+												function() {
+													var text = $(this).text();
+													if (this.value
+															&& (!request.term || matcher
+																	.test(text)))
+														return {
+															label : text,
+															value : text,
+															option : this
+														};
+												}));
+							},
+							_removeIfInvalid : function(event, ui) {
+								// Selected an item, nothing to do
+								if (ui.item) {
+									return;
+								}
+								// Search for a match (case-insensitive)
+								var value = this.input.val(), valueLowerCase = value
+										.toLowerCase(), valid = false;
+								this.element
+										.children("option")
+										.each(
+												function() {
+													if ($(this).text()
+															.toLowerCase() === valueLowerCase) {
+														this.selected = valid = true;
+														return false;
+													}
+
+												});
+								// Found a match, nothing to do
+								if (valid) {
+									return;
+								}
+
+								// Remove invalid value
+								this.input.val(value).attr(
+										"title",
+										"\"" + value
+												+ "\"  didn't match any item.")
+										.tooltip("open");
+
+								/* kltsa 15/08/2014 : if option does not exists, add it.*/
+								select = document
+										.getElementById('openid_identifier');
+								var opt = document.createElement('option');
+								opt.value = value;
+								opt.innerHTML = value;
+								select.appendChild(opt);
+								select.value = value;
+								this.selected = valid = true;
+								return false;
+
+								//this.element.val("");
+								this._delay(function() {
+									this.input.tooltip("close").attr("title",
+											"");
+								}, 5500);
+								this.input.autocomplete("instance").term = "";
+							},
+							_destroy : function() {
+								this.wrapper.remove();
+								this.element.show();
+							}
+						});
+	})(jQuery);
+	$(function() {
+		$("#openid_identifier").combobox();
+		$("#toggle").click(function() {
+			$("#openid_identifier").toggle();
+		});
 	});
-	this._on( this.input, {
-	autocompleteselect: function( event, ui ) {
-	ui.item.option.selected = true;
-	this._trigger( "select", event, {
-	item: ui.item.option
-	});
-	},
-	autocompletechange: "_removeIfInvalid"
-	});
-	},
-	_createShowAllButton: function() {
-	var input = this.input,
-	wasOpen = false;
-	$( "<a>" )
-	.attr( "tabIndex", -1 )
-	.attr( "title", "Show All Items" )
-	.tooltip()
-	.appendTo( this.wrapper )
-	.button({
-	icons: {
-	primary: "ui-icon-triangle-1-s"
-	},
-	text: false
-	})
-	.removeClass( "ui-corner-all" )
-	.addClass( "custom-combobox-toggle ui-corner-right" )
-	.mousedown(function() {
-	wasOpen = input.autocomplete( "widget" ).is( ":visible" );
-	})
-	.click(function() {
-	input.focus();
-	// Close if already visible
-	if ( wasOpen ) {
-	return;
-	}
-	// Pass empty string as value to search for, displaying all results
-	input.autocomplete( "search", "" );
-	});
-	},
-	_source: function( request, response ) {
-	var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-	response( this.element.children( "option" ).map(function() {
-	var text = $( this ).text();
-	if ( this.value && ( !request.term || matcher.test(text) ) )
-	return {
-	label: text,
-	value: text,
-	option: this
-	};
-	}) );
-	},
-	_removeIfInvalid: function( event, ui ) {
-	// Selected an item, nothing to do
-	if ( ui.item ) {
-	return;
-	}
-	// Search for a match (case-insensitive)
-	var value = this.input.val(),
-	valueLowerCase = value.toLowerCase(),
-	valid = false;
-	this.element.children( "option" ).each(function() {
-	if ( $( this ).text().toLowerCase() === valueLowerCase ) 
-	{
-	  this.selected = valid = true;
-	  return false;
-	}
-	
-	});
-	// Found a match, nothing to do
-	if ( valid ) 
-	{
-	return;
-	}
-	
-	// Remove invalid value
-	this.input
-	.val(value)
-	.attr( "title", "\"" + value + "\"  didn't match any item." )
-	.tooltip( "open" );
-	
-	/* kltsa 15/08/2014 change for issue #23088 : if option does not exists, add it.*/
-	select = document.getElementById('openid_identifier');
-	var opt = document.createElement('option');
-    opt.value = value;
-    opt.innerHTML = value;
-    select.appendChild(opt);
-    select.value =value;
-	this.selected = valid = true;
-	return false;
-	
-	//this.element.val("");
-	this._delay(function() {
-	this.input.tooltip( "close" ).attr( "title", "" );
-	}, 5500 );
-	this.input.autocomplete( "instance" ).term = "";
-	},
-	_destroy: function() {
-	this.wrapper.remove();
-	this.element.show();
-	}
-	});
-	})( jQuery );
-$(function() {
-$( "#openid_identifier" ).combobox();
-$( "#toggle" ).click(function() {
-$( "#openid_identifier" ).toggle();
-});
-});
 </script>
 
 <p/>&nbsp;<p/>
@@ -290,10 +309,6 @@ function sanitize()
 <td align="right" class="required">OpenID</td>
 <td align="left"  WIDTH="650">
 
-<!-- kltsa 13/08/2014 change for issue #23088: 
-     Reads the configuration directive "known_OPs_xml" from the esgf.properties file. The configuration 
-     directive contains the path to the file containing the OPs to be displayed in the html <select> tag. 
--->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
