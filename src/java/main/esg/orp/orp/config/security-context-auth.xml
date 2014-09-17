@@ -51,7 +51,7 @@
 	<!-- Filter responsible for OpenID authentication. 
 		 The OpenIDAuthenticationFilter redirects the client to the OpenID Identity Provider before authentication, 
 		 and process the HTTP redirect from the OpenID Identity Provider after the client has successfully authenticated -->
-	<bean id="myOpenIDAuthenticationFilter" class="org.springframework.security.openid.OpenIDAuthenticationFilter">
+	<bean id="myOpenIDAuthenticationFilter" class="esg.orp.orp.test_class"> <!-- kltsa: org.springframework.security.openid.OpenIDAuthenticationFilter -->
 		<property name="consumer" ref="myOpenID4JavaConsumer"></property>
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="filterProcessesUrl" value="/j_spring_openid_security_check.htm"/>

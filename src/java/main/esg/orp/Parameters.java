@@ -81,6 +81,6 @@ public interface Parameters {
 	
 	// test file
 	final static String TEST_FILE = "esg-saml-test-file.xml";
-	final static String TEST_OPENID = "http://JoeTester.myopenid.com/";
+	final static String TEST_OPENID = "http://JoeTester.myopenid.com/";	
 
 }
