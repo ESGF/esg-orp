@@ -19,7 +19,6 @@
 package esg.orp.orp;
 
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,7 +52,7 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 	/**
      * Service holding the white list of trusted Identity Providers.
      */
-    public static  RegistryService registryService;
+    private RegistryService registryService;
 	
 	/**
 	 * List of trusted IdP providers.
