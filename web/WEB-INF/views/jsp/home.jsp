@@ -317,7 +317,7 @@ function sanitize()
 <c:import url="file:${path}" var="doc_xml"/>
 
 <x:parse xml="${doc_xml}" var="parsed_doc"/>
-<select name="openid_identifier" id="openid_identifier"  STYLE="width: 500px">
+<select name="openid_identifier" id="openid_identifier">
 <x:forEach select="$parsed_doc/OPS/OP" var="item">
  <option value=<x:out select="$item/URL"/>><x:out select="$item/NAME"/></option>
 </x:forEach>
