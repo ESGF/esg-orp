@@ -58,6 +58,7 @@ public interface Parameters {
     final static String AUTHENTICATION_REQUIRED_PATTERNS = "authenticationRequiredPatterns";
     final static String AUTHENTICATION_NOT_REQUIRED_PATTERNS = "authenticationNotRequiredPatterns";
     final static String AUTHORIZED_IP = "authorizedIp";
+    final static String AUTHORIZED_IP_RANGES = "authorizedIpRanges";
     final static String IP_WHITELIST = "ip_whitelist";
 	
 	// shared parameters
@@ -80,6 +81,6 @@ public interface Parameters {
 	
 	// test file
 	final static String TEST_FILE = "esg-saml-test-file.xml";
-	final static String TEST_OPENID = "http://JoeTester.myopenid.com/";	
+	final static String TEST_OPENID = "http://JoeTester.myopenid.com/";
 
 }
