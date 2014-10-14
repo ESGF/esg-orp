@@ -285,6 +285,7 @@
 <script language="javascript">
 function sanitize() 
 {
+  $("#Go_button").focus();	
   openidElement = document.getElementById("openid_identifier");
   openid = openidElement.value;
   openid = openid.replace("http:","https:")
@@ -325,7 +326,7 @@ function sanitize()
 
 </td>
 <td  align="center">
-<input type="submit" value="GO" style="height:30px; width:50px" onclick="javascript:sanitize()"/>
+<input type="submit" value="GO" style="height:30px; width:50px" id="Go_button" onclick="javascript:sanitize()"/>
 </td>												
 </tr>
 <tr>
