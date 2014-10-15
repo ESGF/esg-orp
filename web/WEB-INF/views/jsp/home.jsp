@@ -273,10 +273,7 @@
 						});
 	})(jQuery);
 	$(function() {
-		$("#openid_identifier").combobox();
-		$("#toggle").click(function() {
-			$("#openid_identifier").toggle();
-		});
+		$("#openid_identifier").combobox();		
 	});
 </script>
 
