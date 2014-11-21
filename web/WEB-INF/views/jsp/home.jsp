@@ -273,10 +273,7 @@
 						});
 	})(jQuery);
 	$(function() {
-		$("#openid_identifier").combobox();
-		$("#toggle").click(function() {
-			$("#openid_identifier").toggle();
-		});
+		$("#openid_identifier").combobox();		
 	});
 </script>
 
@@ -285,6 +282,7 @@
 <script language="javascript">
 function sanitize() 
 {
+  $("#SubmitButton").focus();	
   openidElement = document.getElementById("openid_identifier");
   openid = openidElement.value;
   openid = openid.replace("http:","https:")
@@ -325,7 +323,7 @@ function sanitize()
 
 </td>
 <td  align="center">
-<input type="submit" value="GO" style="height:30px; width:50px" onclick="javascript:sanitize()"/>
+<input type="submit" value="GO" style="height:30px; width:50px" id="SubmitButton" onclick="javascript:sanitize()"/>
 </td>												
 </tr>
 <tr>
