@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OPS>
+ <OP>
+  <NAME>@local_idp_name@</NAME>
+  <URL>@local_idp_url@</URL>
+ </OP>
+ <OP>
+  <NAME>CCMC</NAME>
+  <URL>https://adm07.cmcc.it/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>CEDA</NAME>
+  <URL>https://ceda.ac.uk/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>DKRZ</NAME>
+  <URL>https://esgf-data.dkrz.de/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>IPSL</NAME>
+  <URL>https://esgf-node.ipsl.fr/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>JPL</NAME>
+  <URL>https://esg-datanode.jpl.nasa.gov/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>LIU</NAME>
+  <URL>https://esg-dn1.nsc.liu.se/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>NCCS</NAME>
+  <URL>https://esgf.nccs.nasa.gov/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>NCI</NAME>
+  <URL>https://esg2.nci.org.au/esgf-idp/openid/</URL>
+ </OP>
+ <OP>
+  <NAME>PCMDI</NAME>
+  <URL>https://pcmdi9.llnl.gov/esgf-idp/openid/</URL>
+ </OP>
+</OPS>

@@ -157,6 +157,8 @@
 			} else if (group=='CORDEX_Commercial') {
 				// retrieve specified license
 				showLicense("licenses/CordexCommercialLicense.xml");
+			} else if (group=='SPECS') {
+			        showLicense("licenses/specs.xml");
 			} else {
 				// submit the form
 				formObj.submit();
