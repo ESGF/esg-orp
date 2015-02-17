@@ -80,7 +80,8 @@
 <p/>&nbsp;<p/>The following URL requires authentication: 
 <br/><b><c:out value="${sessionScope['redirect']}"/></b>
 </c:if>
-<p>&nbsp;</p>Please select your openid provider or type it and then select it and you will be redirected to the login page at that site
+<p>&nbsp;</p>Please type in your OpenID URL at the OpenID prompt below or select 
+your home OpenID Provider from one of the options provided in the drop-down list
 
 <!-- user is NOT authenticated -->
 
