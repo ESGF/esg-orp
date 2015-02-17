@@ -29,13 +29,18 @@
 -->
 <OPS>
  <OP>
-  <!-- Identity Provider Organisation name to be displayed in ORP user interface combobox -->
-  <NAME>@local_idp_name@</NAME>
-  <!-- Identifier Select OpenID URI i.e. generic Organisation OpenID -->
-  <URL>@local_idp_url@</URL>
+  <!--
+	Identity Provider Organisation name to be displayed in ORP user interface combobox
+	The first entry is blank to indicate to the user that they can type in their
+	own if needed
+  -->
+  <NAME> </NAME>
+  <URL>https://</URL>
  </OP>
  <OP>
+  <!-- Organisation Name for the IdP -->
   <NAME>Centre for Environmental Data Archival (CEDA)</NAME>
+  <!-- Identifier Select OpenID URI i.e. generic Organisation OpenID -->
   <URL>https://ceda.ac.uk/openid/</URL>
  </OP>
 <!--
