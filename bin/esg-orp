@@ -386,6 +386,7 @@ fetch_known_providers_file() {
     local make_backup=1
     checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
     (( $? > 1 )) && [FAIL] && return 2
+    chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${fetch_file}
     [OK]
 }
 
