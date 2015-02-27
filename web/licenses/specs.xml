@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<license>
+  <title>SPECS terms of use</title>
+  <body>
+    <ul>
+      <li>
+	I agree to restrict my use of SPECS model output to non-commercial research and educational purposes only. Results from non-commercial research are expected to be made generally available through open-access
+publication and must not be considered proprietary. Materials prepared for educational purposes cannot be sold.
+These restrictions may only be relaxed by permission of the individual modelling groups responsible for the
+simulations.
+      </li>
+      <li>
+	I understand that my name and email address will be shared with SPECS data providers.
+	I will hold no individual(s), organization(s), or group(s) responsible for any errors in the models or in their output data.  
+      </li>
+      <li>
+	In publications that rely on the SPECS model output, I will appropriately credit the data providers by an acknowledgement similar to the following: "We acknowledge the SPECS project funded by the European Commission through the Seventh Framework Programme for Research, Theme Six-Environment (Grant Agreement 308378), and we thank the climate modelling groups (listed in Table XX of this paper) for producing and making available their model output." where "Table XX" in your paper should list the models and modelling groups that provided the data used.
+      </li>
+      <li>
+I acknowledge the potential limitations of the data obtained from this archive. These may include (but are not
+necessarily limited to) errors in the models, shortcomings in the experiment designs, the conjectural quality of
+the forcing scenarios used to drive the models, and so on.
+      </li>
+      <li>
+I understand that although the model output has been subjected to a quality control procedure, unrecognized
+errors almost certainly remain.
+      </li>
+      <li>
+To aid participating groups in understanding and improving upon their models behaviours, I will respond to
+reasonable requests from the SPECS project for feedback about my research results based on SPECS data (e.g.,
+reporting model deficiencies, recording SPECS publications, etc.).
+      </li>
+      <li>
+Although I may freely share downloaded SPECS data with close collaborators, I understand that I may not
+redistribute the data more widely before the end of the SPECS project (February 2017).
+      </li>
+    </ul>
+  </body>
+</license>
