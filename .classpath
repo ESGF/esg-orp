@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/java/main"/>
 	<classpathentry kind="src" path="src/java/test"/>
-	<classpathentry kind="lib" path="lib/fetched/activation-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/avalon-framework-4.1.3.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.8.3.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-codec-1.4.jar"/>
@@ -14,7 +13,6 @@
 	<classpathentry kind="lib" path="lib/fetched/hessian-3.0.20.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/jaxb-xjc-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/junit-4.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/logkit-1.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/fetched/geronimo-jms_1.1_spec-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/opensaml-2.3.2.jar"/>
@@ -60,6 +58,7 @@
 	<classpathentry kind="lib" path="lib/fetched/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-web-3.2.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-3.2.2.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.3.16.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/logkit-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.5.2.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
