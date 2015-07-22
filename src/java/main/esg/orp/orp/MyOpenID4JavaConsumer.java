@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openid4java.consumer.ConsumerException;
+import org.springframework.security.openid.AxFetchListFactory;
 import org.springframework.security.openid.OpenID4JavaConsumer;
-import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDConsumerException;
 
 import esg.security.registry.service.api.RegistryService;
@@ -63,8 +63,9 @@ public class MyOpenID4JavaConsumer extends OpenID4JavaConsumer {
 		super();
 	}
 	
-	public MyOpenID4JavaConsumer(java.util.List<OpenIDAttribute> attributes) throws ConsumerException {
-		super(attributes);
+	public MyOpenID4JavaConsumer(AxFetchListFactory attributes) throws ConsumerException /* kltsa 14/06/2015 : java.util.List<OpenIDAttribute> attributes is considered deprecated. */
+	{
+      super(attributes);
 	}
 
 	@Override

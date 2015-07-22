@@ -31,7 +31,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+/*import org.springframework.security.core.authority.GrantedAuthorityImpl; kltsa 24/06/2015 : GrantedAuthorityImplis considered deprecated. */
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -65,8 +66,8 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 		if (isValid(username, password)) {
 			
 			final Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-			authorities.add( new GrantedAuthorityImpl(ROLES[0]) );
-			authorities.add( new GrantedAuthorityImpl(ROLES[1]) );
+			authorities.add( new SimpleGrantedAuthority(ROLES[0]) ); /* kltsa 24/06/2015 : GrantedAuthorityImpl(ROLES[0]) is considered deprecated. */
+			authorities.add( new SimpleGrantedAuthority(ROLES[1]) );
 			authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
 			final UserDetails details = userDetailsService.loadUserByUsername(username);
 			((UsernamePasswordAuthenticationToken)authentication).setDetails(details);

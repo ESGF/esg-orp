@@ -6,9 +6,9 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xmlns:security="http://www.springframework.org/schema/security"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-	   					   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
-                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	   					   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
 	<!-- The "http" namespace element automatically creates the following filters: 
 	     HttpSessionContextIntegrationFilter, ExceptionTranslationFilter and FilterSecurityInterceptor,
@@ -43,6 +43,9 @@
     	<!-- Disable anonymous authentication -->
     	<security:anonymous enabled="false" />
     	
+    	 <!--  kltsa 20/07/2015 -->	
+	    <security:csrf disabled="true"/>
+    	
 	</security:http>
 	
 	<!-- Filter that saves the "redirect" parameter -->
@@ -60,7 +63,8 @@
 	
 	<!-- Custom implementation of OpenID4JavaConsumer that allows specification of a white list of trusted Identity Providers. -->
 	<bean id="myOpenID4JavaConsumer" class="esg.orp.orp.MyOpenID4JavaConsumer" init-method="init">
-		<!-- list of user attributes to be retrieved as part of the OpenID exchange -->
+		<!-- kltsa 20/07/2015 : AxFetchListFactory is used instead. 
+		list of user attributes to be retrieved as part of the OpenID exchange 
 	    <constructor-arg index="0">
 	    	<list value-type="org.springframework.security.openid.OpenIDAttribute">
 				<bean id="emailAttribute" class="org.springframework.security.openid.OpenIDAttribute">
@@ -79,7 +83,45 @@
 					<property name="required" value="true" />
 				</bean>
 	    	</list>
+	      
 	    </constructor-arg>
+	    -->	
+	    <constructor-arg> <!-- kltsa 21/07/2015 : modification according to http://docs.spring.io/spring-security/site/migrate/current/3-to-4/html5/migrate-3-to-4-xml.html -->
+		<bean class="org.springframework.security.openid.RegexBasedAxFetchListFactory">
+			<constructor-arg>
+				<map>
+					<entry key=".*">
+						<list>
+							<!-- 
+							<bean class="org.springframework.security.openid.OpenIDAttribute">
+								<constructor-arg value="email"/>
+								<constructor-arg value="http://axschema.org/contact/email"/>
+							</bean>
+							 -->
+							<bean id="emailAttribute" class="org.springframework.security.openid.OpenIDAttribute">
+					        	<constructor-arg index="0" value="email"/>
+					        	<constructor-arg index="1" value="http://openid.net/schema/contact/internet/email"/>
+					        	<property name="required" value="true" />
+				            </bean>
+				            <bean id="firstNameAttribute" class="org.springframework.security.openid.OpenIDAttribute">
+					        	<constructor-arg index="0" value="firstname"/>
+					        	<constructor-arg index="1" value="http://openid.net/schema/namePerson/first"/>
+					        	<property name="required" value="true" />
+				            </bean>
+							<bean id="lastNameAttribute" class="org.springframework.security.openid.OpenIDAttribute">
+								<constructor-arg index="0" value="lastname"/>
+								<constructor-arg index="1" value="http://openid.net/schema/namePerson/last"/>
+								<property name="required" value="true" />
+							</bean>
+						</list>
+					</entry>
+				</map>
+			</constructor-arg>
+		</bean>
+	    </constructor-arg>
+	     
+	    
+	    
 	    <!-- list of IdPs trusted by the ORP -->
 	    <property name="idpWhiteListFile" value="/esg/config/esgf_idp.xml, /esg/config/esgf_idp_static.xml" />
 	</bean>
