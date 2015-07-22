@@ -27,7 +27,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+/* import org.springframework.security.core.authority.GrantedAuthorityImpl;   kltsa 24/06/2015 : GrantedAuthorityImpl is considered deprecated. */
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,7 +56,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		if (users.containsKey(userName)) {
 			for (final String authority : users.get(userName)) {
-				authorities.add( new GrantedAuthorityImpl(authority) );
+				authorities.add( new SimpleGrantedAuthority(authority) ); /* kltsa 24/06/2015 : GrantedAuthorityImpl(authority) is considered deprecated. */
 			}
 		}
 		return new User(userName, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
