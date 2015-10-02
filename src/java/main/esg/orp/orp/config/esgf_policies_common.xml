@@ -7,6 +7,8 @@
 
         <!-- Admin-restricted applications. -->
         <policy resource=".*esgf-dashboard.*" attribute_type="wheel" attribute_value="super" action="Read"/>
+        <policy resource=".*test.*" attribute_type="ANY" attribute_value="" action="Read"/>
+        <policy resource=".*test.*" attribute_type="wheel" attribute_value="super" action="Write"/>
         
         <!-- Test resources are made freely available 
         <policy resource=".*test.*" attribute_type="ANY" attribute_value="" action="Read"/>

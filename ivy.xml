@@ -88,27 +88,29 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="commons-io" name="commons-io" rev="2.4"/>
     <dependency org="commons-lang" name="commons-lang" rev="2.5"/>
 
-    <dependency org="org.springframework" name="spring-core" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-web" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-webmvc" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-beans" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-context" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-context-support" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-tx" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-aop" rev="3.2.2.RELEASE" transitive="false" />
-    <dependency org="org.springframework" name="spring-expression" rev="3.2.2.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-core" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-web" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-webmvc" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-beans" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-context" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-context-support" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-tx" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-aop" rev="4.1.6.RELEASE" transitive="false" />
+    <dependency org="org.springframework" name="spring-expression" rev="4.1.6.RELEASE" transitive="false" />
 
-    <dependency org="org.springframework.security" name="spring-security-config" rev="3.1.4.RELEASE" transitive="false"/>
-    <dependency org="org.springframework.security" name="spring-security-core" rev="3.1.4.RELEASE" transitive="false"/>
-    <dependency org="org.springframework.security" name="spring-security-openid" rev="3.1.4.RELEASE" transitive="false"/>
-    <dependency org="org.springframework.security" name="spring-security-taglibs" rev="3.1.4.RELEASE" transitive="false"/>
-    <dependency org="org.springframework.security" name="spring-security-web" rev="3.1.4.RELEASE" transitive="false"/>
+    <dependency org="org.springframework.security" name="spring-security-config" rev="4.0.1.RELEASE" transitive="false"/>
+    <dependency org="org.springframework.security" name="spring-security-core" rev="4.0.1.RELEASE" transitive="false"/>
+    <dependency org="org.springframework.security" name="spring-security-openid" rev="4.0.1.RELEASE" transitive="false"/>
+    <dependency org="org.springframework.security" name="spring-security-taglibs" rev="4.0.1.RELEASE" transitive="false"/>
+    <dependency org="org.springframework.security" name="spring-security-web" rev="4.0.1.RELEASE" transitive="false"/>
 
-    <dependency org="org.apache.tiles" name="tiles-core" rev="2.1.4" transitive="false" />
-    <dependency org="org.apache.tiles" name="tiles-api" rev="2.1.4" transitive="false" />
-    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.1.4" transitive="false" />
-    <dependency org="org.apache.tiles" name="tiles-compat" rev="2.1.4" transitive="false" />
-    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.1.4" transitive="false" />
+    <dependency org="org.apache.tiles" name="tiles-core" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-compat" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" conf="*->default" />
+    
+    <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" conf="*->default" />
 
     <dependency org="javax.servlet" name="jstl" rev="1.2" transitive="false"/>
     <dependency org="taglibs" name="standard" rev="1.1.2" transitive="false"/>
@@ -132,6 +134,7 @@ Note: Check Maven for propery dependency parameter values @
     
     <dependency org="net.sf.retrotranslator" name="retrotranslator-runtime" rev="1.2.7"/>
     <dependency org="org.openid4java" name="openid4java" rev="0.9.6"/>
+    
     
     <dependency org="edu.ucar.unidata" name="tds" rev="4.1"/>
     <dependency org="org.esgf" name="esgf-security" rev="latest.milestone" transitive="false"/>
