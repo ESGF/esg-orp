@@ -380,6 +380,17 @@ clean_orp_webapp_subsystem() {
 #--------------------------------------
 # Misc utility functions
 #--------------------------------------
+
+fetch_static_ats_file() {
+    local fetch_file=esgf_ats_static.xml
+    local force=1
+    local make_backup=1
+    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
+    (( $? > 1 )) && [FAIL] && return 2
+    chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${fetch_file}
+    [OK]
+}
+
 fetch_known_providers_file() {
     local fetch_file=esgf_known_providers.xml
     local force=1
