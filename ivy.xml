@@ -129,7 +129,7 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="velocity" name="velocity" rev="1.5"/>
     <dependency org="xml-security" name="xmlsec" rev="1.4.2"/>    
     <dependency org="xalan" name="serializer" rev="2.9.1" />
-    <dependency org="xalan" name="xalan" rev="2.7.1"  />
+    <dependency org="xalan" name="xalan" rev="2.7.2"  />
     <dependency org="xerces" name="xercesImpl" rev="2.9.1" />
     
     <dependency org="net.sf.retrotranslator" name="retrotranslator-runtime" rev="1.2.7"/>
