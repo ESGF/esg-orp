@@ -112,8 +112,8 @@ Note: Check Maven for propery dependency parameter values @
     
     <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" conf="*->default" />
 
-    <dependency org="javax.servlet" name="jstl" rev="1.2" transitive="false"/>
-    <dependency org="taglibs" name="standard" rev="1.1.2" transitive="false"/>
+    <dependency org="org.apache.taglibs" name="taglibs-standard-spec" rev="1.2.5"/>
+    <dependency org="org.apache.taglibs" name="taglibs-standard-impl" rev="1.2.5"/>
     
     <dependency org="org.jdom" name="jdom" rev="1.1"/>
 
