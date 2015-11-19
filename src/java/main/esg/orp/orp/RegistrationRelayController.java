@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import esg.orp.Parameters;
-import esg.orp.utils.HttpUtils;
+import esg.security.utils.http.HttpUtils;
 import esg.security.policy.service.api.PolicyAttribute;
 import esg.security.policy.service.api.PolicyService;
 import esg.security.registration.web.RegistrationRequestUtils;
