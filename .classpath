@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/java/main"/>
 	<classpathentry kind="src" path="src/java/test"/>
-	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.8.3.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-digester-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-lang-2.5.jar"/>
@@ -89,5 +88,6 @@
 	<classpathentry kind="lib" path="lib/fetched/taglibs-standard-spec-1.2.5.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xercesImpl-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.9.2.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
