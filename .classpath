@@ -60,8 +60,6 @@
 	<classpathentry kind="lib" path="lib/fetched/logkit-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/el-api-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/guice-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/jcip-annotations-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/jsp-api-2.1.jar"/>
@@ -89,5 +87,8 @@
 	<classpathentry kind="lib" path="lib/fetched/xercesImpl-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
