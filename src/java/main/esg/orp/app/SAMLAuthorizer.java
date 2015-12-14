@@ -1,8 +1,11 @@
 package esg.orp.app;
 
+import java.net.InetAddress;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensaml.saml2.core.DecisionTypeEnumeration;
+import org.springframework.util.StringUtils;
 
 import esg.security.authz.service.api.SAMLAuthorization;
 import esg.security.authz.service.api.SAMLAuthorizations;
@@ -110,8 +113,28 @@ public class SAMLAuthorizer implements Authorizer {
      * Setter method for URL endpoints of SAML authorization services.
      * @param endpoints
      */
-    public void setEndpoints(String[] endpoints) {
-        this.endpoints = endpoints;
+    public void setEndpoints(String[] endpoints) {  
+    	        
+    	// assign endpoints from configuration file
+    	this.endpoints = endpoints;
+    			
+        // try replacing "localhost" with FQDN
+        try {
+	        String hostName = InetAddress.getLocalHost().getHostName();
+	        LOG.info("Detected hostName="+hostName);
+	        if (StringUtils.hasText(hostName)) {
+	        	for (int i = 0; i<this.endpoints.length; i++) {
+	        		this.endpoints[i] = this.endpoints[i].replace("localhost", hostName);
+	        	}
+	        }
+        } catch(Exception e) {
+        	LOG.warn(e.getMessage());
+        }
+          
+        for (String endpoint : this.endpoints) {
+        	LOG.info("SAML Authorizer: using endpoint="+endpoint);
+        }
+        
     }
     
 
