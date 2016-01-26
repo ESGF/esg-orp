@@ -287,7 +287,8 @@ function sanitize()
   openidElement = document.getElementById("openid_identifier");
   openid = openidElement.value;
   openid = openid.replace("http:","https:")
-	               .replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+                   .replace(/[\>\<"'\&$()\[\]\{\}%]/gi,'_')
+	               .replace(/^\s*/, '').replace(/\s*$/, '');
   openidElement.value = openid;
 }
 </script>	
