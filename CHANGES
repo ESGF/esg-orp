@@ -1,3 +1,6 @@
+2.8.7
+-- Moving --fetch-static-idp-file to orp so data only nodes can have it installed
+
 2.3.0
 -- https://github.com/ESGF/esg-orp/issues?milestone=1&state=closed
 
