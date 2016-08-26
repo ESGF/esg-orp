@@ -312,7 +312,7 @@ function sanitize()
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<fmt:setBundle var="bundle" basename="esgf"/>
+<fmt:setBundle var="bundle" basename="esg-orp"/>
 <fmt:message var="path" key="orp.provider.list" bundle="${bundle}"/>
 <c:import url="file:${path}" var="doc_xml"/>
 
