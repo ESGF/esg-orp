@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src/java/main"/>
 	<classpathentry kind="src" path="src/java/test"/>
-	<classpathentry kind="lib" path="lib/fetched/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-digester-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/hessian-3.0.20.jar"/>
@@ -10,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/fetched/junit-4.8.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/fetched/geronimo-jms_1.1_spec-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/opensaml-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/openws-1.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/velocity-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xmltooling-1.2.2.jar"/>
@@ -66,12 +64,6 @@
 	<classpathentry kind="lib" path="lib/fetched/nekohtml-1.9.20.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/openid4java-nodeps-0.9.6.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/servlet-api-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-aop-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-beans-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-context-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-context-support-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-core-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-expression-4.2.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-jdbc-4.2.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-acl-4.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-config-4.0.3.RELEASE.jar"/>
@@ -79,16 +71,24 @@
 	<classpathentry kind="lib" path="lib/fetched/spring-security-openid-4.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-taglibs-4.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-web-4.0.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-tx-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-web-4.2.3.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-4.2.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/taglibs-standard-impl-1.2.5.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/taglibs-standard-spec-1.2.5.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xercesImpl-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.9.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-httpclient-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.5.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/commons-collections-3.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.13.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.13.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/opensaml-2.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-aop-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-beans-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-support-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-core-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-expression-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-tx-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-web-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-4.3.9.RELEASE.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
