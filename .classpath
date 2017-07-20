@@ -64,7 +64,6 @@
 	<classpathentry kind="lib" path="lib/fetched/nekohtml-1.9.20.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/openid4java-nodeps-0.9.6.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/servlet-api-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-jdbc-4.2.2.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-acl-4.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-config-4.0.3.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/spring-security-core-4.0.3.RELEASE.jar"/>
@@ -78,17 +77,18 @@
 	<classpathentry kind="lib" path="lib/fetched/commons-beanutils-1.9.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-collections-3.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.13.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.13.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/opensaml-2.6.4.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-aop-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-beans-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-context-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-context-support-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-core-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-expression-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-tx-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-web-4.3.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-4.3.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.15.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.15.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/opensaml-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-aop-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-beans-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-support-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-core-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-expression-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-jdbc-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-tx-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-web-4.2.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-4.2.9.RELEASE.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
