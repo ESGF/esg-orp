@@ -1,0 +1,40 @@
+  <!-- ******************************** -->
+  <!-- web.xml entry for authentication -->
+  <!-- can serve as a replacement for   -->
+  <!-- esg.orp.app.AuthenticationFilter -->
+  <!-- ******************************** -->
+  <filter>
+    <filter-name>authenticationFilter</filter-name>
+    <filter-class>esg.orp.app.AuthenticationRedirectFilter</filter-class>
+    <init-param>
+      <!-- URL of an authentication service -->
+      <param-name>authenticateUrl</param-name>
+      <param-value>https://localhost/account/signin</param-value>
+    </init-param>
+    <init-param>
+      <!-- name of the html query parameter signalling a return-to URL for -->
+      <!-- the authentication service -->
+      <!-- defaults to 'r' -->
+      <param-name>redirectQuery</param-name>
+      <param-value>r</param-value>
+    </init-param>
+    <init-param>
+      <!-- cookie set by the authentication service containing a user's openid -->
+      <param-name>sessionCookieName</param-name>
+      <param-value>ceda.session.2</param-value>
+    </init-param>
+    <init-param>
+      <!-- base64 encoded secret key used to encrypt the cookie, example: -->
+      <param-name>secretKey</param-name>
+      <param-value>xnVuDEZROQfoBT+scRkaig==</param-value>
+    </init-param>
+    <init-param>
+      <!-- name of the httpRequest attribute to set on authentication success -->
+      <param-name>requestAttribute</param-name>
+      <param-value>esg.openid</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>authenticationFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
