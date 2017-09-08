@@ -76,12 +76,13 @@ Note: Check Maven for propery dependency parameter values @
       <exclude org="javax.jms"/>
     </dependency>
     <dependency org="junit" name="junit" rev="4.8.1"/>
+    <dependency org="org.mockito" name="mockito-all" rev="1.10.19"/>
     <dependency org="com.sun.xml.bind" name="jaxb-xjc" rev="2.2"/>
 
     <dependency org="com.caucho" name="hessian" rev="3.0.20" />
 
     <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.2"/>
-    <dependency org="commons-codec" name="commons-codec" rev="1.4"/>
+    <dependency org="commons-codec" name="commons-codec" rev="1.10"/>
     <dependency org="commons-collections" name="commons-collections" rev="3.2.2"/>
     <dependency org="commons-digester" name="commons-digester" rev="2.0"/>
     <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.1" />
