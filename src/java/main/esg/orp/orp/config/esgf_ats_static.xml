@@ -8,13 +8,13 @@
 	<!-- pcmdi9 Attribute and Registration services: it is included here to allow registration for "esgf-test" nodes,
 	     otherwise it should be contained in file esgf_ats.xml for nodes in the "esgf-prod" group -->
 	<attribute type="CMIP5 Research"
-               attributeService="https://pcmdi9.llnl.gov/esgf-idp/saml/soap/secure/attributeService.htm"
+               attributeService="https://pcmdi.llnl.gov/esgf-idp/saml/soap/secure/attributeService.htm"
                description="Users of CMIP5 data for non-commercial research purposes only"
-               registrationService="https://pcmdi9.llnl.gov/esgf-idp/secure/registrationService.htm"/>
+               registrationService="https://pcmdi.llnl.gov/esgf-idp/secure/registrationService.htm"/>
     <attribute type="CMIP5 Commercial"
-               attributeService="https://pcmdi9.llnl.gov/esgf-idp/saml/soap/secure/attributeService.htm"
+               attributeService="https://pcmdi.llnl.gov/esgf-idp/saml/soap/secure/attributeService.htm"
                description="Users of CMIP5 data for commercial purposes"
-               registrationService="https://pcmdi9.llnl.gov/esgf-idp/secure/registrationService.htm"/>
+               registrationService="https://pcmdi.llnl.gov/esgf-idp/secure/registrationService.htm"/>
                
     <!-- pcmdi7 Attribute Service: garantees that users that register with a gateway are immediately recognized by the p2p system -->
     <attribute type="CMIP5 Research" attributeService="https://pcmdi7.llnl.gov/esgf-security/saml/soap/secure/attributeService.htm"

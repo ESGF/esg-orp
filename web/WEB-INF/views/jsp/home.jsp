@@ -287,7 +287,8 @@ function sanitize()
   openidElement = document.getElementById("openid_identifier");
   openid = openidElement.value;
   openid = openid.replace("http:","https:")
-	               .replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+                   .replace(/[\>\<"'\&$()\[\]\{\}%]/gi,'_')
+	               .replace(/^\s*/, '').replace(/\s*$/, '');
   openidElement.value = openid;
 }
 </script>	
@@ -311,7 +312,7 @@ function sanitize()
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
 
-<fmt:setBundle var="bundle" basename="esgf"/>
+<fmt:setBundle var="bundle" basename="esg-orp"/>
 <fmt:message var="path" key="orp.provider.list" bundle="${bundle}"/>
 <c:import url="file:${path}" var="doc_xml"/>
 

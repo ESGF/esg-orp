@@ -71,7 +71,10 @@ public class PreAuthenticationFilter implements Filter {
 		
 		// remember openid identity
 		if (StringUtils.hasText(openid)) {
-			final Cookie cookie = new Cookie(Parameters.OPENID_IDENTITY_COOKIE, openid);
+			// sanitize openid of potentially malicious characters before setting the cookie
+			String _openid = openid.replaceAll("[><&%\"'(){}]", "_");
+			final Cookie cookie = new Cookie(Parameters.OPENID_IDENTITY_COOKIE, _openid);
+			cookie.setSecure(true);
 			if (StringUtils.hasText(rememberme) && rememberme.equals("on")) {
 				cookie.setMaxAge(Parameters.OPENID_IDENTITY_COOKIE_LIFETIME);
 				if (LOG.isDebugEnabled()) LOG.debug("Set cookie name="+cookie.getName()+" value="+cookie.getValue());
