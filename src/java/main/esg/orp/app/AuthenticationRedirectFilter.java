@@ -12,8 +12,6 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +20,8 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import esg.orp.Parameters;
+import esg.orp.Utils;
 import esg.orp.app.cookie.DecryptionException;
 import esg.orp.app.cookie.UserDetailsCookie;
 
@@ -33,11 +33,12 @@ import esg.orp.app.cookie.UserDetailsCookie;
 public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
 {
 
+    private PolicyServiceFilterCollaborator policyService;
+    
     private String requestAttribute;
     
     private URL authenticateUrl;
     private String returnQueryName;
-    
     private String sessionCookieName;
     private String secretKey;
     
@@ -49,7 +50,20 @@ public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
     void attemptValidation(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException
     {
-        if (this.authenticateUrl == null)
+        // check URL policy before attempting authentication
+        if (!this.policyService.isSecure(request))
+        {
+            // authorize this request
+            if (LOG.isDebugEnabled())
+            {
+                String url = Utils.getFullRequestUrl(request);
+                LOG.debug(String.format(
+                        "URL=%s is NOT secure, request is authorized", url));
+            }
+            
+            this.assertIsValid(request);
+        }
+        else if (this.authenticateUrl == null)
         {
             LOG.warn("Authenticate URL not specified in config; skipping filter.");
         }
@@ -154,15 +168,29 @@ public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
     /**
      * @see Filter#init(FilterConfig)
      */
-    public void init(FilterConfig fConfig) throws ServletException
+    public void init(FilterConfig filterConfig) throws ServletException
     {
-        if (fConfig != null)
+        super.init(filterConfig);
+        
+        if (filterConfig != null)
         {
-            this.setAuthenticateUrl(fConfig.getInitParameter("authenticateUrl"));
-            this.setReturnQueryName(fConfig.getInitParameter("returnQueryName"));
-            this.setSessionCookieName(fConfig.getInitParameter("sessionCookieName"));
-            this.setSecretKey(fConfig.getInitParameter("secretKey"));
-            this.setRequestAttribute(fConfig.getInitParameter("requestAttribute"));
+            this.setAuthenticateUrl(filterConfig.getInitParameter("authenticateUrl"));
+            this.setReturnQueryName(filterConfig.getInitParameter("returnQueryName"));
+            this.setSessionCookieName(filterConfig.getInitParameter("sessionCookieName"));
+            this.setSecretKey(filterConfig.getInitParameter("secretKey"));
+            this.setRequestAttribute(filterConfig.getInitParameter("requestAttribute"));
+            
+            // instantiate and initialize PolicyService
+            try
+            {
+                final String policyServiceClass = this.getMandatoryFilterParameter(Parameters.POLICY_SERVICE);
+                this.policyService = (PolicyServiceFilterCollaborator)Class.forName(policyServiceClass).newInstance();
+                this.policyService.init(filterConfig);
+            }
+            catch(ClassNotFoundException | InstantiationException | IllegalAccessException e)
+            {
+                throw new ServletException(e.getMessage());
+            }
         }
         
         if (this.returnQueryName == null)
