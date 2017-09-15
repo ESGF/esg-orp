@@ -63,10 +63,6 @@ public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
             
             this.assertIsValid(request);
         }
-        else if (this.authenticateUrl == null)
-        {
-            LOG.warn("Authenticate URL not specified in config; skipping filter.");
-        }
         else
         {
             // retrieve session cookie
@@ -172,30 +168,29 @@ public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
     {
         super.init(filterConfig);
         
-        if (filterConfig != null)
-        {
-            this.setAuthenticateUrl(filterConfig.getInitParameter("authenticateUrl"));
-            this.setReturnQueryName(filterConfig.getInitParameter("returnQueryName"));
-            this.setSessionCookieName(filterConfig.getInitParameter("sessionCookieName"));
-            this.setSecretKey(filterConfig.getInitParameter("secretKey"));
-            this.setRequestAttribute(filterConfig.getInitParameter("requestAttribute"));
-            
-            // instantiate and initialize PolicyService
-            try
-            {
-                final String policyServiceClass = this.getMandatoryFilterParameter(Parameters.POLICY_SERVICE);
-                this.policyService = (PolicyServiceFilterCollaborator)Class.forName(policyServiceClass).newInstance();
-                this.policyService.init(filterConfig);
-            }
-            catch(ClassNotFoundException | InstantiationException | IllegalAccessException e)
-            {
-                throw new ServletException(e.getMessage());
-            }
-        }
+        // mandatory settings
+        this.setAuthenticateUrl(this.getMandatoryFilterParameter("authenticateUrl"));
+        this.setSessionCookieName(this.getMandatoryFilterParameter("sessionCookieName"));
+        this.setSecretKey(this.getMandatoryFilterParameter("secretKey"));
+        this.setRequestAttribute(this.getMandatoryFilterParameter("requestAttribute"));
         
+        // optional
+        this.setReturnQueryName(this.getOptionalFilterParameter("returnQueryName"));
         if (this.returnQueryName == null)
         {
             this.returnQueryName = RETURN_QUERY_NAME_DEFAULT;
+        }
+        
+        // instantiate and initialize PolicyService
+        try
+        {
+            final String policyServiceClass = this.getMandatoryFilterParameter(Parameters.POLICY_SERVICE);
+            this.policyService = (PolicyServiceFilterCollaborator)Class.forName(policyServiceClass).newInstance();
+            this.policyService.init(filterConfig);
+        }
+        catch(ClassNotFoundException | InstantiationException | IllegalAccessException e)
+        {
+            throw new ServletException(e.getMessage());
         }
     }
     
