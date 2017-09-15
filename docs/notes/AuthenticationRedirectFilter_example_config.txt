@@ -7,6 +7,18 @@
     <filter-name>authenticationFilter</filter-name>
     <filter-class>esg.orp.app.AuthenticationRedirectFilter</filter-class>
     <init-param>
+      <param-name>policyServiceClass</param-name>
+      <param-value>esg.orp.app.RegexPolicyService</param-value>
+    </init-param>
+    <init-param>
+      <param-name>authenticationNotRequiredPatterns</param-name>
+      <param-value>"[^?]*(?&lt;=\.(html|xml|css|gif))(\?.*)?"</param-value>
+      <!--  Alternatively, e.g.:
+      <param-name>authenticationRequiredPatterns</param-name>
+      <param-value>"[^?]*/fileServer/.*", "[^?]*/dodsC/[^?]*(?&lt;!\.html)(\?.*)?"</param-value>
+      -->
+    </init-param>
+    <init-param>
       <!-- URL of an authentication service -->
       <param-name>authenticateUrl</param-name>
       <param-value>https://localhost/account/signin</param-value>
