@@ -30,7 +30,7 @@ import esg.orp.app.cookie.UserDetailsCookie;
  * 
  * @author William Tucker
  */
-public class AuthenticationRedirectFilter implements Filter
+public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
 {
 
     private String requestAttribute;
@@ -45,18 +45,8 @@ public class AuthenticationRedirectFilter implements Filter
     
     private static final Log LOG = LogFactory.getLog(AuthenticationRedirectFilter.class);
     
-    /**
-     * @see Filter#destroy()
-     */
-    public void destroy()
-    {
-        
-    }
-    
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    @Override
+    void attemptValidation(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException
     {
         if (this.authenticateUrl == null)
@@ -65,11 +55,9 @@ public class AuthenticationRedirectFilter implements Filter
         }
         else
         {
-            HttpServletRequest httpRequest = (HttpServletRequest) request;
-            
             // retrieve session cookie
             String cookieValue = null;
-            Cookie[] cookies = httpRequest.getCookies();
+            Cookie[] cookies = request.getCookies();
             if (cookies != null)
             {
                 for (Cookie cookie: cookies)
@@ -88,9 +76,9 @@ public class AuthenticationRedirectFilter implements Filter
             {
                 // session cookie not found
                 // redirect request to authentication service
-                StringBuffer requestUrl = httpRequest.getRequestURL();
+                StringBuffer requestUrl = request.getRequestURL();
                 
-                String query = httpRequest.getQueryString();
+                String query = request.getQueryString();
                 if (query != null)
                 {
                     requestUrl.append('?').append(query);
@@ -101,8 +89,7 @@ public class AuthenticationRedirectFilter implements Filter
                     String redirectUrl = getRedirectUrl(requestUrl.toString());
                     
                     // send the redirect
-                    HttpServletResponse httpResponse = (HttpServletResponse) response;
-                    httpResponse.sendRedirect(redirectUrl);
+                    response.sendRedirect(redirectUrl);
                     
                     if (LOG.isDebugEnabled())
                         LOG.debug(String.format(
@@ -143,21 +130,25 @@ public class AuthenticationRedirectFilter implements Filter
                 {
                     // userID not found in cookie
                     // send 401 response
-                    HttpServletResponse httpResponse = (HttpServletResponse) response;
-                    httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not found.");
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not found.");
                 }
                 else
                 {
                     // set request attribute indicating authentication success
-                    httpRequest.setAttribute(this.requestAttribute, userID);
+                    request.setAttribute(this.requestAttribute, userID);
                     if (LOG.isDebugEnabled())
                         LOG.debug(String.format("Setting '%s' attribute", this.requestAttribute));
                 }
             }
         }
+    }
+    
+    /**
+     * @see Filter#destroy()
+     */
+    public void destroy()
+    {
         
-        // pass the request along the filter chain
-        chain.doFilter(request, response);
     }
     
     /**
