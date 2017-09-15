@@ -162,7 +162,7 @@ public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
      */
     public void destroy()
     {
-        
+        super.destroy();
     }
     
     /**
