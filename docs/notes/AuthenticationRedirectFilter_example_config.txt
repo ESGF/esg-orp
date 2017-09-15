@@ -21,7 +21,7 @@
     <init-param>
       <!-- cookie set by the authentication service containing a user's openid -->
       <param-name>sessionCookieName</param-name>
-      <param-value>ceda.session.2</param-value>
+      <param-value>esg.openid.saml.cookie</param-value>
     </init-param>
     <init-param>
       <!-- base64 encoded secret key used to encrypt the cookie, example: -->
