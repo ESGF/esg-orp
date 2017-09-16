@@ -12,8 +12,6 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +20,8 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import esg.orp.Parameters;
+import esg.orp.Utils;
 import esg.orp.app.cookie.DecryptionException;
 import esg.orp.app.cookie.UserDetailsCookie;
 
@@ -30,14 +30,15 @@ import esg.orp.app.cookie.UserDetailsCookie;
  * 
  * @author William Tucker
  */
-public class AuthenticationRedirectFilter implements Filter
+public class AuthenticationRedirectFilter extends AccessControlFilterTemplate
 {
 
+    private PolicyServiceFilterCollaborator policyService;
+    
     private String requestAttribute;
     
     private URL authenticateUrl;
     private String returnQueryName;
-    
     private String sessionCookieName;
     private String secretKey;
     
@@ -45,31 +46,28 @@ public class AuthenticationRedirectFilter implements Filter
     
     private static final Log LOG = LogFactory.getLog(AuthenticationRedirectFilter.class);
     
-    /**
-     * @see Filter#destroy()
-     */
-    public void destroy()
-    {
-        
-    }
-    
-    /**
-     * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-     */
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    @Override
+    void attemptValidation(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException
     {
-        if (this.authenticateUrl == null)
+        // check URL policy before attempting authentication
+        if (!this.policyService.isSecure(request))
         {
-            LOG.warn("Authenticate URL not specified in config; skipping filter.");
+            // authorize this request
+            if (LOG.isDebugEnabled())
+            {
+                String url = Utils.getFullRequestUrl(request);
+                LOG.debug(String.format(
+                        "URL=%s is NOT secure, request is authorized", url));
+            }
+            
+            this.assertIsValid(request);
         }
         else
         {
-            HttpServletRequest httpRequest = (HttpServletRequest) request;
-            
             // retrieve session cookie
             String cookieValue = null;
-            Cookie[] cookies = httpRequest.getCookies();
+            Cookie[] cookies = request.getCookies();
             if (cookies != null)
             {
                 for (Cookie cookie: cookies)
@@ -88,9 +86,9 @@ public class AuthenticationRedirectFilter implements Filter
             {
                 // session cookie not found
                 // redirect request to authentication service
-                StringBuffer requestUrl = httpRequest.getRequestURL();
+                StringBuffer requestUrl = request.getRequestURL();
                 
-                String query = httpRequest.getQueryString();
+                String query = request.getQueryString();
                 if (query != null)
                 {
                     requestUrl.append('?').append(query);
@@ -101,8 +99,7 @@ public class AuthenticationRedirectFilter implements Filter
                     String redirectUrl = getRedirectUrl(requestUrl.toString());
                     
                     // send the redirect
-                    HttpServletResponse httpResponse = (HttpServletResponse) response;
-                    httpResponse.sendRedirect(redirectUrl);
+                    response.sendRedirect(redirectUrl);
                     
                     if (LOG.isDebugEnabled())
                         LOG.debug(String.format(
@@ -143,40 +140,57 @@ public class AuthenticationRedirectFilter implements Filter
                 {
                     // userID not found in cookie
                     // send 401 response
-                    HttpServletResponse httpResponse = (HttpServletResponse) response;
-                    httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not found.");
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not found.");
                 }
                 else
                 {
                     // set request attribute indicating authentication success
-                    httpRequest.setAttribute(this.requestAttribute, userID);
+                    request.setAttribute(this.requestAttribute, userID);
                     if (LOG.isDebugEnabled())
                         LOG.debug(String.format("Setting '%s' attribute", this.requestAttribute));
                 }
             }
         }
-        
-        // pass the request along the filter chain
-        chain.doFilter(request, response);
+    }
+    
+    /**
+     * @see Filter#destroy()
+     */
+    public void destroy()
+    {
+        super.destroy();
     }
     
     /**
      * @see Filter#init(FilterConfig)
      */
-    public void init(FilterConfig fConfig) throws ServletException
+    public void init(FilterConfig filterConfig) throws ServletException
     {
-        if (fConfig != null)
-        {
-            this.setAuthenticateUrl(fConfig.getInitParameter("authenticateUrl"));
-            this.setReturnQueryName(fConfig.getInitParameter("returnQueryName"));
-            this.setSessionCookieName(fConfig.getInitParameter("sessionCookieName"));
-            this.setSecretKey(fConfig.getInitParameter("secretKey"));
-            this.setRequestAttribute(fConfig.getInitParameter("requestAttribute"));
-        }
+        super.init(filterConfig);
         
+        // mandatory settings
+        this.setAuthenticateUrl(this.getMandatoryFilterParameter("authenticateUrl"));
+        this.setSessionCookieName(this.getMandatoryFilterParameter("sessionCookieName"));
+        this.setSecretKey(this.getMandatoryFilterParameter("secretKey"));
+        this.setRequestAttribute(this.getMandatoryFilterParameter("requestAttribute"));
+        
+        // optional
+        this.setReturnQueryName(this.getOptionalFilterParameter("returnQueryName"));
         if (this.returnQueryName == null)
         {
             this.returnQueryName = RETURN_QUERY_NAME_DEFAULT;
+        }
+        
+        // instantiate and initialize PolicyService
+        try
+        {
+            final String policyServiceClass = this.getMandatoryFilterParameter(Parameters.POLICY_SERVICE);
+            this.policyService = (PolicyServiceFilterCollaborator)Class.forName(policyServiceClass).newInstance();
+            this.policyService.init(filterConfig);
+        }
+        catch(ClassNotFoundException | InstantiationException | IllegalAccessException e)
+        {
+            throw new ServletException(e.getMessage());
         }
     }
     
