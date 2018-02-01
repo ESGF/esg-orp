@@ -85,8 +85,8 @@ force_install=${force_install:-0}
 
 init() {
     
-    orp_dist_url="${esg_dist_url}/${script_maj_version}/${script_sub_version}/esg-orp/esg-orp.war"
-    orp_property_file_dist_url="${esg_dist_url}/${script_maj_version}/${script_sub_version}/esg-orp/esg-orp.properties"
+    orp_dist_url="${esg_dist_url}/esg-orp/esg-orp.war"
+    orp_property_file_dist_url="${esg_dist_url}/esg-orp/esg-orp.properties"
     orp_context_root="esg-orp"
     orp_service_app_home="${CATALINA_HOME}/webapps/${orp_context_root}"
     orp_service_endpoint=$(echo "https://${esgf_host}$( if ((esgf_https_port != 443)); then echo "${port}"; fi)/${orp_service_app_home##*/}/html.htm")
@@ -238,7 +238,7 @@ setup_providers_dropdown() {
 
     # Do additional setup to configure CEDA-provided ORP with a dropdown list of IDPs
 
-    known_providers_url="${esg_dist_url}/${script_maj_version}/${script_sub_version}/lists/esgf_known_providers.xml"
+    known_providers_url="${esg_dist_url}/lists/esgf_known_providers.xml"
     config_dir=${esg_root_dir}/config
     known_providers_file=${config_dir}/esgf_known_providers.xml
 
@@ -276,10 +276,10 @@ get_orp_support_libs() {
 
         echo "getting (downloading) dependent library jars from ESGF Distribution Server (Security) to ${dest_dir} ..."
         local make_backup_file=0 #Do NOT make backup file
-        checked_get ${dest_dir}/${esgf_security_jar} ${esg_dist_url}/${script_maj_version}/${script_sub_version}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
+        checked_get ${dest_dir}/${esgf_security_jar} ${esg_dist_url}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
         (( $? == 0 )) && ((ret++)) && write_security_lib_install_log #yes, I did indeed fetch something new
 
-        checked_get ${dest_dir}/${esgf_security_test_jar} ${esg_dist_url}/${script_maj_version}/${script_sub_version}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
+        checked_get ${dest_dir}/${esgf_security_test_jar} ${esg_dist_url}/esgf-security/${esgf_security_jar} $((force_install)) $((make_backup_file))
         (( $? == 0 )) && ((ret++)) #yes, I did indeed fetch something new
 
         #remove all other node manager jars that are not what we want
@@ -385,7 +385,7 @@ fetch_static_ats_file() {
     local fetch_file=esgf_ats_static.xml
     local force=1
     local make_backup=1
-    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/${script_maj_version}/${script_sub_version}/lists/${fetch_file} ${force} ${make_backup}
+    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
     (( $? > 1 )) && [FAIL] && return 2
     chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${fetch_file}
     [OK]
@@ -395,7 +395,7 @@ fetch_known_providers_file() {
     local fetch_file=esgf_known_providers.xml
     local force=1
     local make_backup=1
-    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/${script_maj_version}/${script_sub_version}/lists/${fetch_file} ${force} ${make_backup}
+    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
     (( $? > 1 )) && [FAIL] && return 2
     chown ${tomcat_user}:${tomcat_group} ${esg_config_dir}/${fetch_file}
     [OK]
@@ -405,7 +405,7 @@ fetch_static_idp_file() {
     local fetch_file=esgf_idp_static.xml
     local force=1
     local make_backup=1
-    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/${script_maj_version}/${script_sub_version}/lists/${fetch_file} ${force} ${make_backup}
+    checked_get ${esg_config_dir}/${fetch_file} ${esg_dist_url}/lists/${fetch_file} ${force} ${make_backup}
     (( $? > 1 )) && [FAIL] && return 2
     [OK]
 }
