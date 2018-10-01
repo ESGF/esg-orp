@@ -13,8 +13,8 @@
 
 <tiles:putAttribute type="string" name="title" value="OpenID Login Page" />
 	
-<!-- automatic redirect if "openid" parameter is detected -->
 <tiles:putAttribute name="script">
+<!-- automatic redirect if "openid" parameter is detected -->
 	
 <c:if test="${param[openid] != null}">
 <c:url value="${target_url}" var="myurl">
