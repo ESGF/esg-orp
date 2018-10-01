@@ -38,7 +38,7 @@
 	</bean>
 	
 	<!-- Tiles Configurer -->
-	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="useMutableTilesContainer" value="true" />
 		<property name="definitions">
 			<list>
