@@ -106,13 +106,13 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.springframework.security" name="spring-security-taglibs" rev="5.1.0.RELEASE" conf="default->default" />
     <dependency org="org.springframework.security" name="spring-security-web" rev="5.1.0.RELEASE" conf="default->default" />
 
-    <dependency org="org.apache.tiles" name="tiles-core" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-api" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-jsp" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-compat" rev="2.2.2" conf="*->default" />
-    <dependency org="org.apache.tiles" name="tiles-servlet" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-core" rev="3.0.8" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-api" rev="3.0.8" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-jsp" rev="3.0.8" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-compat" rev="3.0.8" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-servlet" rev="3.0.8" conf="*->default" />
     
-    <dependency org="org.apache.tiles" name="tiles-template" rev="2.2.2" conf="*->default" />
+    <dependency org="org.apache.tiles" name="tiles-template" rev="3.0.8" conf="*->default" />
 
     <dependency org="org.apache.taglibs" name="taglibs-standard-spec" rev="1.2.5"/>
     <dependency org="org.apache.taglibs" name="taglibs-standard-impl" rev="1.2.5"/>
