@@ -57,34 +57,8 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/fetched/asm-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/cglib-2.2.1-v20090111.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.7.20.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.7.20.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/guice-3.0.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/httpclient-4.5.6.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/httpcore-4.4.10.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/jcl-over-slf4j-1.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/nekohtml-1.9.22.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/slf4j-api-1.7.6.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-aop-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-beans-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-context-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-context-support-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-core-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-expression-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-jcl-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-jdbc-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-security-acl-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-security-config-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-security-core-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-security-openid-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-security-taglibs-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-security-web-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-tx-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-web-5.1.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-5.1.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/tiles-api-3.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/tiles-autotag-core-runtime-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/tiles-compat-3.0.8.jar"/>
@@ -95,7 +69,6 @@
 	<classpathentry kind="lib" path="lib/fetched/tiles-request-servlet-1.0.7.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/tiles-servlet-3.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/tiles-template-3.0.8.jar"/>
-	<classpathentry kind="lib" path="lib/fetched/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/annotations-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/bcel-5.1.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/cobertura-1.8.jar"/>
@@ -112,5 +85,30 @@
 	<classpathentry kind="lib" path="lib/fetched/regexp-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/asm-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/esgf-security-test-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/guice-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/httpclient-4.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/httpcore-4.4.3.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/nekohtml-1.9.20.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-aop-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-beans-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-context-support-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-core-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-expression-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-jdbc-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-acl-4.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-config-4.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-core-4.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-openid-4.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-taglibs-4.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-security-web-4.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-tx-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-web-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/spring-webmvc-4.3.19.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/xercesImpl-2.10.0.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
