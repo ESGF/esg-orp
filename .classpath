@@ -119,5 +119,7 @@
 	<classpathentry kind="lib" path="lib/fetched/xmlgraphics-commons-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xmltooling-1.4.6.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/xom-1.2.5.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/not-yet-commons-ssl-0.3.9.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/xmlsec-1.4.7.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

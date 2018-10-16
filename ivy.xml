@@ -125,6 +125,9 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.owasp.esapi" name="esapi" rev="2.1.0.1"/>
     <dependency org="org.owasp.antisamy" name="antisamy" rev="1.5.7"/>
     <dependency org="org.opensaml" name="XSGroupRole" rev="1.0.0" transitive="false" conf="default->default"  />
+    
+    <dependency org="org.apache.santuario" name="xmlsec" rev="1.4.7"/>
+    <dependency org="ca.juliusdavies" name="not-yet-commons-ssl" rev="0.3.9"/>
 
     <dependency org="joda-time" name="joda-time" rev="2.0"/>
     <dependency org="org.slf4j" name="slf4j-api" rev="1.6.4"/>
