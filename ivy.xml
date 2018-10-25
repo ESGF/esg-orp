@@ -90,16 +90,16 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="commons-io" name="commons-io" rev="2.4"/>
     <dependency org="commons-lang" name="commons-lang" rev="2.5"/>
 
-    <dependency org="org.springframework" name="spring-core" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-web" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-webmvc" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-beans" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-context" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-context-support" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-tx" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-aop" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-expression" rev="4.3.19.RELEASE" conf="default->default" />
-    <dependency org="org.springframework" name="spring-jdbc" rev="4.3.19.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-core" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-web" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-webmvc" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-beans" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-context" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-context-support" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-tx" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-aop" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-expression" rev="4.3.20.RELEASE" conf="default->default" />
+    <dependency org="org.springframework" name="spring-jdbc" rev="4.3.20.RELEASE" conf="default->default" />
 
     <dependency org="org.springframework.security" name="spring-security-config" rev="4.2.8.RELEASE" conf="default->default" />
     <dependency org="org.springframework.security" name="spring-security-core" rev="4.2.8.RELEASE" conf="default->default" />
@@ -147,6 +147,8 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="org.esgf" name="esgf-security" rev="latest.milestone" transitive="false"/>
 
     <dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1"/>
+    
+    <dependency org="org.dom4j" name="dom4j" rev="2.1.1"/>
 
   </dependencies>
 
