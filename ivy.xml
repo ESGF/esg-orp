@@ -149,6 +149,15 @@ Note: Check Maven for propery dependency parameter values @
     <dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1"/>
     
     <dependency org="org.dom4j" name="dom4j" rev="2.1.1"/>
+    
+    <!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-util -->
+	<dependency org="org.apache.xmlgraphics" name="batik-util" rev="1.10"/>
+	<dependency org="org.apache.xmlgraphics" name="batik-css" rev="1.10"/>
+	<!-- https://mvnrepository.com/artifact/org.apache-extras.beanshell/bsh -->
+	<dependency org="org.apache-extras.beanshell" name="bsh-core" rev="2.0b6"/>
+	<exclude org="org.beanshell" module="bsh-core" />
+	<conflict org="org.apache-extras.beanshell" module="bsh-core" rev="2.0b6"/>
+    
 
   </dependencies>
 
