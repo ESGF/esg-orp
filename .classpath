@@ -44,6 +44,7 @@
 	<classpathentry kind="lib" path="lib/fetched/commons-collections-3.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/commons-codec-1.10.jar"/>
 	<classpathentry kind="lib" path="lib/fetched/mockito-all-1.10.19.jar"/>
+	<classpathentry kind="lib" path="lib/fetched/bcprov-jdk15on-160.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
