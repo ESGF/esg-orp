@@ -1,6 +1,7 @@
 package esg.orp.app;
 
 import java.net.InetAddress;
+import java.util.Objects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,8 +88,9 @@ public class SAMLAuthorizer implements Authorizer {
         // parse the authorization statements
         final SAMLAuthorizations authorizations = encoder.parseAuthorizationResponse(authzStatement);
         
-        if (authorizations.getIdentity().equals(user)) {
-            if (LOG.isTraceEnabled()) LOG.trace("Matched user="+user);
+        // ensure statement identity and the user match, even if both are null
+        if (Objects.equals(authorizations.getIdentity(), user)) {
+            if (LOG.isTraceEnabled() && user != null) LOG.trace("Matched user="+user);
             for (final SAMLAuthorization authz : authorizations.getAuthorizations()) {
                 
                 if (authz.getResource().equals(url)) {

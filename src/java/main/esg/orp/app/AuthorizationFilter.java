@@ -52,26 +52,23 @@ public class AuthorizationFilter extends AccessControlFilterTemplate {
 	public void attemptValidation(final HttpServletRequest req, final HttpServletResponse resp, final FilterChain chain) 
 				throws IOException, ServletException {
 								
-		// proceed only if authentication cookie is found in request
+		// check for authentication id attribute in request
 		final String openid = (String)req.getAttribute(Parameters.AUTHENTICATION_REQUEST_ATTRIBUTE);
-		if (openid!=null) {
-			
-			if (LOG.isDebugEnabled()) LOG.debug("Found authentication attribute, openid="+openid);				
-			String url = null;
-			if (urlTransformer != null) {
-				url = urlTransformer.transformUrl(Utils.getFullRequestUrl(req));
-			} else {
-				url = Utils.getFullRequestUrl(req);
-			}
-			
-			if (LOG.isDebugEnabled()) LOG.debug("Requesting authorization for transformed URL="+url);
-			final boolean authorized = authorizationService.authorize(openid, url, Action.READ_ACTION);
-			if (LOG.isDebugEnabled()) LOG.debug("Openid="+openid+" url="+url+" operation="+Action.READ_ACTION+" authorization result="+authorized);					
-			if (authorized) this.assertIsValid(req);
-							   		
+		if (LOG.isDebugEnabled() && openid != null)
+			LOG.debug("Found authentication attribute, openid = " + openid);
 		
-		} // authentication cookie found
-			
+		String url = null;
+		if (urlTransformer != null) {
+			url = urlTransformer.transformUrl(Utils.getFullRequestUrl(req));
+		} else {
+			url = Utils.getFullRequestUrl(req);
+		}
+		
+		if (LOG.isDebugEnabled()) LOG.debug("Requesting authorization for transformed URL="+url);
+		final boolean authorized = authorizationService.authorize(openid, url, Action.READ_ACTION);
+		if (LOG.isDebugEnabled()) LOG.debug("Openid="+openid+" url="+url+" operation="+Action.READ_ACTION+" authorization result="+authorized);					
+		if (authorized) this.assertIsValid(req);
+		
 	}
 
 
